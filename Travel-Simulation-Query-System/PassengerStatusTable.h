@@ -38,14 +38,15 @@ public:
 
 class PassengerStatusTable {
 public:
+	PassengerStatusTable();
 	PassengerStatusTable(const string& file, const int& num);
 	~PassengerStatusTable();
 	//...
 	bool addPassenger(const string& id, const PassengerRequirements& newPassenger);
 	bool addPassengerList(const string& file, const int& num);
 	bool delPassenger(const string& id);
-	TravelSchedule getTravelSchedule(Graph map, string id);
-	PassengerStatus getPassengerStatus(Graph map, string id);
+	TravelSchedule getTravelSchedule(const Graph& map, const string& id);
+	PassengerStatus getPassengerStatus(const Graph& map, const string& id);
 private:
 	unordered_map<string, PassengerRequirements> passengerTable;
 };

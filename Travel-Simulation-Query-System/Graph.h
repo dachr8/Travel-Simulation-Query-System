@@ -11,7 +11,7 @@ public:
 	string city;
 	string transportation;
 	float fare;
-	tm time[2];
+	tm time[2] = {0};
 };
 
 bool operator==(const ArcCity& a, const ArcCity& b);
@@ -20,11 +20,13 @@ istream& operator>>(istream& is, tm& time);
 
 class Graph {
 public:
+	Graph();
 	Graph(const string& file, const int& num);
 	~Graph();
 	bool addArc(const string& city, const ArcCity& newArc);
 	bool addArcList(const string& file, const int& num);
 	bool delArc(const string& city, const ArcCity& arc);
+	const unordered_multimap<string, ArcCity>& getGraph();
 	//...
 private:
 	unordered_multimap<string, ArcCity> cityMap;

@@ -1,6 +1,7 @@
 #include "Graph.h"
 
-
+Graph::Graph() {
+}
 Graph::Graph(const string& file, const int& num) {
 	addArcList(file, num);
 }
@@ -15,23 +16,22 @@ bool Graph::addArc(const string& city, const ArcCity& newArc) {
 	return true;
 }
 
-bool Graph::addArcList(const string& file, const int& num) {
+bool Graph::addArcList(const string & file, const int& num) {
 	string city;
 	ArcCity arcCity;
 
-	ifstream infile;
-	infile.open(file);
-
-	for (int i = 0; i < num; ++i) {
-		infile >> city >> arcCity.city >> arcCity.transportation >> arcCity.fare >> arcCity.time[0] >> arcCity.time[1];
-		if(!addArc(city, arcCity))
-			return false;
-	}
+	ifstream infile(file);
+	if (infile)
+		for (int i = 0; i < num && !infile.eof(); ++i) {
+			infile >> city >> arcCity.city >> arcCity.transportation >> arcCity.fare >> arcCity.time[0] >> arcCity.time[1];
+			if (!addArc(city, arcCity))
+				return false;
+		}
 	infile.close();
 	return true;
 }
 
-bool Graph::delArc(const string& city, const ArcCity& arc) {
+bool Graph::delArc(const string & city, const ArcCity & arc) {
 	for (auto i = cityMap.equal_range(city); i.first != i.second; ++i.first)
 		if (i.first->second == arc) {
 			cityMap.erase(i.first);
@@ -40,7 +40,11 @@ bool Graph::delArc(const string& city, const ArcCity& arc) {
 	return false;
 }
 
-bool operator==(const ArcCity& a, const ArcCity& b) {
+const unordered_multimap<string, ArcCity>& Graph::getGraph() {
+	return cityMap;
+}
+
+bool operator==(const ArcCity & a, const ArcCity & b) {
 	return a.city == b.city &&
 		a.transportation == b.transportation &&
 		a.fare == b.fare &&
@@ -48,7 +52,7 @@ bool operator==(const ArcCity& a, const ArcCity& b) {
 		a.time[1] == b.time[1];
 }
 
-bool operator==(const tm& a, const tm& b) {
+bool operator==(const tm & a, const tm & b) {
 	return a.tm_hour == b.tm_hour &&
 		a.tm_mday == b.tm_mday &&
 		a.tm_min == b.tm_min &&
@@ -57,7 +61,7 @@ bool operator==(const tm& a, const tm& b) {
 		a.tm_year == b.tm_year;
 }
 
-istream& operator>>(istream& is, tm& time) {
+istream& operator>>(istream & is, tm & time) {
 	is >> time.tm_year >> time.tm_mon >> time.tm_mday >> time.tm_hour >> time.tm_min;
 	return is;
 }
