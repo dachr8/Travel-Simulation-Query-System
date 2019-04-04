@@ -15,7 +15,6 @@ bool Graph::addArc(const string& city, const ArcCity& newArc) {
 	cityMap.insert({ city,newArc });
 	return true;
 }
-
 bool Graph::addArcList(const string & file, const int& num) {
 	string city;
 	ArcCity arcCity;
