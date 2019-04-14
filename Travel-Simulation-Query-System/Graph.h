@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <unordered_map>
+#include <ctime>
 
 using namespace std;
 
@@ -11,7 +12,7 @@ public:
 	string city;
 	string transportation;
 	float fare;
-	tm time[2] = {0};
+	time_t time[2] = {0};
 };
 
 bool operator==(const ArcCity& a, const ArcCity& b);

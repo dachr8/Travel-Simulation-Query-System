@@ -14,28 +14,28 @@ bool PassengerStatusTable::addPassenger(const string& id, const PassengerRequire
 }
 
 bool PassengerStatusTable::addPassengerList(const string& file, const int& num) {
-	string id;
-	PassengerRequirements passengerRequirements;
 	int tmp;
 
 	ifstream infile(file);
 	if (infile)
 		for (int i = 0; i < num && !infile.eof(); ++i) {
-			infile >> id >> tmp;
-			passengerRequirements.strategy = (strategy)tmp;
+			string* id = new string;
+			PassengerRequirements* passengerRequirements = new PassengerRequirements;
+			infile >> *id >> tmp;
+			passengerRequirements->strategy = (strategy)tmp;
 
-			if (passengerRequirements.strategy == limitedTime)
-				infile >> passengerRequirements.timeLimit;
+			if (passengerRequirements->strategy == limitedTime)
+				infile >> passengerRequirements->timeLimit;
 
 			infile >> tmp;
-			passengerRequirements.cities.resize(tmp);
+			passengerRequirements->cities.resize(tmp);
 
 			for (int j = 0; j < tmp; ++j) {
 				string tmp;
 				infile >> tmp;
-				passengerRequirements.cities.push_back(tmp);
+				passengerRequirements->cities.push_back(tmp);
 			}
-			addPassenger(id, passengerRequirements);
+			addPassenger(*id, *passengerRequirements);
 		}
 
 	infile.close();
