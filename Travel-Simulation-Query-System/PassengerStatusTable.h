@@ -5,7 +5,6 @@
 #include <list>
 #include <unordered_map>
 #include <ctime>
-#include "Graph.h"
 
 using namespace std;
 
@@ -46,8 +45,8 @@ public:
 	bool addPassenger(const string& id, const PassengerRequirements& newPassenger);
 	bool addPassengerList(const string& file, const int& num);
 	bool delPassenger(const string& id);
-	TravelSchedule getTravelSchedule(const Graph& map, const string& id);
-	PassengerStatus getPassengerStatus(const Graph& map, const string& id);
+	TravelSchedule* getTravelSchedule(const unordered_multimap<string, ArcCity>& map, const string& id);
+	PassengerStatus getPassengerStatus(const unordered_multimap<string, ArcCity>& map, const string& id);
 private:
 	unordered_map<string, PassengerRequirements> passengerTable;
 };

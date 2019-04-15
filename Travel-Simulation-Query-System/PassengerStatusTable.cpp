@@ -46,11 +46,37 @@ bool PassengerStatusTable::delPassenger(const string& id) {
 	return passengerTable.erase(id);
 }
 
-TravelSchedule PassengerStatusTable::getTravelSchedule(const Graph& map, const string& id) {
-	return TravelSchedule();
+TravelSchedule* PassengerStatusTable::getTravelSchedule(const unordered_multimap<string, ArcCity>& map, const string& id) {
+	PassengerRequirements requires = passengerTable.find(id)->second;
+
+	time_t now = time(0);
+	tm ltm = { 0 };
+	localtime_s(&ltm, &now);
+
+	switch (requires.strategy) {
+	case minCost:
+		break;
+	case minTime:
+
+
+		cout << 1900 + ltm.tm_year << "Äê " << 1 + ltm.tm_mon << "ÔÂ ";
+		cout << ltm.tm_mday << "ÈÕ " << ltm.tm_hour << ":" << ltm.tm_min << ":" << ltm.tm_sec << endl;
+
+		break;
+	case limitedTime:
+		break;
+	default:
+		break;
+	}
+
+	TravelSchedule* schedule = new TravelSchedule;
+	schedule->cities;
+	schedule->planCost;
+	schedule->planTime;
+	return schedule;
 }
 
-PassengerStatus PassengerStatusTable::getPassengerStatus(const Graph& map, const string& id) {
+PassengerStatus PassengerStatusTable::getPassengerStatus(const unordered_multimap<string, ArcCity>& map, const string& id) {
 	return PassengerStatus();
 }
 

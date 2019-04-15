@@ -16,8 +16,8 @@ public:
 };
 
 bool operator==(const ArcCity& a, const ArcCity& b);
-bool operator==(const tm& a, const tm& b);
-istream& operator>>(istream& is, tm& time);
+//bool operator==(const tm& a, const tm& b);
+//istream& operator>>(istream& is, tm& time);
 
 class Graph {
 public:
