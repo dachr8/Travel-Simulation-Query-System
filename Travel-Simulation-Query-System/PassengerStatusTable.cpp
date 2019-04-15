@@ -28,8 +28,6 @@ bool PassengerStatusTable::addPassengerList(const string& file, const int& num) 
 				infile >> passengerRequirements->timeLimit;
 
 			infile >> tmp;
-			passengerRequirements->cities.resize(tmp);
-
 			for (int j = 0; j < tmp; ++j) {
 				string tmp;
 				infile >> tmp;
@@ -48,31 +46,24 @@ bool PassengerStatusTable::delPassenger(const string& id) {
 
 TravelSchedule* PassengerStatusTable::getTravelSchedule(const unordered_multimap<string, ArcCity>& map, const string& id) {
 	PassengerRequirements requires = passengerTable.find(id)->second;
-
-	time_t now = time(0);
-	tm ltm = { 0 };
-	localtime_s(&ltm, &now);
+	TravelSchedule* schedule = new TravelSchedule;
+	schedule->departure = requires.cities.front();
 
 	switch (requires.strategy) {
 	case minCost:
 		break;
 	case minTime:
-
-
-		cout << 1900 + ltm.tm_year << "Äê " << 1 + ltm.tm_mon << "ÔÂ ";
-		cout << ltm.tm_mday << "ÈÕ " << ltm.tm_hour << ":" << ltm.tm_min << ":" << ltm.tm_sec << endl;
-
+		schedule->cities;
+		schedule->planCost = 999;
+		schedule->planTime = 666;
 		break;
 	case limitedTime:
 		break;
 	default:
+		delete schedule;
 		break;
 	}
 
-	TravelSchedule* schedule = new TravelSchedule;
-	schedule->cities;
-	schedule->planCost;
-	schedule->planTime;
 	return schedule;
 }
 

@@ -15,13 +15,24 @@ bool Graph::addArc(const string& city, const ArcCity& newArc) {
 	cityMap.insert({ city,newArc });
 	return true;
 }
+
 bool Graph::addArcList(const string & file, const int& num) {
 	ifstream infile(file);
 	if (infile)
 		for (int i = 0; i < num && !infile.eof(); ++i) {
 			string* city = new string;
 			ArcCity* arcCity = new ArcCity;
-			infile >> *city >> arcCity->city >> arcCity->transportation >> arcCity->fare >> arcCity->time[0] >> arcCity->time[1];
+			infile >> *city >> arcCity->city >> arcCity->transportation >> arcCity->fare;
+			for (int i = 0; i < 2; ++i) {
+				tm tm_ = { 0 };
+				int tmp;
+				infile >> tmp;
+				tm_.tm_year = tmp - 1900;
+				infile >> tmp;
+				tm_.tm_mon = tmp - 1;
+				infile >> tm_.tm_mday >> tm_.tm_hour >> tm_.tm_min >> tm_.tm_sec;
+				arcCity->time[i] = mktime(&tm_);
+			}
 			if (!addArc(*city, *arcCity))
 				return false;
 		}
@@ -50,11 +61,15 @@ bool operator==(const ArcCity & a, const ArcCity & b) {
 		a.time[1] == b.time[1];
 }
 
-istream& operator>>(istream & is, time_t & time) {
-	tm tm_ = { 0 };
-	is >> tm_.tm_year >> tm_.tm_mon >> tm_.tm_mday >> tm_.tm_hour >> tm_.tm_min;
-	tm_.tm_year -= 1900;
-	--tm_.tm_mon;
-	time = mktime(&tm_);
-	return is;
+ostream& operator<<(ostream & os, ArcCity & arcCity) {
+	os << arcCity.city << arcCity.transportation << arcCity.fare;
+	for (int i = 0; i < 2; ++i) {
+		char tmp[64];
+		tm ltm;
+		localtime_s(&ltm, &arcCity.time[i]);
+		strftime(tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S", &ltm);
+		os << tmp;
+	}
+	return os;
 }
+

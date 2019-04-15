@@ -26,7 +26,8 @@ public:
 
 class TravelSchedule {
 public:
-	list<string> cities;
+	string departure;
+	list<ArcCity> cities;
 	int planTime;
 	float planCost;
 };

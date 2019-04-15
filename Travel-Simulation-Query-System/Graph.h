@@ -12,12 +12,11 @@ public:
 	string city;
 	string transportation;
 	float fare;
-	time_t time[2] = {0};
+	time_t time[2] = { 0 };
 };
 
 bool operator==(const ArcCity& a, const ArcCity& b);
-//bool operator==(const tm& a, const tm& b);
-//istream& operator>>(istream& is, tm& time);
+ostream& operator<<(ostream& os, ArcCity& arcCity);
 
 class Graph {
 public:
