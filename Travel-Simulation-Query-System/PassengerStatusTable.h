@@ -5,6 +5,7 @@
 #include <list>
 #include <unordered_map>
 #include <ctime>
+#include "Graph.h"
 
 using namespace std;
 
