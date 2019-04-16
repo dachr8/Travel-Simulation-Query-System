@@ -53,8 +53,10 @@ public:
 	bool addPassenger(const string& id, const PassengerRequirements& newPassenger);
 	bool addPassengerList(const string& file, const int& num);
 	bool delPassenger(const string& id);
+	bool findPassenger(const string& id);
 	const TravelSchedule& getTravelSchedule(const unordered_multimap<string, ArcCity>& map, const string& id);
-	const PassengerStatus& getPassengerStatus(const string& id);
+	const TravelSchedule& generateTravelSchedule(const unordered_multimap<string, ArcCity>& map, const string& id);
+	bool updatePassengerStatusTable();
 	bool printPassengerStatusTable();
 private:
 	unordered_map<string, PassengerRequirements> passengerRequirements;

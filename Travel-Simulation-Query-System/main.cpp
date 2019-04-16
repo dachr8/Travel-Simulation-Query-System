@@ -7,6 +7,7 @@ using namespace std;
 
 bool timer_thread = true;
 time_t now;
+PassengerTable* passengers;
 
 void timer() {
 	now = time(0);
@@ -18,9 +19,9 @@ void timer() {
 
 	while (true) {
 		if (timer_thread) {
-			cout << 1900 + ltm.tm_year << "-" << 1 + ltm.tm_mon << "-" << ltm.tm_mday << " " << ltm.tm_hour << ":00:00" << endl;
-			Sleep(1000);
-			//Sleep(10000);
+			cout << 1900 + ltm.tm_year << "-" << 1 + ltm.tm_mon << "-" << ltm.tm_mday << " " << ltm.tm_hour << ":00:00";
+			passengers->updatePassengerStatusTable();
+			Sleep(1000); //Sleep(10000);
 			++ltm.tm_hour;
 			now = mktime(&ltm);
 		} else
@@ -29,7 +30,7 @@ void timer() {
 }
 
 int main() {
-	PassengerTable passengers("passengers.txt", 1);
+	passengers = new PassengerTable("passengers.txt", 10);
 	Graph map("map.txt", 10);
 
 
@@ -40,32 +41,23 @@ int main() {
 	while (run_flag) {
 		string cmd;
 		cin >> cmd;
-		if (cmd == "q") {
+		if (cmd == "#") {
 			run_flag = false;
-		} else if (cmd == "zhang") {
-			if (timer_thread) {
-				timer_thread = false;
-				TravelSchedule schedule = passengers.getTravelSchedule(map.getGraph(), "zhang");
-				cout << "zhang " << schedule.departure << endl;
-				for (auto iter = schedule.cities.begin(); iter != schedule.cities.end(); ++iter)
-					cout << ">>" << *iter << endl;
-				cout << "Plan Cost: " << schedule.planCost << "\tPlan Time: " << schedule.planTime << endl << endl;
-				timer_thread = true;
-			}
 		} else if (cmd == "check") {
-			if (timer_thread) {
-				timer_thread = false;
-				passengers.printPassengerStatusTable();
-				cout << endl;
-				timer_thread = true;
-			}
+			timer_thread = false;
+			passengers->printPassengerStatusTable();
+			cout << endl;
+			timer_thread = true;
+		} else if (passengers->findPassenger(cmd)) {
+			timer_thread = false;
+			TravelSchedule schedule = passengers->getTravelSchedule(map.getGraph(), cmd);
+			cout << cmd << '\t' << schedule.departure << endl;
+			for (auto iter = schedule.cities.begin(); iter != schedule.cities.end(); ++iter)
+				cout << ">>" << *iter << endl;
+			cout << "Plan Cost: " << schedule.planCost << "\tPlan Time: " << schedule.planTime << endl << endl;
+			timer_thread = true;
 		}
 	}
-
-
-
-	// ...
-
 
 	return 0;
 }

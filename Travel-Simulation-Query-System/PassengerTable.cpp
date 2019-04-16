@@ -52,13 +52,27 @@ bool PassengerTable::delPassenger(const string& id) {
 	return passengerRequirements.erase(id);
 }
 
+bool PassengerTable::findPassenger(const string& id) {
+	return  passengerRequirements.find(id) != passengerRequirements.end();
+}
+
 const TravelSchedule& PassengerTable::getTravelSchedule(const unordered_multimap<string, ArcCity>& map, const string& id) {
+	if (travelSchedule.find(id) == travelSchedule.end())
+		return generateTravelSchedule(map, id);
+	else
+		return travelSchedule.find(id)->second;
+}
+
+const TravelSchedule& PassengerTable::generateTravelSchedule(const unordered_multimap<string, ArcCity> & map, const string & id) {
 	PassengerRequirements requires = passengerRequirements.find(id)->second;
 	TravelSchedule* schedule = new TravelSchedule;
 	schedule->departure = requires.cities.front();
 
 	switch (requires.strategy) {
 	case minCost:
+		schedule->cities;
+		schedule->planCost = 111;
+		schedule->planTime = 222;
 		break;
 	case minTime:
 		schedule->cities;
@@ -66,6 +80,9 @@ const TravelSchedule& PassengerTable::getTravelSchedule(const unordered_multimap
 		schedule->planTime = 666;
 		break;
 	case limitedTime:
+		schedule->cities;
+		schedule->planCost = 111;
+		schedule->planTime = requires.timeLimit;
 		break;
 	default:
 		delete schedule;
@@ -76,25 +93,19 @@ const TravelSchedule& PassengerTable::getTravelSchedule(const unordered_multimap
 	return *schedule;
 }
 
-const PassengerStatus& PassengerTable::getPassengerStatus(const string& id) {
-	TravelSchedule schedule = travelSchedule.find(id)->second;
-	PassengerStatus* status = &passengerStatusTable.find(id)->second;
-	//TODO
-	schedule.cities;
-	now;
-
-
-	return *status;
+bool PassengerTable::updatePassengerStatusTable() {
+	cout << "//" << endl;
+	return true;
 }
 
 bool PassengerTable::printPassengerStatusTable() {
 	for (auto iter = passengerStatusTable.begin(); iter != passengerStatusTable.end(); ++iter)
-		cout << iter->first << "\t" << iter->second << endl;
+		cout << iter->first << '\t' << iter->second << endl;
 	return true;
 }
 
 ostream& operator<<(ostream & os, PassengerStatus & passengerStatus) {
-	os << passengerStatus.currentCity << "\t";
+	os << passengerStatus.currentCity << '\t';
 	switch (passengerStatus.currentStatus) {
 	case waiting:
 		os << "µÈ´ýÖÐ";
