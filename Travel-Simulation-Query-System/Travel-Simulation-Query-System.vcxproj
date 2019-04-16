@@ -124,12 +124,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Graph.h" />
-    <ClInclude Include="PassengerStatusTable.h" />
+    <ClInclude Include="PassengerTable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PassengerStatusTable.cpp" />
+    <ClCompile Include="PassengerTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="map.txt" />

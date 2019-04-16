@@ -1,5 +1,5 @@
 #include "Graph.h"
-#include "PassengerStatusTable.h"
+#include "PassengerTable.h"
 #include <windows.h>
 #include <thread>
 
@@ -29,31 +29,36 @@ void timer() {
 }
 
 int main() {
-	PassengerStatusTable passengers("passengers.txt", 1);
+	PassengerTable passengers("passengers.txt", 1);
 	Graph map("map.txt", 10);
 
 
 	thread t(timer);
 	t.detach();
 
-	while (true) {
-		char switch_on;
-		cin >> switch_on;
-		switch (switch_on) {
-		case 's':
+	bool run_flag = true;
+	while (run_flag) {
+		string cmd;
+		cin >> cmd;
+		if (cmd == "q") {
+			run_flag = false;
+		} else if (cmd == "zhang") {
 			if (timer_thread) {
 				timer_thread = false;
-				TravelSchedule* schedule = passengers.getTravelSchedule(map.getGraph(), "zhang");
-				cout << "zhang " << schedule->departure << endl;
-				for (auto iter = schedule->cities.begin(); iter != schedule->cities.end(); ++iter)
+				TravelSchedule schedule = passengers.getTravelSchedule(map.getGraph(), "zhang");
+				cout << "zhang " << schedule.departure << endl;
+				for (auto iter = schedule.cities.begin(); iter != schedule.cities.end(); ++iter)
 					cout << ">>" << *iter << endl;
-				cout << "Plan Cost: " << schedule->planCost << "\tPlan Time: " << schedule->planTime << endl;
-				delete schedule;
+				cout << "Plan Cost: " << schedule.planCost << "\tPlan Time: " << schedule.planTime << endl << endl;
 				timer_thread = true;
 			}
-			break;
-		default:
-			break;
+		} else if (cmd == "check") {
+			if (timer_thread) {
+				timer_thread = false;
+				passengers.printPassengerStatusTable();
+				cout << endl;
+				timer_thread = true;
+			}
 		}
 	}
 
