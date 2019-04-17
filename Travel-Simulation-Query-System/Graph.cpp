@@ -12,6 +12,8 @@ bool Graph::addArc(const string& city, const ArcCity& newArc) {
 	for (auto i = cityMap.equal_range(city); i.first != i.second; ++i.first)
 		if (i.first->second == newArc)
 			return false;
+	citySet.insert(city);
+	citySet.insert(newArc.city);
 	cityMap.insert({ city,newArc });
 	return true;
 }
@@ -49,7 +51,11 @@ bool Graph::delArc(const string & city, const ArcCity & arc) {
 	return false;
 }
 
-const unordered_multimap<string, ArcCity>& Graph::getGraph() {
+const unordered_set<string>& Graph::getCitySet() {
+	return citySet;
+}
+
+const unordered_multimap<string, ArcCity>& Graph::getCityMap() {
 	return cityMap;
 }
 
@@ -62,8 +68,9 @@ bool operator==(const ArcCity & a, const ArcCity & b) {
 }
 
 ostream& operator<<(ostream & os, ArcCity & arcCity) {
-	os << arcCity.city << arcCity.transportation << arcCity.fare;
+	os << arcCity.city << '\t' << arcCity.transportation << '\t' << arcCity.fare;
 	for (int i = 0; i < 2; ++i) {
+		os << '\t';
 		char tmp[64];
 		tm ltm;
 		localtime_s(&ltm, &arcCity.time[i]);

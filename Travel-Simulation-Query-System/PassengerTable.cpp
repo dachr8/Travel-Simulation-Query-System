@@ -37,9 +37,14 @@ bool PassengerTable::addPassengerList(const string& file, const int& num) {
 
 			infile >> tmp;
 			for (int j = 0; j < tmp; ++j) {
-				string tmp;
-				infile >> tmp;
-				requirements->cities.push_back(tmp);
+				string city;
+				infile >> city;
+				if (j == 0)
+					requirements->departure = city;
+				else if (j == tmp - 1)
+					requirements->destination = city;
+				else
+					requirements->wayCities.push_back(city);
 			}
 			addPassenger(*id, *requirements);
 		}
@@ -48,15 +53,15 @@ bool PassengerTable::addPassengerList(const string& file, const int& num) {
 	return true;
 }
 
-bool PassengerTable::delPassenger(const string& id) {
+bool PassengerTable::delPassenger(const string & id) {
 	return passengerRequirements.erase(id);
 }
 
-bool PassengerTable::findPassenger(const string& id) {
+bool PassengerTable::findPassenger(const string & id) {
 	return  passengerRequirements.find(id) != passengerRequirements.end();
 }
 
-const TravelSchedule& PassengerTable::getTravelSchedule(const unordered_multimap<string, ArcCity>& map, const string& id) {
+const TravelSchedule& PassengerTable::getTravelSchedule(const unordered_multimap<string, ArcCity> & map, const string & id) {
 	if (travelSchedule.find(id) == travelSchedule.end())
 		return generateTravelSchedule(map, id);
 	else
@@ -66,28 +71,39 @@ const TravelSchedule& PassengerTable::getTravelSchedule(const unordered_multimap
 const TravelSchedule& PassengerTable::generateTravelSchedule(const unordered_multimap<string, ArcCity> & map, const string & id) {
 	PassengerRequirements requires = passengerRequirements.find(id)->second;
 	TravelSchedule* schedule = new TravelSchedule;
-	schedule->departure = requires.cities.front();
+	schedule->departure = requires.departure;
+	schedule->destination = requires.destination;
+	string nextCity;
 
 	switch (requires.strategy) {
 	case minCost:
 		schedule->cities;
 		schedule->planCost = 111;
-		schedule->planTime = 222;
 		break;
 	case minTime:
-		schedule->cities;
+		//
+		for (auto nextCity = ++(requires.wayCities.begin()); nextCity != requires.wayCities.end(); ++nextCity) {
+			for (auto i = map.equal_range(*nextCity); i.first != i.second; ++i.first) {
+				schedule->cities.push_back(i.first->second);
+			}
+		}
+		//
 		schedule->planCost = 999;
-		schedule->planTime = 666;
 		break;
 	case limitedTime:
 		schedule->cities;
 		schedule->planCost = 111;
-		schedule->planTime = requires.timeLimit;
 		break;
 	default:
 		delete schedule;
 		break;
 	}
+
+	if (schedule->cities.size())
+		schedule->planTime = schedule->cities.back().time[1];
+	else
+		schedule->planTime = 999;
+
 	travelSchedule.insert({ id,*schedule });
 	passengerStatusTable.insert({ id, { waiting,schedule->departure} });
 	return *schedule;

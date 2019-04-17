@@ -23,7 +23,9 @@ enum strategy {
 
 class PassengerRequirements {
 public:
-	list<string> cities;
+	string departure;
+	string destination;
+	list<string> wayCities;
 	strategy strategy;
 	time_t timeLimit;
 };
@@ -31,6 +33,7 @@ public:
 class TravelSchedule {
 public:
 	string departure;
+	string destination;
 	list<ArcCity> cities;
 	time_t planTime;
 	float planCost;

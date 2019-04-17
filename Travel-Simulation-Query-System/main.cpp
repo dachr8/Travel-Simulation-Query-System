@@ -50,7 +50,7 @@ int main() {
 			timer_thread = true;
 		} else if (passengers->findPassenger(cmd)) {
 			timer_thread = false;
-			TravelSchedule schedule = passengers->getTravelSchedule(map.getGraph(), cmd);
+			TravelSchedule schedule = passengers->getTravelSchedule(map.getCityMap(), cmd);
 			cout << cmd << '\t' << schedule.departure << endl;
 			for (auto iter = schedule.cities.begin(); iter != schedule.cities.end(); ++iter)
 				cout << ">>" << *iter << endl;
