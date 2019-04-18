@@ -61,19 +61,23 @@ bool PassengerTable::findPassenger(const string & id) {
 	return  passengerRequirements.find(id) != passengerRequirements.end();
 }
 
-const TravelSchedule& PassengerTable::getTravelSchedule(const unordered_multimap<string, ArcCity> & map, const string & id) {
+const TravelSchedule& PassengerTable::getTravelSchedule(const multimap<string, ArcCity> & map, const string & id) {
 	if (travelSchedule.find(id) == travelSchedule.end())
 		return generateTravelSchedule(map, id);
 	else
 		return travelSchedule.find(id)->second;
 }
 
-const TravelSchedule& PassengerTable::generateTravelSchedule(const unordered_multimap<string, ArcCity> & map, const string & id) {
+const TravelSchedule& PassengerTable::generateTravelSchedule(const multimap<string, ArcCity> & map, const string & id) {
 	PassengerRequirements requires = passengerRequirements.find(id)->second;
 	TravelSchedule* schedule = new TravelSchedule;
 	schedule->departure = requires.departure;
 	schedule->destination = requires.destination;
-	string nextCity;
+
+
+	list<string> destinations = requires.wayCities;
+	string currentCity = requires.departure;
+	bool find = false;
 
 	switch (requires.strategy) {
 	case minCost:
@@ -82,10 +86,24 @@ const TravelSchedule& PassengerTable::generateTravelSchedule(const unordered_mul
 		break;
 	case minTime:
 		//
-		for (auto nextCity = ++(requires.wayCities.begin()); nextCity != requires.wayCities.end(); ++nextCity) {
-			for (auto i = map.equal_range(*nextCity); i.first != i.second; ++i.first) {
-				schedule->cities.push_back(i.first->second);
-			}
+		while (currentCity != requires.destination) {
+			find = false;
+			for (auto i = map.equal_range(currentCity); !find && i.first != i.second; ++i.first)
+				if (destinations.size()) {
+					auto nextCity = destinations.begin();
+					while (!find && nextCity != destinations.end())
+						if (i.first->second.city == *nextCity) {
+							schedule->cities.push_back(i.first->second);
+							destinations.erase(nextCity);
+							currentCity = i.first->second.city;
+							find = true;
+						} else
+							++nextCity;
+				} else if (i.first->second.city == requires.destination) {
+					schedule->cities.push_back(i.first->second);
+					currentCity = requires.destination;
+					find = true;
+				}
 		}
 		//
 		schedule->planCost = 999;
@@ -104,8 +122,10 @@ const TravelSchedule& PassengerTable::generateTravelSchedule(const unordered_mul
 	else
 		schedule->planTime = 999;
 
-	travelSchedule.insert({ id,*schedule });
-	passengerStatusTable.insert({ id, { waiting,schedule->departure} });
+	if (find) {
+		travelSchedule.insert({ id,*schedule });
+		passengerStatusTable.insert({ id, { waiting,schedule->departure ,schedule->cities.front()} });
+	}
 	return *schedule;
 }
 
@@ -139,6 +159,6 @@ ostream& operator<<(ostream & os, PassengerStatus & passengerStatus) {
 		os << "default";
 		break;
 	}
-
+	os << '\t' << passengerStatus.currentWay;
 	return os;
 }

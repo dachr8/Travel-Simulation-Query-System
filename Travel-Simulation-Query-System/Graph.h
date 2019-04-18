@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <unordered_set>
 #include <ctime>
 
@@ -27,10 +27,10 @@ public:
 	bool addArc(const string& city, const ArcCity& newArc);
 	bool addArcList(const string& file, const int& num);
 	bool delArc(const string& city, const ArcCity& arc);
-	const unordered_multimap<string, ArcCity>& getCityMap();
+	const multimap<string, ArcCity>& getCityMap();
 	const unordered_set<string>& getCitySet();
 	//...
 private:
-	unordered_multimap<string, ArcCity> cityMap;
+	multimap<string, ArcCity> cityMap;
 	unordered_set<string> citySet;
 };

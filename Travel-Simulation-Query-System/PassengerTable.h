@@ -35,14 +35,15 @@ public:
 	string departure;
 	string destination;
 	list<ArcCity> cities;
-	time_t planTime;
-	float planCost;
+	time_t planTime=0;
+	float planCost=0;
 };
 
 class PassengerStatus {
 public:
 	status currentStatus;
 	string currentCity;
+	ArcCity currentWay;
 };
 
 ostream& operator<<(ostream& os, PassengerStatus& passengerStatus);
@@ -57,8 +58,8 @@ public:
 	bool addPassengerList(const string& file, const int& num);
 	bool delPassenger(const string& id);
 	bool findPassenger(const string& id);
-	const TravelSchedule& getTravelSchedule(const unordered_multimap<string, ArcCity>& map, const string& id);
-	const TravelSchedule& generateTravelSchedule(const unordered_multimap<string, ArcCity>& map, const string& id);
+	const TravelSchedule& getTravelSchedule(const multimap<string, ArcCity>& map, const string& id);
+	const TravelSchedule& generateTravelSchedule(const multimap<string, ArcCity>& map, const string& id);
 	bool updatePassengerStatusTable();
 	bool printPassengerStatusTable();
 private:

@@ -55,7 +55,7 @@ const unordered_set<string>& Graph::getCitySet() {
 	return citySet;
 }
 
-const unordered_multimap<string, ArcCity>& Graph::getCityMap() {
+const multimap<string, ArcCity>& Graph::getCityMap() {
 	return cityMap;
 }
 

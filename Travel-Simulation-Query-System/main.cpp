@@ -9,6 +9,10 @@ bool timer_thread = true;
 time_t now;
 PassengerTable* passengers;
 
+void printTime(const tm& ltm) {
+	cout << 1900 + ltm.tm_year << "-" << 1 + ltm.tm_mon << "-" << ltm.tm_mday << " " << ltm.tm_hour << ":00:00";
+}
+
 void timer() {
 	now = time(0);
 	tm ltm = { 0 };
@@ -19,7 +23,7 @@ void timer() {
 
 	while (true) {
 		if (timer_thread) {
-			cout << 1900 + ltm.tm_year << "-" << 1 + ltm.tm_mon << "-" << ltm.tm_mday << " " << ltm.tm_hour << ":00:00";
+			printTime(ltm);
 			passengers->updatePassengerStatusTable();
 			Sleep(1000); //Sleep(10000);
 			++ltm.tm_hour;
@@ -54,7 +58,15 @@ int main() {
 			cout << cmd << '\t' << schedule.departure << endl;
 			for (auto iter = schedule.cities.begin(); iter != schedule.cities.end(); ++iter)
 				cout << ">>" << *iter << endl;
-			cout << "Plan Cost: " << schedule.planCost << "\tPlan Time: " << schedule.planTime << endl << endl;
+			cout << "Plan Cost: " << schedule.planCost << "\tPlan Time: ";
+
+			tm ltm = { 0 };
+			localtime_s(&ltm, &schedule.planTime);
+			ltm.tm_min = 0;
+			ltm.tm_sec = 0;
+			printTime(ltm);
+			cout << endl << endl;
+
 			timer_thread = true;
 		}
 	}
