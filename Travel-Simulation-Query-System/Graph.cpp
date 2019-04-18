@@ -68,7 +68,7 @@ bool operator==(const ArcCity & a, const ArcCity & b) {
 }
 
 ostream& operator<<(ostream & os, ArcCity & arcCity) {
-	os << arcCity.city << '\t' << arcCity.transportation << '\t' << arcCity.fare;
+	os << arcCity.city << '\t' << arcCity.transportation << "\tÆ±¼Û£º"<< arcCity.fare;
 	for (int i = 0; i < 2; ++i) {
 		os << '\t';
 		char tmp[64];

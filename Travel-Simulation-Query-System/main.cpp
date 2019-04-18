@@ -8,10 +8,7 @@ using namespace std;
 bool timer_thread = true;
 time_t now;
 PassengerTable* passengers;
-
-void printTime(const tm& ltm) {
-	cout << 1900 + ltm.tm_year << "-" << 1 + ltm.tm_mon << "-" << ltm.tm_mday << " " << ltm.tm_hour << ":00:00";
-}
+Graph* graph;
 
 void timer() {
 	now = time(0);
@@ -20,10 +17,9 @@ void timer() {
 	ltm.tm_min = 0;
 	ltm.tm_sec = 0;
 
-
 	while (true) {
 		if (timer_thread) {
-			printTime(ltm);
+			passengers->printTime(ltm);
 			passengers->updatePassengerStatusTable();
 			Sleep(1000); //Sleep(10000);
 			++ltm.tm_hour;
@@ -35,7 +31,7 @@ void timer() {
 
 int main() {
 	passengers = new PassengerTable("passengers.txt", 10);
-	Graph map("map.txt", 10);
+	graph = new Graph("map.txt", 10);
 
 
 	thread t(timer);
@@ -54,19 +50,8 @@ int main() {
 			timer_thread = true;
 		} else if (passengers->findPassenger(cmd)) {
 			timer_thread = false;
-			TravelSchedule schedule = passengers->getTravelSchedule(map.getCityMap(), cmd);
-			cout << cmd << '\t' << schedule.departure << endl;
-			for (auto iter = schedule.cities.begin(); iter != schedule.cities.end(); ++iter)
-				cout << ">>" << *iter << endl;
-			cout << "Plan Cost: " << schedule.planCost << "\tPlan Time: ";
-
-			tm ltm = { 0 };
-			localtime_s(&ltm, &schedule.planTime);
-			ltm.tm_min = 0;
-			ltm.tm_sec = 0;
-			printTime(ltm);
-			cout << endl << endl;
-
+			passengers->printTravelSchedule(cmd);
+			cout << endl;
 			timer_thread = true;
 		}
 	}

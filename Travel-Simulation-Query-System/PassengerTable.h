@@ -11,6 +11,7 @@ using namespace std;
 
 extern bool timer_thread;
 extern time_t now;
+extern Graph* graph;
 
 
 enum status {
@@ -30,21 +31,24 @@ public:
 	time_t timeLimit;
 };
 
-class TravelSchedule {
-public:
-	string departure;
-	string destination;
-	list<ArcCity> cities;
-	time_t planTime=0;
-	float planCost=0;
-};
-
 class PassengerStatus {
 public:
 	status currentStatus;
 	string currentCity;
 	ArcCity currentWay;
 };
+
+class TravelSchedule {
+public:
+	string departure;
+	string destination;
+	list<ArcCity> cities;
+	time_t planTime = 0;
+	float planCost = 0;
+	PassengerStatus status;
+};
+
+
 
 ostream& operator<<(ostream& os, PassengerStatus& passengerStatus);
 
@@ -58,12 +62,14 @@ public:
 	bool addPassengerList(const string& file, const int& num);
 	bool delPassenger(const string& id);
 	bool findPassenger(const string& id);
-	const TravelSchedule& getTravelSchedule(const multimap<string, ArcCity>& map, const string& id);
-	const TravelSchedule& generateTravelSchedule(const multimap<string, ArcCity>& map, const string& id);
+	const TravelSchedule& getTravelSchedule(const string& id);
+	const TravelSchedule& generateTravelSchedule(const string& id);
 	bool updatePassengerStatusTable();
+	bool printTravelSchedule(const string& id);
 	bool printPassengerStatusTable();
+	void printTime(const tm& ltm);
+
 private:
 	unordered_map<string, PassengerRequirements> passengerRequirements;
 	unordered_map<string, TravelSchedule> travelSchedule;
-	unordered_map<string, PassengerStatus> passengerStatusTable;
 };
