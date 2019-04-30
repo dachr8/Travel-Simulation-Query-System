@@ -31,7 +31,9 @@ bool PassengerTable::addPassengerList(const string& file, const int& num) {
 				tm_.tm_year = tmp - 1900;
 				infile >> tmp;
 				tm_.tm_mon = tmp - 1;
-				infile >> tm_.tm_mday >> tm_.tm_hour >> tm_.tm_min >> tm_.tm_sec;
+				infile >> tm_.tm_mday >> tm_.tm_hour;
+				tm_.tm_min = 0;
+				tm_.tm_sec = 0;
 				requirements->timeLimit = mktime(&tm_);
 			}
 
