@@ -19,11 +19,11 @@ public:
 bool operator==(const ArcCity& a, const ArcCity& b);
 ostream& operator<<(ostream& os, ArcCity& arcCity);
 
-class Graph {
+class TimeTable {
 public:
-	Graph();
-	Graph(const string& file, const int& num);
-	~Graph();
+	TimeTable();
+	TimeTable(const string& file, const int& num);
+	~TimeTable();
 	bool addArc(const string& city, const ArcCity& newArc);
 	bool addArcList(const string& file, const int& num);
 	bool delArc(const string& city, const ArcCity& arc);

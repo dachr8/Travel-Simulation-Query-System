@@ -5,13 +5,13 @@
 #include <list>
 #include <unordered_map>
 #include <ctime>
-#include "Graph.h"
+#include "TimeTable.h"
 
 using namespace std;
 
 extern bool timer_thread;
 extern time_t now;
-extern Graph* graph;
+extern TimeTable* timeTable;
 
 
 enum status {

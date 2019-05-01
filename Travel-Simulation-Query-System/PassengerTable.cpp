@@ -90,7 +90,7 @@ const TravelSchedule& PassengerTable::generateTravelSchedule(const string & id) 
 		//
 		while (currentCity != requires.destination) {
 			find = false;
-			for (auto i = graph->getCityMap().equal_range(currentCity); !find && i.first != i.second; ++i.first)
+			for (auto i = timeTable->getCityMap().equal_range(currentCity); !find && i.first != i.second; ++i.first)
 				if (destinations.size()) {
 					auto nextCity = destinations.begin();
 					while (!find && nextCity != destinations.end())

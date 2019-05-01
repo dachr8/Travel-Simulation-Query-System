@@ -15,21 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Graph.h">
+    <ClInclude Include="PassengerTable.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="PassengerTable.h">
+    <ClInclude Include="TimeTable.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Graph.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PassengerTable.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeTable.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

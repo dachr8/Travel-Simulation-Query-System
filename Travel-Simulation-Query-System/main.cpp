@@ -1,4 +1,4 @@
-#include "Graph.h"
+#include "TimeTable.h"
 #include "PassengerTable.h"
 #include <windows.h>
 #include <thread>
@@ -8,7 +8,7 @@ using namespace std;
 bool timer_thread = true;
 time_t now;
 PassengerTable* passengers;
-Graph* graph;
+TimeTable* timeTable;
 
 void timer() {
 	now = time(0);
@@ -31,7 +31,7 @@ void timer() {
 
 int main() {
 	passengers = new PassengerTable("passengers.txt", 10);
-	graph = new Graph("map.txt", 10);
+	timeTable = new TimeTable("map.txt", 10);
 
 
 	thread t(timer);

@@ -1,14 +1,14 @@
-#include "Graph.h"
+#include "TimeTable.h"
 
-Graph::Graph() {
+TimeTable::TimeTable() {
 }
-Graph::Graph(const string& file, const int& num) {
+TimeTable::TimeTable(const string& file, const int& num) {
 	addArcList(file, num);
 }
-Graph::~Graph() {
+TimeTable::~TimeTable() {
 }
 
-bool Graph::addArc(const string& city, const ArcCity& newArc) {
+bool TimeTable::addArc(const string& city, const ArcCity& newArc) {
 	for (auto i = cityMap.equal_range(city); i.first != i.second; ++i.first)
 		if (i.first->second == newArc)
 			return false;
@@ -18,7 +18,7 @@ bool Graph::addArc(const string& city, const ArcCity& newArc) {
 	return true;
 }
 
-bool Graph::addArcList(const string & file, const int& num) {
+bool TimeTable::addArcList(const string & file, const int& num) {
 	ifstream infile(file);
 	if (infile)
 		for (int i = 0; i < num && !infile.eof(); ++i) {
@@ -44,7 +44,7 @@ bool Graph::addArcList(const string & file, const int& num) {
 	return true;
 }
 
-bool Graph::delArc(const string & city, const ArcCity & arc) {
+bool TimeTable::delArc(const string & city, const ArcCity & arc) {
 	for (auto i = cityMap.equal_range(city); i.first != i.second; ++i.first)
 		if (i.first->second == arc) {
 			cityMap.erase(i.first);
@@ -53,11 +53,11 @@ bool Graph::delArc(const string & city, const ArcCity & arc) {
 	return false;
 }
 
-const unordered_set<string>& Graph::getCitySet() {
+const unordered_set<string>& TimeTable::getCitySet() {
 	return citySet;
 }
 
-const multimap<string, ArcCity>& Graph::getCityMap() {
+const multimap<string, ArcCity>& TimeTable::getCityMap() {
 	return cityMap;
 }
 
