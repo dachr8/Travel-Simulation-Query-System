@@ -70,68 +70,6 @@ const TravelSchedule& PassengerTable::getTravelSchedule(const string & id) {
 		return travelSchedule.find(id)->second;
 }
 
-const TravelSchedule& PassengerTable::generateTravelSchedule(const string & id) {
-	PassengerRequirements requires = passengerRequirements.find(id)->second;
-	TravelSchedule* schedule = new TravelSchedule;
-	schedule->departure = requires.departure;
-	schedule->destination = requires.destination;
-	schedule->planCost = 0;
-
-	list<string> destinations = requires.wayCities;
-	string currentCity = requires.departure;
-	bool find = false;
-
-	switch (requires.strategy) {
-	case minCost:
-		schedule->cities;
-		schedule->planCost = 111;
-		break;
-	case minTime:
-		//
-		while (currentCity != requires.destination) {
-			find = false;
-			for (auto i = timeTable->getCityMap().equal_range(currentCity); !find && i.first != i.second; ++i.first)
-				if (destinations.size()) {
-					auto nextCity = destinations.begin();
-					while (!find && nextCity != destinations.end())
-						if (i.first->second.city == *nextCity) {
-							schedule->cities.push_back(i.first->second);
-							destinations.erase(nextCity);
-							currentCity = i.first->second.city;
-							schedule->planCost += i.first->second.fare;
-							find = true;
-						} else
-							++nextCity;
-				} else if (i.first->second.city == requires.destination) {
-					schedule->cities.push_back(i.first->second);
-					currentCity = requires.destination;
-					find = true;
-				}
-		}
-		//
-		break;
-	case limitedTime:
-		schedule->cities;
-		schedule->planCost = 111;
-		break;
-	default:
-		delete schedule;
-		break;
-	}
-
-	if (schedule->cities.size())
-		schedule->planTime = schedule->cities.back().time[1];
-	else
-		schedule->planTime = 999;
-	if (find) {
-		schedule->status.currentCity = schedule->departure;
-		schedule->status.currentStatus = waiting;
-		schedule->status.currentWay = schedule->cities.front();
-		travelSchedule.insert({ id,*schedule });
-	}
-	return *schedule;
-}
-
 bool PassengerTable::printTravelSchedule(const string & id) {
 	TravelSchedule schedule = getTravelSchedule(id);
 	cout << id << '\t' << schedule.status.currentCity << endl;
@@ -146,7 +84,6 @@ bool PassengerTable::printTravelSchedule(const string & id) {
 	printTime(ltm); return true;
 }
 
-
 bool PassengerTable::updatePassengerStatusTable() {
 	for (auto iter = travelSchedule.begin(); iter != travelSchedule.end(); ++iter) {
 		while (iter->second.status.currentStatus != over && now >= iter->second.status.currentWay.time[1]) {
@@ -155,7 +92,8 @@ bool PassengerTable::updatePassengerStatusTable() {
 			if (iter->second.status.currentCity == iter->second.destination) {
 				iter->second.status.currentStatus = over;
 				iter->second.planCost = 0;
-			} else {
+			} 
+			else {
 				iter->second.planCost -= iter->second.status.currentWay.fare;
 				iter->second.status.currentWay = iter->second.cities.front();
 				if (now <= iter->second.status.currentWay.time[1])
