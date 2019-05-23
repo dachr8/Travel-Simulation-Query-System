@@ -1,9 +1,12 @@
 #pragma once
-#include<algorithm>
+#include <algorithm>
+#include <string>
+#include "PassengerTable.h"
+#include "TimeTable.h"
 using namespace std;
 
 const int MAX_CITY = 10;
-int num;//城市总数
+static int num;//城市总数
 
 
 class City {
@@ -18,5 +21,5 @@ private:
 	time_t startTime;//从之前目的地出发时间
 	time_t currentTime;//抵达时间
 	int flag;//0 1 -1扫描标识
-	int value;//当前
+	float value;//当前
 };

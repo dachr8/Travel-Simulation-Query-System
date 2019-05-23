@@ -123,10 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Permutations.h" />
     <ClInclude Include="TimeTable.h" />
     <ClInclude Include="PassengerTable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Permutations.cpp" />
     <ClCompile Include="TimeTable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PassengerTable.cpp" />

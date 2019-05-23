@@ -31,15 +31,12 @@ void timer() {
 }
 
 
-
-
-
-
 int main() {
 	passengers = new PassengerTable("passengers.txt", 10);
 	timeTable = new TimeTable("map.txt", 10);
-	passengers->generateTravelSchedule("zhang");
-/*	thread t(timer);
+
+
+	thread t(timer);
 	t.detach();
 
 	bool run_flag = true;
@@ -53,19 +50,15 @@ int main() {
 			timer_thread = false;
 			passengers->printPassengerStatusTable();
 			cout << endl;
-			system("pause");
 			timer_thread = true;
 		} 
 		else if (passengers->findPassenger(cmd)) {
 			timer_thread = false;
 			passengers->printTravelSchedule(cmd);
 			cout << endl;
-			system("pause");
 			timer_thread = true;
 		}
 	}
-	*/
-	
 	
 	return 0;
 }

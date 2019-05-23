@@ -1,4 +1,5 @@
 #include "PassengerTable.h"
+#include "Permutations.h"
 
 PassengerTable::PassengerTable() {
 }
@@ -55,22 +56,50 @@ bool PassengerTable::addPassengerList(const string& file, const int& num) {
 	return true;
 }
 
-bool PassengerTable::delPassenger(const string & id) {
+bool PassengerTable::delPassenger(const string& id) {
 	return passengerRequirements.erase(id);
 }
 
-bool PassengerTable::findPassenger(const string & id) {
+bool PassengerTable::findPassenger(const string& id) {
 	return  passengerRequirements.find(id) != passengerRequirements.end();
 }
 
-const TravelSchedule& PassengerTable::getTravelSchedule(const string & id) {
+const TravelSchedule& PassengerTable::getTravelSchedule(const string& id) {
 	if (travelSchedule.find(id) == travelSchedule.end())
 		return generateTravelSchedule(id);
 	else
 		return travelSchedule.find(id)->second;
 }
 
-bool PassengerTable::printTravelSchedule(const string & id) {
+const TravelSchedule& PassengerTable::generateTravelSchedule(const string& id) {
+	PassengerRequirements requires = passengerRequirements.find(id)->second;
+	TravelSchedule* schedule = new TravelSchedule;
+	City c;
+	schedule->departure = requires.departure;
+	schedule->destination = requires.destination;
+	schedule->planCost = FLT_MAX;
+	schedule->planTime = INT64_MAX;
+
+	list<string> destinations = requires.wayCities;
+	string currentCity = requires.departure;
+	bool find = false;
+
+	schedule = c.Permutations(requires, schedule);
+
+	if (schedule->cities.size())
+		schedule->planTime = schedule->cities.back().time[1];
+	else
+		schedule->planTime = 999;
+	if (find) {
+		schedule->status.currentCity = schedule->departure;
+		schedule->status.currentStatus = waiting;
+		schedule->status.currentWay = schedule->cities.front();
+		travelSchedule.insert({ id,*schedule });
+	}
+	return *schedule;
+}
+
+bool PassengerTable::printTravelSchedule(const string& id) {
 	TravelSchedule schedule = getTravelSchedule(id);
 	cout << id << '\t' << schedule.status.currentCity << endl;
 	for (auto iter = schedule.cities.begin(); iter != schedule.cities.end(); ++iter)
@@ -92,8 +121,7 @@ bool PassengerTable::updatePassengerStatusTable() {
 			if (iter->second.status.currentCity == iter->second.destination) {
 				iter->second.status.currentStatus = over;
 				iter->second.planCost = 0;
-			} 
-			else {
+			} else {
 				iter->second.planCost -= iter->second.status.currentWay.fare;
 				iter->second.status.currentWay = iter->second.cities.front();
 				if (now <= iter->second.status.currentWay.time[1])
@@ -118,11 +146,11 @@ bool PassengerTable::printPassengerStatusTable() {
 	return true;
 }
 
-void PassengerTable::printTime(const tm & ltm) {
+void PassengerTable::printTime(const tm& ltm) {
 	cout << 1900 + ltm.tm_year << "-" << 1 + ltm.tm_mon << "-" << ltm.tm_mday << " " << ltm.tm_hour << ":00:00" << endl;
 }
 
-ostream& operator<<(ostream & os, PassengerStatus & passengerStatus) {
+ostream& operator<<(ostream& os, PassengerStatus& passengerStatus) {
 	os << passengerStatus.currentCity << ",";
 	switch (passengerStatus.currentStatus) {
 	case waiting:

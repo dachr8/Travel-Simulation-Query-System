@@ -18,7 +18,7 @@ bool TimeTable::addArc(const string& city, const ArcCity& newArc) {
 	return true;
 }
 
-bool TimeTable::addArcList(const string & file, const int& num) {
+bool TimeTable::addArcList(const string& file, const int& num) {
 	ifstream infile(file);
 	if (infile)
 		for (int i = 0; i < num && !infile.eof(); ++i) {
@@ -44,7 +44,7 @@ bool TimeTable::addArcList(const string & file, const int& num) {
 	return true;
 }
 
-bool TimeTable::delArc(const string & city, const ArcCity & arc) {
+bool TimeTable::delArc(const string& city, const ArcCity& arc) {
 	for (auto i = cityMap.equal_range(city); i.first != i.second; ++i.first)
 		if (i.first->second == arc) {
 			cityMap.erase(i.first);
@@ -61,7 +61,7 @@ const multimap<string, ArcCity>& TimeTable::getCityMap() {
 	return cityMap;
 }
 
-bool operator==(const ArcCity & a, const ArcCity & b) {
+bool operator==(const ArcCity& a, const ArcCity& b) {
 	return a.city == b.city &&
 		a.transportation == b.transportation &&
 		a.fare == b.fare &&
@@ -69,7 +69,7 @@ bool operator==(const ArcCity & a, const ArcCity & b) {
 		a.time[1] == b.time[1];
 }
 
-ostream& operator<<(ostream & os, ArcCity & arcCity) {
+ostream& operator<<(ostream& os, ArcCity& arcCity) {
 	os << arcCity.city << '\t' << arcCity.transportation << "\tÆ±¼Û£º" << arcCity.fare;
 	for (int i = 0; i < 2; ++i) {
 		os << '\t';
