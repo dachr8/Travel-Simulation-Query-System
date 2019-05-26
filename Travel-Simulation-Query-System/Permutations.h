@@ -6,20 +6,20 @@
 using namespace std;
 
 const int MAX_CITY = 10;
-static int num;//城市总数
+static int num;//鍩庡競鎬绘暟
 
 
 class City {
 public:
-	City* Dijkstra(string& start, string& destination, enum strategy s);
+	City* Dijkstra(string& start, enum strategy s);
 	int find_city(string& name, City* cityList);
 	TravelSchedule* Permutations(PassengerRequirements& require, TravelSchedule* schedule);
 private:
-	string name;//当前名称
-	string from;//来自
-	string order;//航班
-	time_t startTime;//从之前目的地出发时间
-	time_t currentTime;//抵达时间
-	int flag;//0 1 -1扫描标识
-	float value;//当前
+	string name;//褰撳墠鍚嶇О
+	string from;//鏉ヨ嚜
+	string order;//鑸彮
+	time_t startTime;//浠庝箣鍓嶇洰鐨勫湴鍑哄彂鏃堕棿
+	time_t currentTime;//鎶佃揪鏃堕棿
+	int flag;//0 1 -1鎵弿鏍囪瘑
+	float value;//褰撳墠
 };
