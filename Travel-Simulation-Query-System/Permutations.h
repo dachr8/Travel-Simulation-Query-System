@@ -13,7 +13,7 @@ class City {
 public:
 	City* Dijkstra(string& start, enum strategy s);
 	int find_city(string& name, City* cityList);
-	TravelSchedule* Permutations(PassengerRequirements& require, TravelSchedule* schedule);
+	TravelSchedule* Permutations(PassengerRequirements& require);
 private:
 	string name;//当前名称
 	string from;//来自

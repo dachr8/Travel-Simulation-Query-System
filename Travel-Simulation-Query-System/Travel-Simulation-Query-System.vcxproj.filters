@@ -49,4 +49,7 @@
     <Text Include="map.txt" />
     <Text Include="passengers.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
 </Project>
