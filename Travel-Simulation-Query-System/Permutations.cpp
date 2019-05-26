@@ -10,10 +10,10 @@ int City::find_city(string& name, City* cityList) {
 	return -1;
 }
 
-City* City::Dijkstra(string& start, string& destination, enum strategy s) {
+City* City::Dijkstra(string& start, enum strategy s) {
 	multimap<string, ArcCity> map = timeTable->getCityMap();
 	unordered_set<string> cities = timeTable->getCitySet();
-	multimap<string, ArcCity>::iterator j;//Æðµãjµü´úÆ÷
+	multimap<string, ArcCity>::iterator j;//Ã†Ã°ÂµÃ£jÂµÃ¼Â´ÃºÃ†Ã·
 	City* cityList, tempList;
 	num = cities.size();
 	int count = 0, temp = 0;
@@ -24,7 +24,8 @@ City* City::Dijkstra(string& start, string& destination, enum strategy s) {
 		cityList[i].name = *it;
 		cityList[i].flag = (cityList[i].name == start) ? 1 : 0;
 		cityList[i].value = (cityList[i].name == start) ? 0 : FLT_MAX;
-		cityList[i].currentTime = (cityList[i].name == start) ? 0 : INT_MAX;//TODO
+		cityList[i].startTime = (cityList[i].name == start) ? 0 : INT64_MAX;
+		cityList[i].currentTime = (cityList[i].name == start) ? 0: INT64_MAX;
 		it++;
 	}
 
@@ -52,6 +53,7 @@ City* City::Dijkstra(string& start, string& destination, enum strategy s) {
 			}
 		}
 		break;
+	case limitedTime:		
 	case minTime:
 		while (count != num) {
 			count = 0;
