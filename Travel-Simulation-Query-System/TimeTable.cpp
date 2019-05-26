@@ -69,16 +69,16 @@ bool operator==(const ArcCity& a, const ArcCity& b) {
 		a.time[1] == b.time[1];
 }
 
-ostream& operator<<(ostream& os, ArcCity& arcCity) {
-	os << arcCity.city << '\t' << arcCity.transportation << "\tÆ±¼Û£º" << arcCity.fare;
+
+string ArcCity::toString() {
+	string s = city + '\t' + transportation + "\tÆ±¼Û£º" + to_string(fare);
 	for (int i = 0; i < 2; ++i) {
-		os << '\t';
+		s += '\t';
 		char tmp[64];
 		tm ltm;
-		localtime_s(&ltm, &arcCity.time[i]);
+		localtime_s(&ltm, &time[i]);
 		strftime(tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S", &ltm);
-		os << tmp;
+		s += tmp;
 	}
-	return os;
+	return s;
 }
-

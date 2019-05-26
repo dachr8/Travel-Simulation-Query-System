@@ -14,10 +14,10 @@ public:
 	string transportation;
 	float fare;
 	time_t time[2] = { 0 };
+	string toString();
 };
 
 bool operator==(const ArcCity& a, const ArcCity& b);
-ostream& operator<<(ostream& os, ArcCity& arcCity);
 
 class TimeTable {
 public:

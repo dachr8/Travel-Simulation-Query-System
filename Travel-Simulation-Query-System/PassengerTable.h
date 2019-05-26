@@ -6,12 +6,13 @@
 #include <unordered_map>
 #include <ctime>
 #include "TimeTable.h"
+#include "Logger.h"
 
 using namespace std;
 
-extern bool timer_thread;
 extern time_t now;
 extern TimeTable* timeTable;
+extern Logger* logger;
 
 
 enum status {
@@ -49,9 +50,6 @@ public:
 };
 
 
-
-ostream& operator<<(ostream& os, PassengerStatus& passengerStatus);
-
 class PassengerTable {
 public:
 	PassengerTable();
@@ -67,7 +65,7 @@ public:
 	bool updatePassengerStatusTable();
 	bool printTravelSchedule(const string& id);
 	bool printPassengerStatusTable();
-	void printTime(const tm& ltm);
+	string StatustoString(PassengerStatus& status);
 
 private:
 	unordered_map<string, PassengerRequirements> passengerRequirements;

@@ -80,17 +80,11 @@ const TravelSchedule& PassengerTable::generateTravelSchedule(const string& id) {
 	schedule->planCost = FLT_MAX;
 	schedule->planTime = INT64_MAX;
 
-	list<string> destinations = requires.wayCities;
-	string currentCity = requires.departure;
 	bool find = false;
 
 	schedule = c.Permutations(requires, schedule);
 
-	if (schedule->cities.size())
-		schedule->planTime = schedule->cities.back().time[1];
-	else
-		schedule->planTime = 999;
-	if (find) {
+	if (schedule->destination == requires.destination) {
 		schedule->status.currentCity = schedule->departure;
 		schedule->status.currentStatus = waiting;
 		schedule->status.currentWay = schedule->cities.front();
@@ -101,16 +95,13 @@ const TravelSchedule& PassengerTable::generateTravelSchedule(const string& id) {
 
 bool PassengerTable::printTravelSchedule(const string& id) {
 	TravelSchedule schedule = getTravelSchedule(id);
-	cout << id << '\t' << schedule.status.currentCity << endl;
+	logger->out(id + '\t' + schedule.status.currentCity + "\n");
 	for (auto iter = schedule.cities.begin(); iter != schedule.cities.end(); ++iter)
-		cout << ">>" << *iter << endl;
-	cout << "Plan Cost: " << schedule.planCost << "\tPlan Time: ";
-
-	tm ltm = { 0 };
-	localtime_s(&ltm, &schedule.planTime);
-	ltm.tm_min = 0;
-	ltm.tm_sec = 0;
-	printTime(ltm); return true;
+		logger->out(">>" + iter->toString() + "\n");
+	logger->out("Plan Cost: " + to_string(schedule.planCost) + "\tPlan Time: ");
+	logger->time(schedule.planTime);
+	logger->out("\n");
+	return true;
 }
 
 bool PassengerTable::updatePassengerStatusTable() {
@@ -129,47 +120,42 @@ bool PassengerTable::updatePassengerStatusTable() {
 				else
 					iter->second.status.currentStatus = onTheWay;
 			}
-			cout << iter->first << "\t到达" << iter->second.status << endl;
+			logger->out(iter->first + "\t到达" + StatustoString(iter->second.status) + "\n");
 		}
 
-		if (iter->second.status.currentCity == iter->second.departure && now <= iter->second.status.currentWay.time[0])
-			cout << iter->first << "\t需要到达" << iter->second.status << endl;
-
-		cout << endl;
+		if (iter->second.status.currentCity == iter->second.departure && now <= iter->second.status.currentWay.time[0]) {
+			logger->out(iter->first + "\t需要到达" + StatustoString(iter->second.status) + "\n");
+		}
 	}
 	return true;
 }
 
 bool PassengerTable::printPassengerStatusTable() {
 	for (auto iter = travelSchedule.begin(); iter != travelSchedule.end(); ++iter)
-		cout << iter->first << '\t' << iter->second.status << endl;
+		logger->out(iter->first + '\t' + StatustoString(iter->second.status) + "\n");
 	return true;
 }
 
-void PassengerTable::printTime(const tm& ltm) {
-	cout << 1900 + ltm.tm_year << "-" << 1 + ltm.tm_mon << "-" << ltm.tm_mday << " " << ltm.tm_hour << ":00:00" << endl;
-}
-
-ostream& operator<<(ostream& os, PassengerStatus& passengerStatus) {
-	os << passengerStatus.currentCity << ",";
-	switch (passengerStatus.currentStatus) {
+string PassengerTable::StatustoString(PassengerStatus& status) {
+	string str = status.currentCity + ",";
+	switch (status.currentStatus) {
 	case waiting:
-		os << "等待去往";
+		str += "等待去往";
 		break;
 	case onTheWay:
-		os << "正在去往";
+		str += "正在去往";
 		break;
 	case resting:
-		os << "换乘休息中，即将去往";
+		str += "换乘休息中，即将去往";
 		break;
 	case over:
-		os << "旅程已结束";
+		str += "旅程已结束";
 		break;
 	default:
-		os << "default";
+		str += "default";
 		break;
 	}
-	if (passengerStatus.currentStatus != over)
-		os << passengerStatus.currentWay;
-	return os;
+	if (status.currentStatus != over)
+		str += status.currentWay.toString();
+	return str;
 }

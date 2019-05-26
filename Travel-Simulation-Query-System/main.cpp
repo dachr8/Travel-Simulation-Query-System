@@ -1,17 +1,19 @@
 #include "TimeTable.h"
 #include "PassengerTable.h"
+#include "Logger.h"
 #include <windows.h>
 #include <thread>
 
 using namespace std;
 
-bool timer_thread = true;
+static bool timer_thread = true;
 time_t now;
 PassengerTable* passengers;
 TimeTable* timeTable;
+Logger* logger;
 
-void timer() {
-	now = time(0);
+void timer(time_t start) {
+	now = start;
 	tm ltm = { 0 };
 	localtime_s(&ltm, &now);
 	ltm.tm_min = 0;
@@ -19,13 +21,13 @@ void timer() {
 
 	while (true) {
 		if (timer_thread) {
-			passengers->printTime(ltm);
+			logger->time(now);
 			passengers->updatePassengerStatusTable();
+			logger->out("\n");
 			Sleep(1000);
 			++ltm.tm_hour;
 			now = mktime(&ltm);
-		} 
-		else
+		} else
 			Sleep(1000);
 	}
 }
@@ -34,9 +36,9 @@ void timer() {
 int main() {
 	passengers = new PassengerTable("passengers.txt", 10);
 	timeTable = new TimeTable("map.txt", 10);
+	logger = new Logger("log.txt");
 
-
-	thread t(timer);
+	thread t(timer, time(0));
 	t.detach();
 
 	bool run_flag = true;
@@ -45,21 +47,19 @@ int main() {
 		cin >> cmd;
 		if (cmd == "#") {
 			run_flag = false;
-		} 
-		else if (cmd == "check") {
+		} else if (cmd == "check") {
 			timer_thread = false;
 			passengers->printPassengerStatusTable();
 			cout << endl;
 			timer_thread = true;
-		} 
-		else if (passengers->findPassenger(cmd)) {
+		} else if (passengers->findPassenger(cmd)) {
 			timer_thread = false;
 			passengers->printTravelSchedule(cmd);
 			cout << endl;
 			timer_thread = true;
 		}
 	}
-	
+
 	return 0;
 }
 
