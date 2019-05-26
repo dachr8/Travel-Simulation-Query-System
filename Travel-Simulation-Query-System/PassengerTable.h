@@ -5,12 +5,14 @@
 #include <list>
 #include <unordered_map>
 #include <ctime>
-#include "Graph.h"
+#include "TimeTable.h"
+#include "Logger.h"
 
 using namespace std;
 
-extern bool timer_thread;
 extern time_t now;
+extern TimeTable* timeTable;
+extern Logger* logger;
 
 
 enum status {
@@ -23,26 +25,30 @@ enum strategy {
 
 class PassengerRequirements {
 public:
-	list<string> cities;
+	string departure;
+	string destination;
+	list<string> wayCities;
 	strategy strategy;
 	time_t timeLimit;
-};
-
-class TravelSchedule {
-public:
-	string departure;
-	list<ArcCity> cities;
-	time_t planTime;
-	float planCost;
 };
 
 class PassengerStatus {
 public:
 	status currentStatus;
 	string currentCity;
+	ArcCity currentWay;
 };
 
-ostream& operator<<(ostream& os, PassengerStatus& passengerStatus);
+class TravelSchedule {
+public:
+	string departure;
+	string destination;
+	list<ArcCity> cities;
+	time_t planTime = 0;
+	float planCost = 0;
+	PassengerStatus status;
+};
+
 
 class PassengerTable {
 public:
@@ -54,12 +60,14 @@ public:
 	bool addPassengerList(const string& file, const int& num);
 	bool delPassenger(const string& id);
 	bool findPassenger(const string& id);
-	const TravelSchedule& getTravelSchedule(const unordered_multimap<string, ArcCity>& map, const string& id);
-	const TravelSchedule& generateTravelSchedule(const unordered_multimap<string, ArcCity>& map, const string& id);
+	const TravelSchedule& getTravelSchedule(const string& id);
+	const TravelSchedule& generateTravelSchedule(const string& id);
 	bool updatePassengerStatusTable();
+	bool printTravelSchedule(const string& id);
 	bool printPassengerStatusTable();
+	string StatustoString(PassengerStatus& status);
+
 private:
 	unordered_map<string, PassengerRequirements> passengerRequirements;
 	unordered_map<string, TravelSchedule> travelSchedule;
-	unordered_map<string, PassengerStatus> passengerStatusTable;
 };

@@ -1,22 +1,24 @@
-#include "Graph.h"
+#include "TimeTable.h"
 
-Graph::Graph() {
+TimeTable::TimeTable() {
 }
-Graph::Graph(const string& file, const int& num) {
+TimeTable::TimeTable(const string& file, const int& num) {
 	addArcList(file, num);
 }
-Graph::~Graph() {
+TimeTable::~TimeTable() {
 }
 
-bool Graph::addArc(const string& city, const ArcCity& newArc) {
+bool TimeTable::addArc(const string& city, const ArcCity& newArc) {
 	for (auto i = cityMap.equal_range(city); i.first != i.second; ++i.first)
 		if (i.first->second == newArc)
 			return false;
+	citySet.insert(city);
+	citySet.insert(newArc.city);
 	cityMap.insert({ city,newArc });
 	return true;
 }
 
-bool Graph::addArcList(const string & file, const int& num) {
+bool TimeTable::addArcList(const string& file, const int& num) {
 	ifstream infile(file);
 	if (infile)
 		for (int i = 0; i < num && !infile.eof(); ++i) {
@@ -30,7 +32,9 @@ bool Graph::addArcList(const string & file, const int& num) {
 				tm_.tm_year = tmp - 1900;
 				infile >> tmp;
 				tm_.tm_mon = tmp - 1;
-				infile >> tm_.tm_mday >> tm_.tm_hour >> tm_.tm_min >> tm_.tm_sec;
+				infile >> tm_.tm_mday >> tm_.tm_hour;
+				tm_.tm_min = 0;
+				tm_.tm_sec = 0;
 				arcCity->time[i] = mktime(&tm_);
 			}
 			if (!addArc(*city, *arcCity))
@@ -40,7 +44,7 @@ bool Graph::addArcList(const string & file, const int& num) {
 	return true;
 }
 
-bool Graph::delArc(const string & city, const ArcCity & arc) {
+bool TimeTable::delArc(const string& city, const ArcCity& arc) {
 	for (auto i = cityMap.equal_range(city); i.first != i.second; ++i.first)
 		if (i.first->second == arc) {
 			cityMap.erase(i.first);
@@ -49,11 +53,15 @@ bool Graph::delArc(const string & city, const ArcCity & arc) {
 	return false;
 }
 
-const unordered_multimap<string, ArcCity>& Graph::getGraph() {
+const unordered_set<string>& TimeTable::getCitySet() {
+	return citySet;
+}
+
+const multimap<string, ArcCity>& TimeTable::getCityMap() {
 	return cityMap;
 }
 
-bool operator==(const ArcCity & a, const ArcCity & b) {
+bool operator==(const ArcCity& a, const ArcCity& b) {
 	return a.city == b.city &&
 		a.transportation == b.transportation &&
 		a.fare == b.fare &&
@@ -61,15 +69,16 @@ bool operator==(const ArcCity & a, const ArcCity & b) {
 		a.time[1] == b.time[1];
 }
 
-ostream& operator<<(ostream & os, ArcCity & arcCity) {
-	os << arcCity.city << arcCity.transportation << arcCity.fare;
+
+string ArcCity::toString() {
+	string s = city + '\t' + transportation + "\tÆ±¼Û£º" + to_string(fare);
 	for (int i = 0; i < 2; ++i) {
+		s += '\t';
 		char tmp[64];
 		tm ltm;
-		localtime_s(&ltm, &arcCity.time[i]);
+		localtime_s(&ltm, &time[i]);
 		strftime(tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S", &ltm);
-		os << tmp;
+		s += tmp;
 	}
-	return os;
+	return s;
 }
-

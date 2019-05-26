@@ -2,7 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <unordered_map>
+#include <map>
+#include <unordered_set>
 #include <ctime>
 
 using namespace std;
@@ -13,21 +14,23 @@ public:
 	string transportation;
 	float fare;
 	time_t time[2] = { 0 };
+	string toString();
 };
 
 bool operator==(const ArcCity& a, const ArcCity& b);
-ostream& operator<<(ostream& os, ArcCity& arcCity);
 
-class Graph {
+class TimeTable {
 public:
-	Graph();
-	Graph(const string& file, const int& num);
-	~Graph();
+	TimeTable();
+	TimeTable(const string& file, const int& num);
+	~TimeTable();
 	bool addArc(const string& city, const ArcCity& newArc);
 	bool addArcList(const string& file, const int& num);
 	bool delArc(const string& city, const ArcCity& arc);
-	const unordered_multimap<string, ArcCity>& getGraph();
+	const multimap<string, ArcCity>& getCityMap();
+	const unordered_set<string>& getCitySet();
 	//...
 private:
-	unordered_multimap<string, ArcCity> cityMap;
+	multimap<string, ArcCity> cityMap;
+	unordered_set<string> citySet;
 };
