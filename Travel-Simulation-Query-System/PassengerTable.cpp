@@ -57,7 +57,7 @@ bool PassengerTable::addPassengerList(const string& file, const int& num) {
 }
 
 bool PassengerTable::delPassenger(const string& id) {
-	return passengerRequirements.erase(id);
+	return  passengerRequirements.erase(id) && travelSchedule.erase(id);
 }
 
 bool PassengerTable::findPassenger(const string& id) {
@@ -71,10 +71,16 @@ TravelSchedule PassengerTable::getTravelSchedule(const string& id) {
 		return travelSchedule.find(id)->second;
 }
 
+TravelSchedule PassengerTable::reSchedule(const string& id, const PassengerRequirements& newRequire) {
+	delPassenger(id);
+	addPassenger(id, newRequire);
+	return getTravelSchedule(id);
+}
+
 TravelSchedule PassengerTable::generateTravelSchedule(const string& id) {
 	PassengerRequirements requires = passengerRequirements.find(id)->second;
 	City c;
-	TravelSchedule *schedule = c.Permutations(requires);
+	TravelSchedule* schedule = c.Permutations(requires);
 
 	if (schedule->status.currentStatus == error) {
 		logger->out(id + "\tÂ·¾¶¹æ»®Ê§°Ü\n");

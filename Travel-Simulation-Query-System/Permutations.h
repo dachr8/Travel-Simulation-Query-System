@@ -5,7 +5,7 @@
 #include "TimeTable.h"
 using namespace std;
 
-const int MAX_CITY = 10;
+const int MAX_CITY = 99;
 static int num;//城市总数
 
 
