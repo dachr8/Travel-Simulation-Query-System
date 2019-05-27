@@ -130,11 +130,32 @@ namespace fdt {
         std::string get_id();
     };
 
+    class TotalTransportationPlan {
+    private:
+        std::vector<PlanSingleTransportation> single_transportation_plan_vector;
+        Passenger passenger;
+        std::string display_info;
+
+    public:
+        TotalTransportationPlan(std::vector<PlanSingleTransportation> single_transportation_plan_vector,
+        Passenger passenger,
+        std::string display_info) : single_transportation_plan_vector(single_transportation_plan_vector),
+                                    passenger(passenger), display_info(display_info) {}
+
+        std::vector<PlanSingleTransportation> get_single_transportation_plan_vector();
+
+        Passenger get_passenger();
+
+        std::string get_display_info();
+    };
+
     std::vector<Vertex> get_all_vertex();
 
     std::vector<Edge> get_all_display_edge();
 
-    std::vector<PlanSingleTransportation> submit_passenger_requirement(Passenger passenger, PassengerRequirement requirement);
+    TotalTransportationPlan submit_passenger_requirement(Passenger passenger, PassengerRequirement requirement);
+
+    time_t sync_time();
 }
 
 #endif //CPP_BACKEND_TRANSMISSION_PROTOCOL_H
