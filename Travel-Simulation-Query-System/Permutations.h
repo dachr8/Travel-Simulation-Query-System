@@ -20,6 +20,7 @@ namespace std {
 		time_t startTime;//从之前目的地出发时间
 		time_t currentTime;//抵达时间
 		int flag;//0 1 -1扫描标识
-		float value;//当前
+		float value;//此趟航班价格
+		float until;
 	};
 }
