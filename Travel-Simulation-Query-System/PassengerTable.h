@@ -30,6 +30,7 @@ public:
 	list<string> wayCities;
 	strategy strategy;
 	time_t timeLimit;
+	time_t timeStart;
 };
 
 class PassengerStatus {

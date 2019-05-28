@@ -35,7 +35,7 @@ void timer(time_t start) {
 
 int main() {
 	passengers = new PassengerTable("passengers.txt", 10);
-	timeTable = new TimeTable("map.txt", 10);
+	timeTable = new TimeTable("map.txt", 567);
 	logger = new Logger("log.txt");
 
 	thread t(timer, time(0));
