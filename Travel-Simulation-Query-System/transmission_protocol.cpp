@@ -109,16 +109,16 @@ namespace fdt {
 	TotalTransportationPlan submit_passenger_requirement(Passenger passenger, PassengerRequirement requirement) {
 		PassengerRequirements require;
 		std::vector<PlanSingleTransportation> plan;
-
+		std::vector<std::string> pass = requirement.get_pass_by_vertex_display_name_vector();
 		TravelSchedule* schedule = new TravelSchedule;
 		City c;
-		std::vector<std::string>::iterator iter = requirement.get_pass_by_vertex_display_name_vector().begin();
+		auto iter = pass.begin();
 		require.departure = requirement.get_from_vertex_display_name();
 		require.destination = requirement.get_to_vertex_display_name();
 		require.strategy = requirement.get_travel_strategy();
 		require.timeLimit = requirement.get_total_time_limit();
 		require.timeStart = requirement.get_start_time();
-		while (iter != requirement.get_pass_by_vertex_display_name_vector().end()) {
+		while (iter != pass.end()) {
 			require.wayCities.push_back(*iter);
 			++iter;
 		}
