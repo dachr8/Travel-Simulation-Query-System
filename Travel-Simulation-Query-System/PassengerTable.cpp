@@ -49,6 +49,7 @@ bool PassengerTable::addPassengerList(const string& file, const int& num) {
 				else
 					requirements->wayCities.push_back(city);
 			}
+			requirements->timeStart = now;
 			addPassenger(*id, *requirements);
 		}
 
