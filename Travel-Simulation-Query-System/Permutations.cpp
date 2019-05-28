@@ -1,5 +1,8 @@
 ﻿#include "Permutations.h"
 
+#include <cfloat>
+#include <climits>
+
 int City::find_city(string& name, City* cityList) {
 	for (int i = 0; i < num; ++i) {
 		if (name == cityList[i].name) {
@@ -103,7 +106,8 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 	int count = require.wayCities.size();
 	num = timeTable->getCitySet().size();
 	string via[MAX_CITY];
-	unordered_set<string>::iterator itt = timeTable->getCitySet().begin();
+//	unordered_set<string>::iterator
+    auto itt = timeTable->getCitySet().begin();
 	list<string>::iterator it;
 	list<ArcCity>::iterator iter;
 	for (int i = 0, c = 1; flag; ++c) {

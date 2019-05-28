@@ -28,7 +28,7 @@ public:
 	string departure;
 	string destination;
 	list<string> wayCities;
-	strategy strategy;
+	enum strategy strategy;
 	time_t timeLimit;
 	time_t timeStart;
 };

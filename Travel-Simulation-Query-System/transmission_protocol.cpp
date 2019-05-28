@@ -1,4 +1,4 @@
-﻿#include"transmission_protocol.h"
+#include"transmission_protocol.h"
 #include"Permutations.h"
 
 #define plus 3600*1000
@@ -72,7 +72,7 @@ namespace fdt {
 
 	std::vector<Vertex> get_all_vertex() {
 		std::vector<Vertex> city_vector;
-		std::unordered_set<std::string>::iterator iter = timeTable->getCitySet().begin();
+		auto iter = timeTable->getCitySet().begin();
 		while (iter != timeTable->getCitySet().end()) {
 			Vertex city(*iter);
 			city_vector.push_back(city);
@@ -134,7 +134,6 @@ namespace fdt {
 					++iter;
 				}
 			}
-			
 		}
 		string display = "";
 		display += schedule->planCost;
@@ -145,4 +144,63 @@ namespace fdt {
 		delete schedule;
 		return totalplan;
 	}
+
+//    TotalTransportationPlan submit_passenger_requirement(Passenger passenger, PassengerRequirement requirement) {
+//        time_t t = sync_time();
+//
+//        Passenger p("Mark_A");
+//
+//        std::vector<PlanSingleTransportation> singles{};
+//
+//        PlanSingleTransportation s1(
+//                "C",
+//
+//                "D",
+//
+//                t + 3600000,
+//
+//                t + 3600000 * 5,
+//
+//                "info");
+//
+//        singles.emplace_back(s1);
+//
+//        PlanSingleTransportation s2("D",
+//
+//                                    "A",
+//
+//                                    t + 3600000 * 5,
+//
+//                                    t + 3600000 * 10,
+//
+//                                    "info2");
+//
+//        singles.emplace_back(s2);
+//
+//        PlanSingleTransportation s3("A",
+//
+//                                    "C",
+//
+//                                    t + 3600000 * 10,
+//
+//                                    t + 3600000 * 15,
+//
+//                                    "info3");
+//
+//        singles.emplace_back(s3);
+//
+//		std::cout << "s1" << s1.get_from_vertex_display_name() << std::endl;
+//
+//		TotalTransportationPlan plan = TotalTransportationPlan (
+//                singles,
+//                p,
+//                "info");
+//
+//        return plan;
+//    }
+
+	time_t sync_time() {
+		return now * 1000;
+	}
+
 }
