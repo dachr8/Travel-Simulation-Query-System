@@ -1,6 +1,8 @@
 #include "PassengerTable.h"
 #include "Permutations.h"
 
+#include <cfloat>
+
 PassengerTable::PassengerTable() {
 }
 
@@ -120,11 +122,11 @@ bool PassengerTable::updatePassengerStatusTable() {
 				else
 					iter->second.status.currentStatus = onTheWay;
 			}
-			logger->out(iter->first + "\tµ½´ï" + StatustoString(iter->second.status) + "\n");
+			logger->out(iter->first + "\tï¿½ï¿½ï¿½ï¿½" + StatustoString(iter->second.status) + "\n");
 		}
 
 		if (iter->second.status.currentCity == iter->second.departure && now <= iter->second.status.currentWay.time[0]) {
-			logger->out(iter->first + "\tĞèÒªµ½´ï" + StatustoString(iter->second.status) + "\n");
+			logger->out(iter->first + "\tï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½" + StatustoString(iter->second.status) + "\n");
 		}
 	}
 	return true;
@@ -140,16 +142,16 @@ string PassengerTable::StatustoString(PassengerStatus& status) {
 	string str = status.currentCity + ",";
 	switch (status.currentStatus) {
 	case waiting:
-		str += "µÈ´ıÈ¥Íù";
+		str += "ï¿½È´ï¿½È¥ï¿½ï¿½";
 		break;
 	case onTheWay:
-		str += "ÕıÔÚÈ¥Íù";
+		str += "ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½";
 		break;
 	case resting:
-		str += "»»³ËĞİÏ¢ÖĞ£¬¼´½«È¥Íù";
+		str += "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ğ£ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½";
 		break;
 	case over:
-		str += "ÂÃ³ÌÒÑ½áÊø";
+		str += "ï¿½Ã³ï¿½ï¿½Ñ½ï¿½ï¿½ï¿½";
 		break;
 	default:
 		str += "default";

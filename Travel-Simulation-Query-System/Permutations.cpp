@@ -1,5 +1,8 @@
 #include "Permutations.h"
 
+#include <cfloat>
+#include <climits>
+
 int City::find_city(string& name, City* cityList) {
 	for (int i = 0; i < num; ++i) {
 		if (name == cityList[i].name) {
@@ -13,7 +16,7 @@ int City::find_city(string& name, City* cityList) {
 City* City::Dijkstra(string& start, string& destination, enum strategy s) {
 	multimap<string, ArcCity> map = timeTable->getCityMap();
 	unordered_set<string> cities = timeTable->getCitySet();
-	multimap<string, ArcCity>::iterator j;//Æðµãjµü´úÆ÷
+	multimap<string, ArcCity>::iterator j;//ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	City* cityList, tempList;
 	num = cities.size();
 	int count = 0, temp = 0;

@@ -71,12 +71,19 @@ bool operator==(const ArcCity& a, const ArcCity& b) {
 
 
 string ArcCity::toString() {
-	string s = city + '\t' + transportation + "\tƱ�ۣ�" + to_string(fare);
+	string s = city + '\t' + transportation + "\tƱ�ۣ�" + to_string(fare);
 	for (int i = 0; i < 2; ++i) {
 		s += '\t';
 		char tmp[64];
 		tm ltm;
+
+#ifdef _WIN32
 		localtime_s(&ltm, &time[i]);
+#endif
+#ifdef __linux__
+		localtime_r(&time[i], &ltm);
+#endif
+
 		strftime(tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S", &ltm);
 		s += tmp;
 	}
