@@ -121,6 +121,9 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 	time_t start_time;
 	while (true) {
 		travelList = new City * [num + 1];
+		for (int i = 0; i < num; ++i) {
+			travelList[i] = NULL;
+		}
 		itt = timeTable->getCitySet().begin();
 		st = *itt;
 		travelList[num] = Dijkstra(st, require.strategy, 0);
@@ -206,6 +209,12 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 	skip:
 
 		delete tempSchedule;
+		for (int i = 0; i < num + 1; ++i) {
+			if (travelList[i] != NULL) {
+				delete[] travelList[i];
+			}
+		}
+		delete[] travelList;
 		
 		if (!flag)
 			break;
@@ -215,9 +224,7 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 		schedule->status.currentStatus = error;
 	}
 
-	//TODO
-	//delete[] travelList[s];
-	delete[] travelList;
+	
 
 	return schedule;
 }
