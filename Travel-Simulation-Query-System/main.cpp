@@ -3,11 +3,13 @@
 #include "transmission_protocol.h"
 #include "Logger.h"
 
+#include "ws_server.h"
+
 #ifdef _WIN32
 #include <windows.h>
 #endif
 
-#ifdef __linux__
+#ifdef __unix__
 #include <unistd.h>
 #endif
 
@@ -27,7 +29,7 @@ void timer(time_t start) {
 #ifdef _WIN32
     localtime_s(&ltm, &now);
 #endif
-#ifdef __linux__
+#ifdef __unix__
     localtime_r(&now, &ltm);
 #endif
     ltm.tm_min = 0;
@@ -41,8 +43,8 @@ void timer(time_t start) {
 #ifdef _WIN32
             Sleep(1000);
 #endif
-#ifdef __linux__
-            usleep(1000);
+#ifdef __unix__
+            usleep(1000000);
 #endif
             ++ltm.tm_hour;
             now = mktime(&ltm);
@@ -50,8 +52,8 @@ void timer(time_t start) {
 #ifdef _WIN32
 			Sleep(1000);
 #endif
-#ifdef __linux__
-			usleep(1000);
+#ifdef __unix__
+			usleep(1000000);
 #endif
 		}
     }
@@ -62,9 +64,14 @@ int main() {
     passengers = new PassengerTable("passengers.txt", 10);
     timeTable = new TimeTable("map.txt", 10);
     logger = new Logger("log.txt");
-	
-    thread t(timer, time(0));
+
+    thread t(timer,
+//             1558843200
+             time(0)
+    );
     t.detach();
+
+    fdt::start_ws_server();
 
     bool run_flag = true;
     while (run_flag) {
@@ -87,5 +94,4 @@ int main() {
 
     return 0;
 }
-
 

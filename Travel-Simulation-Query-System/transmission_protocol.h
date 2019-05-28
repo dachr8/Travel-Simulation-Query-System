@@ -27,9 +27,11 @@ namespace fdt {
 
 	public:
 
+		Vertex(){}
+
 		Vertex(const std::string& display_name) : display_name(display_name) {}
 
-
+		Vertex(const Vertex& _vertex) : display_name(_vertex.display_name) {}
 
 		std::string get_display_name();
 
@@ -62,6 +64,12 @@ namespace fdt {
 		unsigned length; // optional
 
 	public:
+
+		Edge() {}
+
+		Edge(const Edge & _edge) : source_vertex_display_name(_edge.source_vertex_display_name),
+								   destination_vertex_display_name(_edge.destination_vertex_display_name),
+		length(_edge.length) {}
 
 
 		Edge(std::string source_vertex_display_name, std::string destination_vertex_display_name) :
@@ -113,6 +121,16 @@ namespace fdt {
 		time_t total_time_limit;
 
 	public:
+
+		PassengerRequirement() {}
+
+		PassengerRequirement(const PassengerRequirement & _requirement) :
+				from_vertex_display_name(_requirement.from_vertex_display_name),
+				to_vertex_display_name(_requirement.to_vertex_display_name),
+				start_time(_requirement.start_time),
+				pass_by_vertex_display_name_vector(_requirement.pass_by_vertex_display_name_vector),
+				travel_strategy(_requirement.travel_strategy),
+				total_time_limit(_requirement.total_time_limit) {}
 
 		PassengerRequirement(std::string from_vertex_display_name,
 
@@ -188,6 +206,15 @@ namespace fdt {
 
 	public:
 
+		PlanSingleTransportation() {}
+
+		PlanSingleTransportation(const PlanSingleTransportation &_planSingleTransportation):
+				from_vertex_display_name(_planSingleTransportation.from_vertex_display_name),
+		to_vertex_display_name(_planSingleTransportation.to_vertex_display_name),
+		start_time(_planSingleTransportation.start_time),
+		end_time(_planSingleTransportation.end_time),
+		transportation_display_info(_planSingleTransportation.transportation_display_info) {}
+
 		PlanSingleTransportation(std::string from_vertex_display_name,
 
 			std::string to_vertex_display_name,
@@ -236,6 +263,10 @@ namespace fdt {
 
 	public:
 
+		Passenger() {}
+
+		Passenger(const Passenger & _passenger) : id(_passenger.id) {}
+
 		Passenger(std::string id) : id(id) {}
 
 
@@ -259,6 +290,13 @@ namespace fdt {
 
 
 	public:
+
+		TotalTransportationPlan() {}
+
+		TotalTransportationPlan(const TotalTransportationPlan &_plan) :
+				single_transportation_plan_vector(_plan.single_transportation_plan_vector),
+		passenger(_plan.passenger),
+		display_info(_plan.display_info) {}
 
 		TotalTransportationPlan(std::vector<PlanSingleTransportation> single_transportation_plan_vector,
 
