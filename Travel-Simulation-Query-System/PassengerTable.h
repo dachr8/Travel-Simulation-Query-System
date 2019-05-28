@@ -56,14 +56,18 @@ public:
 	PassengerTable();
 	PassengerTable(const string& file, const int& num);
 	~PassengerTable();
-	//...
+	
 	bool addPassenger(const string& id, const PassengerRequirements& newPassenger);
 	bool addPassengerList(const string& file, const int& num);
 	bool delPassenger(const string& id);
 	bool findPassenger(const string& id);
+
 	TravelSchedule getTravelSchedule(const string& id);
+	TravelSchedule reSchedule(const string& id, const PassengerRequirements& newRequire);
 	TravelSchedule generateTravelSchedule(const string& id);
+
 	bool updatePassengerStatusTable();
+
 	bool printTravelSchedule(const string& id);
 	bool printPassengerStatusTable();
 	string StatustoString(PassengerStatus& status);

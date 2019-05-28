@@ -134,7 +134,6 @@ namespace fdt {
 					++iter;
 				}
 			}
-
 		}
 		string display = "";
 		display += schedule->planCost;
@@ -203,4 +202,5 @@ namespace fdt {
 	time_t sync_time() {
 		return now * 1000;
 	}
+
 }

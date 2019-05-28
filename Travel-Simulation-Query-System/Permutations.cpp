@@ -1,4 +1,4 @@
-#include "Permutations.h"
+﻿#include "Permutations.h"
 
 #include <cfloat>
 #include <climits>
@@ -26,7 +26,8 @@ City* City::Dijkstra(string& start, enum strategy s, time_t start_time) {
 	for (int i = 0; i < num; ++i) {
 		cityList[i].name = *it;
 		cityList[i].flag = (cityList[i].name == start) ? 1 : 0;
-		cityList[i].value = (cityList[i].name == start) ? 0 : FLT_MAX;
+		cityList[i].until = (cityList[i].name == start) ? 0 : FLT_MAX;
+		cityList[i].value = 0;
 		cityList[i].startTime = (cityList[i].name == start) ? 0 : INT64_MAX;
 		cityList[i].currentTime = (cityList[i].name == start) ? start_time : INT64_MAX;
 		it++;
@@ -40,9 +41,10 @@ City* City::Dijkstra(string& start, enum strategy s, time_t start_time) {
 			for (int i = 0; i < num; ++i) {
 				if (cityList[i].flag == 1) {
 					for (j = map.find(cityList[i].name); j != map.end() && j->first == cityList[i].name; ++j) {
-						if ((j->second.fare + cityList[i].value) < cityList[find_city(j->second.city, cityList)].value && cityList[i].currentTime <= j->second.time[0]) {
+						if ((j->second.fare + cityList[i].until) < cityList[find_city(j->second.city, cityList)].until && cityList[i].currentTime <= j->second.time[0]) {
 							temp = find_city(j->second.city, cityList);
-							cityList[temp].value = j->second.fare + cityList[i].value;
+							cityList[temp].value = j->second.fare;
+							cityList[temp].until = j->second.fare + cityList[i].until;
 							cityList[temp].flag = 1;
 							cityList[temp].from = cityList[i].name;
 							cityList[temp].order = j->second.transportation;
@@ -65,7 +67,8 @@ City* City::Dijkstra(string& start, enum strategy s, time_t start_time) {
 					for (j = map.find(cityList[i].name); j != map.end() && j->first == cityList[i].name; ++j) {
 						if (j->second.time[1] < cityList[find_city(j->second.city, cityList)].currentTime && cityList[i].currentTime <= j->second.time[0]) {
 							temp = find_city(j->second.city, cityList);
-							cityList[temp].value = j->second.fare + cityList[i].value;
+							cityList[temp].value = j->second.fare;
+							cityList[temp].until = j->second.fare + cityList[i].until;
 							cityList[temp].flag = 1;
 							cityList[temp].from = cityList[i].name;
 							cityList[temp].order = j->second.transportation;
@@ -126,7 +129,7 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 	while (true) {
 		travelList = new City * [num + 1];
 		for (int i = 0; i < num; ++i) {
-			travelList[i] = NULL;
+			travelList[i] = nullptr;
 		}
 		itt = timeTable->getCitySet().begin();
 		st = *itt;
@@ -150,10 +153,10 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 				}
 				
 				if (!k) {
-					tempSchedule->planCost += travelList[s][e].value;
+					tempSchedule->planCost += travelList[s][e].until;
 					start_time = travelList[s][e].currentTime;
 				}
-				if (end == require.destination) {
+				if (i == count && end == require.destination) {
 					tempSchedule->planTime = travelList[s][e].currentTime;
 				}
 
@@ -174,6 +177,8 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 			--iter;
 			while (k) {
 				tempSchedule->cities.push_back(*iter);
+				if(k>1)
+					--iter;
 				--k;
 			}
 			
@@ -192,7 +197,6 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 			if (tempSchedule->planTime < schedule->planTime) {
 				lable = 1;
 			}
-			schedule->planTime = travelList[count][find_city(require.destination, travelList[count])].currentTime;
 			break;
 		case limitedTime:
 			if (tempSchedule->planTime <= require.timeLimit && tempSchedule->planCost < schedule->planCost) {
@@ -214,7 +218,7 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 
 		delete tempSchedule;
 		for (int i = 0; i < num + 1; ++i) {
-			if (travelList[i] != NULL) {
+			if (travelList[i] != nullptr) {
 				delete[] travelList[i];
 			}
 		}
