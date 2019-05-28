@@ -16,7 +16,7 @@ extern Logger* logger;
 
 
 enum status {
-	waiting, onTheWay, resting, over
+	waiting, onTheWay, resting, over, error
 };
 
 enum strategy {
@@ -30,6 +30,7 @@ public:
 	list<string> wayCities;
 	strategy strategy;
 	time_t timeLimit;
+	time_t timeStart;
 };
 
 class PassengerStatus {
@@ -60,8 +61,8 @@ public:
 	bool addPassengerList(const string& file, const int& num);
 	bool delPassenger(const string& id);
 	bool findPassenger(const string& id);
-	const TravelSchedule& getTravelSchedule(const string& id);
-	const TravelSchedule& generateTravelSchedule(const string& id);
+	TravelSchedule getTravelSchedule(const string& id);
+	TravelSchedule generateTravelSchedule(const string& id);
 	bool updatePassengerStatusTable();
 	bool printTravelSchedule(const string& id);
 	bool printPassengerStatusTable();

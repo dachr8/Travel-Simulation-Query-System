@@ -127,13 +127,15 @@
     <ClInclude Include="Permutations.h" />
     <ClInclude Include="TimeTable.h" />
     <ClInclude Include="PassengerTable.h" />
+    <ClInclude Include="transmission_protocol.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="logger.cpp" />
     <ClCompile Include="Permutations.cpp" />
     <ClCompile Include="TimeTable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PassengerTable.cpp" />
+    <ClCompile Include="transmission_protocol.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="map.txt" />

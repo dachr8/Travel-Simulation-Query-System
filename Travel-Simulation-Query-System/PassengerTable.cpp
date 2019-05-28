@@ -64,42 +64,40 @@ bool PassengerTable::findPassenger(const string& id) {
 	return  passengerRequirements.find(id) != passengerRequirements.end();
 }
 
-const TravelSchedule& PassengerTable::getTravelSchedule(const string& id) {
+TravelSchedule PassengerTable::getTravelSchedule(const string& id) {
 	if (travelSchedule.find(id) == travelSchedule.end())
 		return generateTravelSchedule(id);
 	else
 		return travelSchedule.find(id)->second;
 }
 
-const TravelSchedule& PassengerTable::generateTravelSchedule(const string& id) {
+TravelSchedule PassengerTable::generateTravelSchedule(const string& id) {
 	PassengerRequirements requires = passengerRequirements.find(id)->second;
-	TravelSchedule* schedule = new TravelSchedule;
 	City c;
-	schedule->departure = requires.departure;
-	schedule->destination = requires.destination;
-	schedule->planCost = FLT_MAX;
-	schedule->planTime = INT64_MAX;
+	TravelSchedule *schedule = c.Permutations(requires);
 
-	bool find = false;
-
-	schedule = c.Permutations(requires, schedule);
-
-	if (schedule->destination == requires.destination) {
+	if (schedule->status.currentStatus == error) {
+		logger->out(id + "\t路径规划失败\n");
+	} else {
 		schedule->status.currentCity = schedule->departure;
 		schedule->status.currentStatus = waiting;
 		schedule->status.currentWay = schedule->cities.front();
 		travelSchedule.insert({ id,*schedule });
+		logger->out(id + "\t路径规划成功\n");
 	}
 	return *schedule;
 }
 
 bool PassengerTable::printTravelSchedule(const string& id) {
 	TravelSchedule schedule = getTravelSchedule(id);
-	logger->out(id + '\t' + schedule.status.currentCity + "\n");
-	for (auto iter = schedule.cities.begin(); iter != schedule.cities.end(); ++iter)
-		logger->out(">>" + iter->toString() + "\n");
-	logger->out("Plan Cost: " + to_string(schedule.planCost) + "\tPlan Time: ");
-	logger->time(schedule.planTime);
+
+	if (schedule.status.currentStatus != error) {
+		logger->out(id + '\t' + schedule.status.currentCity + "\n");
+		for (auto iter = schedule.cities.begin(); iter != schedule.cities.end(); ++iter)
+			logger->out(">>" + iter->toString() + "\n");
+		logger->out("Plan Cost: " + to_string(schedule.planCost) + "\tPlan Time: ");
+		logger->time(schedule.planTime);
+	}
 	logger->out("\n");
 	return true;
 }
@@ -152,7 +150,7 @@ string PassengerTable::StatustoString(PassengerStatus& status) {
 		str += "旅程已结束";
 		break;
 	default:
-		str += "default";
+		str += "error";
 		break;
 	}
 	if (status.currentStatus != over)

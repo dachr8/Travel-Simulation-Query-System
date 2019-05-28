@@ -1,5 +1,6 @@
 #include "TimeTable.h"
 #include "PassengerTable.h"
+#include "transmission_protocol.h"
 #include "Logger.h"
 #include <windows.h>
 #include <thread>
@@ -37,6 +38,10 @@ int main() {
 	passengers = new PassengerTable("passengers.txt", 10);
 	timeTable = new TimeTable("map.txt", 10);
 	logger = new Logger("log.txt");
+	
+
+	fdt::get_all_vertex();
+	fdt::get_all_display_edge();
 
 	thread t(timer, time(0));
 	t.detach();
