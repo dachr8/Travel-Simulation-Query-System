@@ -13,10 +13,10 @@ int City::find_city(string& name, City* cityList) {
 	return -1;
 }
 
-City* City::Dijkstra(string& start, string& destination, enum strategy s) {
+City* City::Dijkstra(string& start, enum strategy s, time_t start_time) {
 	multimap<string, ArcCity> map = timeTable->getCityMap();
 	unordered_set<string> cities = timeTable->getCitySet();
-	multimap<string, ArcCity>::iterator j;//���j������
+	multimap<string, ArcCity>::iterator j;
 	City* cityList, tempList;
 	num = cities.size();
 	int count = 0, temp = 0;
@@ -27,7 +27,8 @@ City* City::Dijkstra(string& start, string& destination, enum strategy s) {
 		cityList[i].name = *it;
 		cityList[i].flag = (cityList[i].name == start) ? 1 : 0;
 		cityList[i].value = (cityList[i].name == start) ? 0 : FLT_MAX;
-		cityList[i].currentTime = (cityList[i].name == start) ? 0 : INT_MAX;//TODO
+		cityList[i].startTime = (cityList[i].name == start) ? 0 : INT64_MAX;
+		cityList[i].currentTime = (cityList[i].name == start) ? start_time : INT64_MAX;
 		it++;
 	}
 
@@ -39,7 +40,7 @@ City* City::Dijkstra(string& start, string& destination, enum strategy s) {
 			for (int i = 0; i < num; ++i) {
 				if (cityList[i].flag == 1) {
 					for (j = map.find(cityList[i].name); j != map.end() && j->first == cityList[i].name; ++j) {
-						if ((j->second.fare + cityList[i].value) < cityList[find_city(j->second.city, cityList)].value && cityList[i].currentTime < j->second.time[0]) {
+						if ((j->second.fare + cityList[i].value) < cityList[find_city(j->second.city, cityList)].value && cityList[i].currentTime <= j->second.time[0]) {
 							temp = find_city(j->second.city, cityList);
 							cityList[temp].value = j->second.fare + cityList[i].value;
 							cityList[temp].flag = 1;
@@ -55,13 +56,14 @@ City* City::Dijkstra(string& start, string& destination, enum strategy s) {
 			}
 		}
 		break;
+	case limitedTime:
 	case minTime:
 		while (count != num) {
 			count = 0;
 			for (int i = 0; i < num; ++i) {
 				if (cityList[i].flag == 1) {
 					for (j = map.find(cityList[i].name); j != map.end() && j->first == cityList[i].name; ++j) {
-						if (j->second.time[1] < cityList[find_city(j->second.city, cityList)].currentTime && cityList[i].currentTime < j->second.time[0]) {
+						if (j->second.time[1] < cityList[find_city(j->second.city, cityList)].currentTime && cityList[i].currentTime <= j->second.time[0]) {
 							temp = find_city(j->second.city, cityList);
 							cityList[temp].value = j->second.fare + cityList[i].value;
 							cityList[temp].flag = 1;
@@ -77,44 +79,107 @@ City* City::Dijkstra(string& start, string& destination, enum strategy s) {
 			}
 		}
 		break;
+	default:
+		break;
 	}
 
 	return cityList;
 }
 
-TravelSchedule* City::Permutations(PassengerRequirements& require, TravelSchedule* schedule) {
-	string st, des;
+TravelSchedule* City::Permutations(PassengerRequirements& require) {
+	TravelSchedule* schedule = new TravelSchedule;
+	City c;
+	schedule->departure = require.departure;
+	schedule->destination = require.destination;
+	schedule->planCost = FLT_MAX;
+	schedule->planTime = INT64_MAX;
+
+	string st, end;
 	City** travelList;
 	ArcCity tmp;
 	TravelSchedule* tempSchedule;
-	int flag = 1, n, lable;
+	TravelSchedule* container;
+	int flag = 1, s, e, lable;
 	int count = require.wayCities.size();
+	num = timeTable->getCitySet().size();
 	string via[MAX_CITY];
-	travelList = new City * [count + 1];
-	list<string>::iterator it = require.wayCities.begin();
+	unordered_set<string>::iterator itt = timeTable->getCitySet().begin();
+	list<string>::iterator it;
 	list<ArcCity>::iterator iter;
-	for (int i = 0; i < count; ++i) {
-		via[i] = *it;
-		++it;
+	for (int i = 0, c = 1; flag; ++c) {
+		it = require.wayCities.begin();
+		for (int j = 0; j < count; ++j) {
+			if (*itt == *it) {
+				via[i] = *itt;
+				++i;
+			}
+			++it;
+		}
+		if (c < num)
+			++itt;
+		else
+			break;
 	}
-	it = require.wayCities.begin();
 
+	time_t start_time;
 	while (true) {
+		travelList = new City * [num + 1];
+		for (int i = 0; i < num; ++i) {
+			travelList[i] = NULL;
+		}
+		itt = timeTable->getCitySet().begin();
+		st = *itt;
+		travelList[num] = Dijkstra(st, require.strategy, 0);
 		tempSchedule = new TravelSchedule;
+		start_time = require.timeStart;
 		for (int i = 0; i <= count; ++i) {
-			travelList[i] = Dijkstra(i == 0 ? require.departure : via[i - 1], via[i], require.strategy);
+			container = new TravelSchedule;
+			st = i == 0 ? require.departure : via[i - 1];
+			end = i == count ? require.destination : via[i];
+			s = find_city(st, travelList[num]);
+			e = find_city(end, travelList[num]);
+			travelList[s] = Dijkstra(st, require.strategy, start_time);
+			int k = 0;
+			for (int f = 1; f;) {
+				if (travelList[s][e].from == st) {
+					f = 0;
+				}
+				if (travelList[s][e].value == FLT_MAX) {
+					goto skip;
+				}
+				
+				if (!k) {
+					tempSchedule->planCost += travelList[s][e].value;
+					start_time = travelList[s][e].currentTime;
+				}
+				if (end == require.destination) {
+					tempSchedule->planTime = travelList[s][e].currentTime;
+				}
+
+				tmp.transportation = travelList[s][e].order;
+				tmp.city = end;
+				tmp.fare = travelList[s][e].value;
+				tmp.time[0] = travelList[s][e].startTime;
+				tmp.time[1] = travelList[s][e].currentTime;
+				container->cities.push_back(tmp);
+
+				if (f) {
+					end = travelList[s][e].from;
+					e = find_city(end, travelList[num]);
+				}
+				++k;
+			}
+			iter = container->cities.end();
+			--iter;
+			while (k) {
+				tempSchedule->cities.push_back(*iter);
+				--k;
+			}
+			
+			delete container;
 		}
-		for (int i = 0; i <= count; ++i) {
-			tmp.city = count == i ? require.destination : via[i];
-			n = find_city(tmp.city, travelList[i]);
-			tmp.fare = travelList[i][n].value;
-			tempSchedule->planCost += tmp.fare;
-			tmp.transportation = travelList[i][n].order;
-			tmp.time[0] = travelList[i][n].startTime;
-			tmp.time[1] = travelList[i][n].currentTime;
-			tempSchedule->cities.push_back(tmp);
-		}
-		tempSchedule->planTime = tempSchedule->cities.back().time[1];
+		
+
 		lable = 0;
 		switch (require.strategy) {
 		case minCost:
@@ -136,7 +201,7 @@ TravelSchedule* City::Permutations(PassengerRequirements& require, TravelSchedul
 		if (lable) {
 			iter = tempSchedule->cities.begin();
 			schedule->cities.clear();
-			for (size_t i = 0; i < tempSchedule->cities.size(); ++i) {
+			for (int i = 0; i < tempSchedule->cities.size(); ++i) {
 				schedule->cities.push_back(*iter);
 				++iter;
 			}
@@ -144,16 +209,25 @@ TravelSchedule* City::Permutations(PassengerRequirements& require, TravelSchedul
 			schedule->planTime = tempSchedule->planTime;
 		}
 
+	skip:
+
+		delete tempSchedule;
+		for (int i = 0; i < num + 1; ++i) {
+			if (travelList[i] != NULL) {
+				delete[] travelList[i];
+			}
+		}
+		delete[] travelList;
+		
 		if (!flag)
 			break;
 		flag = prev_permutation(via, via + count);
 	}
-
-	delete tempSchedule;
-	for (int i = 0; i < count + 1; ++i) {
-		delete[] travelList[i];
+	if (schedule->cities.size() <= count) {
+		schedule->status.currentStatus = error;
 	}
-	delete[] travelList;
+
+	
 
 	return schedule;
 }

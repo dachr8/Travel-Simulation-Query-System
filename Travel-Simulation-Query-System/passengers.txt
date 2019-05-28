@@ -1,3 +1,3 @@
 zhang 1 4 A城 B城 C城 D城
 zhao 0 3 A城 B城 C城
-sb 0 2 A城 E城
+sb 0 2 B城 A城
