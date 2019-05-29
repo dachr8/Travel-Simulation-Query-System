@@ -1,0 +1,6 @@
+[submodule "Travel-Simulation-Query-System/Simple-WebSocket-Server"]
+	path = Travel-Simulation-Query-System/Simple-WebSocket-Server
+	url = https://github.com/eidheim/Simple-WebSocket-Server.git
+[submodule "Travel-Simulation-Query-System/json"]
+	path = Travel-Simulation-Query-System/json
+	url = https://github.com/nlohmann/json.git
