@@ -168,6 +168,14 @@ document.querySelector(".container-fluid").style.height = (window.innerHeight * 
 
 var colors = d3.scale.category10();
 
+var color2 = d3.scale.category20();
+
+var color3 = function(e) {
+    return color2(5 + e);
+};
+
+color3();
+
 var dataset = {
 
     nodes: [
@@ -230,10 +238,10 @@ var svg = d3.select("#svg_container").append('svg').attr({
     "width": "100%", "height": "100%"
 });
 
-svg.call(d3.behavior.zoom().on("zoom", function () {
-    svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
-}))
-    .append("g");
+// svg.call(d3.behavior.zoom().on("zoom", function () {
+//     svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
+// }))
+//     .append("g");
 
 var w = svg_container.offsetWidth;
 var h = svg_container.offsetHeight;
@@ -280,7 +288,7 @@ function init_vertex_edges() {
             "r": node_radius
         })
         .style("fill", function (d, i) {
-            return colors(i);
+            return color3(i);
         })
         .call(force.drag);
 
