@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--@author FredericDT<frederic.dt.twh@gmail.com>-->
 <head>
     <meta charset="utf-8">
     <title>Travel-Simulation-QuerySystem-Frontend</title>
@@ -23,105 +24,171 @@
 
     <div class="container-fluid" style="">
         <div class="row h-100">
-            <div class="col-12 h-100" id="svg_container"></div>
-        </div>
-        <div class="row">
-            <span class="col-4">Current TIme</span>
-            <span class="col-8" id="current_time"></span>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="d-flex flex-column">
+            <div class="col-8 h-100">
+                <div class="col-12 h-100" id="svg_container"></div>
+            </div>
 
-                    <!--<button type="button" class="btn btn-primary" onclick="new_schedule();">Primary</button>-->
-                    <!--<button type="button" class="btn btn-secondary">Secondary</button>-->
-                    <!--<button type="button" class="btn btn-success">Success</button>-->
-                    <!--<button type="button" class="btn btn-danger">Danger</button>-->
-                    <!--<button type="button" class="btn btn-warning">Warning</button>-->
-                    <!--<button type="button" class="btn btn-info">Info</button>-->
-                    <!--<button type="button" class="btn btn-light">Light</button>-->
-                    <!--<button type="button" class="btn btn-dark">Dark</button>-->
+            <div class="col-4 border" style="background-color: #ffffff">
 
-                    <!--<button type="button" class="btn btn-link">Link</button>-->
+                <p></p>
+
+                <div class="row text-center">
+                    <span class="col-4 offset-4">
+                        <p>Control Panel</p>
+                    </span>
                 </div>
-            </div>
-        </div>
 
-        <hr>
+                <hr>
 
-        <form id="form" class="d-flex flex-column">
-            <div class="row">
-                <span class="col-2">Passenger</span>
-                <input class="col-10" type="text" name="passenger" />
-            </div>
-            <div class="row">
-                <span class="col-2">Travel Strategy</span>
-                <select class="selectpicker col-10" name="travel_strategy">
-                    <option value="min_cost">MIN_COST</option>
-                    <option value="min_time">MIN_TIME</option>
-                    <option value="limited_time">LIMITED_TIME</option>
-                </select>
-            </div>
+                <div class="row">
+                    <span class="col-4">Current TIme</span>
+                    <span class="col-8" id="current_time"></span>
+                </div>
+                <!--<div class="row">-->
+                <!--<div class="col-12">-->
+                <!--<div class="d-flex flex-column">-->
 
-            <div class="row">
-                <span class="col-2">From</span>
-                <select
-                        class="selectpicker col-10"
-                        name="from">
-                    <option value="min_cost">MIN_COST</option>
-                    <option value="min_time">MIN_TIME</option>
-                    <option value="limited_time">LIMITED_TIME</option>
-                </select>
-            </div>
+                <!--<button type="button" class="btn btn-primary" onclick="new_schedule();">Primary</button>-->
+                <!--<button type="button" class="btn btn-secondary">Secondary</button>-->
+                <!--<button type="button" class="btn btn-success">Success</button>-->
+                <!--<button type="button" class="btn btn-danger">Danger</button>-->
+                <!--<button type="button" class="btn btn-warning">Warning</button>-->
+                <!--<button type="button" class="btn btn-info">Info</button>-->
+                <!--<button type="button" class="btn btn-light">Light</button>-->
+                <!--<button type="button" class="btn btn-dark">Dark</button>-->
 
-            <div class="row">
-                <span class="col-2">To</span>
-                <select
-                        class="selectpicker col-10"
-                        name="to">
-                    <option value="min_cost">MIN_COST</option>
-                    <option value="min_time">MIN_TIME</option>
-                    <option value="limited_time">LIMITED_TIME</option>
-                </select>
-            </div>
+                <!--<button type="button" class="btn btn-link">Link</button>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
 
-            <div class="row">
-                <span class="col-2">Pass By Cities</span>
-                <select name="pass_by_vertex_display_name" class="selectpicker col-10" multiple>
-                    <option>Mustard</option>
-                    <option>Ketchup</option>
-                    <option>Relish</option>
-                </select>
-            </div>
+                <hr>
 
-            <div class="row">
-                <span class="col-2">Total Time Limit</span>
-                <div class="input-group date col-10" id="datetimepicker2" data-target-input="nearest">
-                    <input type="text" name="total_time_limit" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
-                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                <form id="form" class="d-flex flex-column row" style="margin:5px;">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <div class="row">
+                                <td>
+                                    <span class="col-12">Passenger</span>
+                                </td>
+                                <td>
+                                    <input class="col-12" type="text" name="passenger" />
+                                </td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="row">
+                                <td>
+                                    <span class="col-12">Travel Strategy</span>
+                                </td>
+                                <td>
+                                    <select class="selectpicker col-12" name="travel_strategy">
+                                        <option value="min_cost">MIN_COST</option>
+                                        <option value="min_time">MIN_TIME</option>
+                                        <option value="limited_time">LIMITED_TIME</option>
+                                    </select>
+                                </td>
+                            </div>
+                        </tr>
+
+                        <tr>
+                            <div class="row">
+                                <td>
+                                    <span class="col-12">From</span>
+                                </td>
+                                <td>
+                                    <select
+                                            class="selectpicker col-12"
+                                            name="from">
+                                        <option value="min_cost">MIN_COST</option>
+                                        <option value="min_time">MIN_TIME</option>
+                                        <option value="limited_time">LIMITED_TIME</option>
+                                    </select>
+                                </td>
+
+                            </div>
+                        </tr>
+
+                        <tr>
+                            <div class="row">
+                                <td>
+                                    <span class="col-12">To</span>
+                                </td>
+                                <td>
+                                    <select
+                                            class="selectpicker col-12"
+                                            name="to">
+                                        <option value="min_cost">MIN_COST</option>
+                                        <option value="min_time">MIN_TIME</option>
+                                        <option value="limited_time">LIMITED_TIME</option>
+                                    </select>
+                                </td>
+
+                            </div>
+                        </tr>
+
+                        <tr>
+                            <div class="row">
+                                <td>
+                                    <span class="col-12">Pass By Cities</span>
+                                </td>
+                                <td>
+                                    <select name="pass_by_vertex_display_name" class="selectpicker col-12" multiple>
+                                        <option>Mustard</option>
+                                        <option>Ketchup</option>
+                                        <option>Relish</option>
+                                    </select>
+                                </td>
+                            </div>
+                        </tr>
+
+                        <tr>
+                            <div class="row">
+                                <td>
+                                    <span class="col-12">Total Time Limit</span>
+                                </td>
+                                <td>
+                                    <div class="input-group date col-12" id="datetimepicker2" data-target-input="nearest">
+                                        <input type="text" name="total_time_limit" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+                                        <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <!--<input type="number" name="total_time_limit" value="0">-->
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="row">
+                                <td>
+                                    <span class="col-12">Start Time</span>
+                                </td>
+                                <td>
+                                    <div class="input-group date col-12" id="datetimepicker1" data-target-input="nearest">
+                                        <input type="text" name="start_time" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+                                        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </div>
+                        </tr>
+
+                            <!--<input type="hidden" name="start_time" />-->
+                        </tbody>
+                    </table>
+
+                    <div class="row">
+                        <button type="button" class="btn btn-primary col-10 offset-1" onclick="submit_form()">Submit Form</button>
                     </div>
-                </div>
-                <!--<input type="number" name="total_time_limit" value="0">-->
+                </form>
+
+                <p></p>
+
             </div>
-
-            <!--<input type="hidden" name="start_time" />-->
-
-            <div class="row">
-                <span class="col-2">Start Time</span>
-                <div class="input-group date col-10" id="datetimepicker1" data-target-input="nearest">
-                    <input type="text" name="start_time" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
-                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <button type="button" class="btn btn-secondary col-12" onclick="submit_form()">Submit Form</button>
-            </div>
-
-        </form>
+        </div>
 
     </div>
 
