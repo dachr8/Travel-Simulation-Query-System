@@ -1,4 +1,4 @@
-#include "logger.h"
+#include "Logger.h"
 
 Logger::Logger() {
 	logger.open("log.txt");
@@ -20,7 +20,12 @@ void Logger::out(const string& content) {
 void Logger::time(time_t t) {
 	char tmp[64];
 	tm ltm;
-	localtime_s(&ltm, &t);
+#ifdef _WIN32
+    localtime_s(&ltm, &t);
+#endif
+#ifdef __linux__
+    localtime_r(&t, &ltm);
+#endif
 	strftime(tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S", &ltm);
 
 	cout << tmp << endl;

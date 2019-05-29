@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Travel-Simulation-QuerySystem-Frontend</title>
+    <script src="jquery-3.4.0.min.js"></script>
+    <script src="popper.min.js"></script>
+    <link rel="stylesheet" href="bootstrap-4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="css/tempusdominus-bootstrap-4.min.css">
+    <script src="bootstrap-4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap-select.min.js"></script>
+    <script src="js/moment.js"></script>
+    <script src="js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="d3.v2.min.js"></script>
+    <!--<script src="d3.v3.min.js" charset="utf-8"></script>-->
+
+    <div class="container-fluid" style="">
+        <div class="row h-100">
+            <div class="col-12 h-100" id="svg_container"></div>
+        </div>
+        <div class="row">
+            <span class="col-4">Current TIme</span>
+            <span class="col-8" id="current_time"></span>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex flex-column">
+
+                    <!--<button type="button" class="btn btn-primary" onclick="new_schedule();">Primary</button>-->
+                    <!--<button type="button" class="btn btn-secondary">Secondary</button>-->
+                    <!--<button type="button" class="btn btn-success">Success</button>-->
+                    <!--<button type="button" class="btn btn-danger">Danger</button>-->
+                    <!--<button type="button" class="btn btn-warning">Warning</button>-->
+                    <!--<button type="button" class="btn btn-info">Info</button>-->
+                    <!--<button type="button" class="btn btn-light">Light</button>-->
+                    <!--<button type="button" class="btn btn-dark">Dark</button>-->
+
+                    <!--<button type="button" class="btn btn-link">Link</button>-->
+                </div>
+            </div>
+        </div>
+
+        <form id="form">
+            <div class="row">
+                <span>Passenger</span>
+                <input type="text" name="passenger" />
+            </div>
+            <div class="row">
+                <span>Travel Strategy</span>
+                <select class="selectpicker" name="travel_strategy">
+                    <option value="min_cost">MIN_COST</option>
+                    <option value="min_time">MIN_TIME</option>
+                    <option value="limited_time">LIMITED_TIME</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <span>From</span>
+                <select
+                        class="selectpicker"
+                        name="from">
+                    <option value="min_cost">MIN_COST</option>
+                    <option value="min_time">MIN_TIME</option>
+                    <option value="limited_time">LIMITED_TIME</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <span>To</span>
+                <select
+                        class="selectpicker"
+                        name="to">
+                    <option value="min_cost">MIN_COST</option>
+                    <option value="min_time">MIN_TIME</option>
+                    <option value="limited_time">LIMITED_TIME</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <span>Pass By Cities</span>
+                <select name="pass_by_vertex_display_name" class="selectpicker" multiple>
+                    <option>Mustard</option>
+                    <option>Ketchup</option>
+                    <option>Relish</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <span>Total Time Limit</span>
+                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                    <input type="text" name="total_time_limit" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+                <!--<input type="number" name="total_time_limit" value="0">-->
+            </div>
+
+            <!--<input type="hidden" name="start_time" />-->
+
+            <div class="row">
+                <span>Start Time</span>
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                    <input type="text" name="start_time" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-secondary" onclick="submit_form()">Submit Form</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</head>
+<body>
+
+<script type="text/javascript" src="my.js"></script>
+
+</body>
+</html>

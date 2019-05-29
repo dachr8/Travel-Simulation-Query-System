@@ -11,7 +11,7 @@ namespace std {
 	class City {
 	public:
 		City* Dijkstra(string& start, enum strategy s, time_t start_time);
-		int find_city(string& name, City* cityList);
+		int find_city(string& name);
 		TravelSchedule* Permutations(PassengerRequirements& require);
 	private:
 		string name;//当前名称
