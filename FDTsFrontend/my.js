@@ -609,6 +609,9 @@ function new_schedule() {
 
 function submit_form() {
     var o = $("#form").serializeObject();
+
+    console.log(o);
+
     if (o.pass_by_vertex_display_name === undefined) {
         o.pass_by_vertex_display_name = [];
     }
@@ -616,12 +619,20 @@ function submit_form() {
         o.pass_by_vertex_display_name = [o.pass_by_vertex_display_name];
     }
     o['function'] = "submit_passenger_requirement";
-    o['start_time'] = parseInt(new Date(o['start_time']).getTime());
+
+    if (o['start_time'] == "") {
+        o['start_time'] = parseInt(new Date(sim_time + 10000).getTime());
+    } else {
+        o['start_time'] = parseInt(new Date(o['start_time']).getTime());
+    }
+
     o['total_time_limit'] = parseInt(o['total_time_limit']);
 
     console.log(o);
 
-    if (o['start_time'] < new Date().getTime()) {
+    return;
+
+    if (o['start_time'] < new Date().getTime(sim_time)) {
         console.log("time invalid");
         return; // if before is a invalid request
     }
