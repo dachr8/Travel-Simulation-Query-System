@@ -3,13 +3,16 @@
 #include <cfloat>
 #include <climits>
 
-int City::find_city(string& name, City* cityList) {
+int City::find_city(string& name) {
+	auto iter = timeTable->getCitySet().begin();
 	for (int i = 0; i < num; ++i) {
-		if (name == cityList[i].name) {
+		if (*iter == name) {
 			return i;
 		}
+		if(i < num - 1)
+			++iter;
 	}
-	cout << "error" << endl;
+	cout <<name<< "find error" << endl;
 	return -1;
 }
 
@@ -33,7 +36,7 @@ City* City::Dijkstra(string& start, enum strategy s, time_t start_time) {
 		it++;
 	}
 
-
+	
 	switch (s) {
 	case minCost:
 		while (count != num) {
@@ -41,8 +44,8 @@ City* City::Dijkstra(string& start, enum strategy s, time_t start_time) {
 			for (int i = 0; i < num; ++i) {
 				if (cityList[i].flag == 1) {
 					for (j = map.find(cityList[i].name); j != map.end() && j->first == cityList[i].name; ++j) {
-						if ((j->second.fare + cityList[i].until) < cityList[find_city(j->second.city, cityList)].until && cityList[i].currentTime <= j->second.time[0]) {
-							temp = find_city(j->second.city, cityList);
+						if ((j->second.fare + cityList[i].until) < cityList[find_city(j->second.city)].until && cityList[i].currentTime <= j->second.time[0]) {
+							temp = find_city(j->second.city);
 							cityList[temp].value = j->second.fare;
 							cityList[temp].until = j->second.fare + cityList[i].until;
 							cityList[temp].flag = 1;
@@ -65,8 +68,8 @@ City* City::Dijkstra(string& start, enum strategy s, time_t start_time) {
 			for (int i = 0; i < num; ++i) {
 				if (cityList[i].flag == 1) {
 					for (j = map.find(cityList[i].name); j != map.end() && j->first == cityList[i].name; ++j) {
-						if (j->second.time[1] < cityList[find_city(j->second.city, cityList)].currentTime && cityList[i].currentTime <= j->second.time[0]) {
-							temp = find_city(j->second.city, cityList);
+						if (j->second.time[1] < cityList[find_city(j->second.city)].currentTime && cityList[i].currentTime <= j->second.time[0]) {
+							temp = find_city(j->second.city);
 							cityList[temp].value = j->second.fare;
 							cityList[temp].until = j->second.fare + cityList[i].until;
 							cityList[temp].flag = 1;
@@ -106,7 +109,6 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 	int count = require.wayCities.size();
 	num = timeTable->getCitySet().size();
 	string via[MAX_CITY];
-//	unordered_set<string>::iterator
     auto itt = timeTable->getCitySet().begin();
 	list<string>::iterator it;
 	list<ArcCity>::iterator iter;
@@ -127,21 +129,21 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 
 	time_t start_time;
 	while (true) {
-		travelList = new City * [num + 1];
+		travelList = new City * [num];
 		for (int i = 0; i < num; ++i) {
 			travelList[i] = nullptr;
 		}
 		itt = timeTable->getCitySet().begin();
 		st = *itt;
-		travelList[num] = Dijkstra(st, require.strategy, 0);
 		tempSchedule = new TravelSchedule;
 		start_time = require.timeStart;
+		
 		for (int i = 0; i <= count; ++i) {
 			container = new TravelSchedule;
 			st = i == 0 ? require.departure : via[i - 1];
 			end = i == count ? require.destination : via[i];
-			s = find_city(st, travelList[num]);
-			e = find_city(end, travelList[num]);
+			s = find_city(st);
+			e = find_city(end);
 			travelList[s] = Dijkstra(st, require.strategy, start_time);
 			int k = 0;
 			for (int f = 1; f;) {
@@ -161,15 +163,16 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 				}
 
 				tmp.transportation = travelList[s][e].order;
+
+
 				tmp.city = end;
 				tmp.fare = travelList[s][e].value;
 				tmp.time[0] = travelList[s][e].startTime;
 				tmp.time[1] = travelList[s][e].currentTime;
 				container->cities.push_back(tmp);
-
 				if (f) {
 					end = travelList[s][e].from;
-					e = find_city(end, travelList[num]);
+					e = find_city(end);
 				}
 				++k;
 			}
@@ -217,7 +220,7 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 	skip:
 
 		delete tempSchedule;
-		for (int i = 0; i < num + 1; ++i) {
+		for (int i = 0; i < num; ++i) {
 			if (travelList[i] != nullptr) {
 				delete[] travelList[i];
 			}
