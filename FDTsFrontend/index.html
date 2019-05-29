@@ -47,14 +47,16 @@
             </div>
         </div>
 
-        <form id="form">
+        <hr>
+
+        <form id="form" class="d-flex flex-column">
             <div class="row">
-                <span>Passenger</span>
-                <input type="text" name="passenger" />
+                <span class="col-2">Passenger</span>
+                <input class="col-10" type="text" name="passenger" />
             </div>
             <div class="row">
-                <span>Travel Strategy</span>
-                <select class="selectpicker" name="travel_strategy">
+                <span class="col-2">Travel Strategy</span>
+                <select class="selectpicker col-10" name="travel_strategy">
                     <option value="min_cost">MIN_COST</option>
                     <option value="min_time">MIN_TIME</option>
                     <option value="limited_time">LIMITED_TIME</option>
@@ -62,9 +64,9 @@
             </div>
 
             <div class="row">
-                <span>From</span>
+                <span class="col-2">From</span>
                 <select
-                        class="selectpicker"
+                        class="selectpicker col-10"
                         name="from">
                     <option value="min_cost">MIN_COST</option>
                     <option value="min_time">MIN_TIME</option>
@@ -73,9 +75,9 @@
             </div>
 
             <div class="row">
-                <span>To</span>
+                <span class="col-2">To</span>
                 <select
-                        class="selectpicker"
+                        class="selectpicker col-10"
                         name="to">
                     <option value="min_cost">MIN_COST</option>
                     <option value="min_time">MIN_TIME</option>
@@ -84,8 +86,8 @@
             </div>
 
             <div class="row">
-                <span>Pass By Cities</span>
-                <select name="pass_by_vertex_display_name" class="selectpicker" multiple>
+                <span class="col-2">Pass By Cities</span>
+                <select name="pass_by_vertex_display_name" class="selectpicker col-10" multiple>
                     <option>Mustard</option>
                     <option>Ketchup</option>
                     <option>Relish</option>
@@ -93,8 +95,8 @@
             </div>
 
             <div class="row">
-                <span>Total Time Limit</span>
-                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                <span class="col-2">Total Time Limit</span>
+                <div class="input-group date col-10" id="datetimepicker2" data-target-input="nearest">
                     <input type="text" name="total_time_limit" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
                     <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -106,8 +108,8 @@
             <!--<input type="hidden" name="start_time" />-->
 
             <div class="row">
-                <span>Start Time</span>
-                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                <span class="col-2">Start Time</span>
+                <div class="input-group date col-10" id="datetimepicker1" data-target-input="nearest">
                     <input type="text" name="start_time" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
                     <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -116,7 +118,7 @@
             </div>
 
             <div class="row">
-                <button type="button" class="btn btn-secondary" onclick="submit_form()">Submit Form</button>
+                <button type="button" class="btn btn-secondary col-12" onclick="submit_form()">Submit Form</button>
             </div>
 
         </form>

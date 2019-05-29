@@ -66,6 +66,16 @@ var full_init = false;
 
 var selected_city = null;
 
+document.body.style.backgroundColor = '#ffffaa';
+
+socket.addEventListener('close', function (event) {
+    document.body.style.backgroundColor = '#ff7777';
+});
+
+socket.addEventListener('open', function (event) {
+    document.body.style.backgroundColor = '';
+});
+
 socket.addEventListener('message', function (event) {
     var j = JSON.parse(event.data);
 
