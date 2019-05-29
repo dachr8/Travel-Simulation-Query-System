@@ -253,6 +253,32 @@ var marker_text;
 var force_timer_started = false;
 
 function init_vertex_edges() {
+
+    var cache_time = sessionStorage.getItem('sim_time');
+
+    // console.log(cache_time);
+
+    if (cache_time != null && sim_time > cache_time) {
+        var cached_markers = JSON.parse(sessionStorage.getItem('markers'));
+        console.log(cached_markers);
+        if (cached_markers != null) {
+
+            for (var i in cached_markers) {
+                for (var j in cached_markers[i].plan) {
+                    cached_markers[i].plan[j].start_node = dataset.nodes[get_node_by_id(cached_markers[i].plan[j].start_node.id)];
+                    // console.log(cached_markers[i].plan[j].start_node);
+                    cached_markers[i].plan[j].end_node = dataset.nodes[get_node_by_id(cached_markers[i].plan[j].end_node.id)];
+                }
+            }
+
+            // console.log(cached_markers);
+            dataset.markers = cached_markers;
+        }
+    } else {
+        sessionStorage.clear();
+    }
+
+
     force = d3.layout.force()
         .nodes(dataset.nodes)
         .links(dataset.edges)
@@ -442,6 +468,8 @@ function init_vertex_edges() {
 
 function update_marker_data() {
 
+    sessionStorage.setItem('markers', JSON.stringify(dataset.markers));
+
     svg.selectAll('.markers').remove();
 
     var _markers = svg.selectAll('.markers').data(dataset.markers);
@@ -609,6 +637,9 @@ setInterval(function() {
             "function": "sync_time"
         }));
     }
+
+    sessionStorage.setItem('sim_time', sim_time);
+
 }, 1000);
 
 function new_schedule() {
