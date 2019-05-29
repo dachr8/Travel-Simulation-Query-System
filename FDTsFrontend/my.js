@@ -610,8 +610,6 @@ function new_schedule() {
 function submit_form() {
     var o = $("#form").serializeObject();
 
-    console.log(o);
-
     if (o.pass_by_vertex_display_name === undefined) {
         o.pass_by_vertex_display_name = [];
     }
@@ -628,9 +626,6 @@ function submit_form() {
 
     o['total_time_limit'] = parseInt(o['total_time_limit']);
 
-    console.log(o);
-
-    return;
 
     if (o['start_time'] < new Date().getTime(sim_time)) {
         console.log("time invalid");
@@ -641,6 +636,8 @@ function submit_form() {
         console.log("invalid id");
         return;
     }
+
+    console.log(o);
 
     var target_marker_index = get_marker_by_name(o['passenger']);
 
