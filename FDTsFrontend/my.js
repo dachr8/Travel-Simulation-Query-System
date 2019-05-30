@@ -146,8 +146,20 @@ socket.addEventListener('message', function (event) {
         // fill marker data
         console.log(j);
 
+        var notification_element = $('#notification');
+        var notification_text_element = document.getElementById('notification_text');
+
         if (j.total_transportation_plan.display_info === "error") {
+            notification_element.css('background-color', 'rgba(255,75,75,0.6)');
+            notification_text_element.innerHTML = 'Unreachable';
+            notification_element.show();
+            notification_element.fadeOut(2000);
             return;
+        } else {
+            notification_element.css('background-color', 'rgba(75,255,75,0.6)');
+            notification_text_element.innerHTML = 'Ok';
+            notification_element.show();
+            notification_element.fadeOut(2000);
         }
 
         var total_transportation_plan = j.total_transportation_plan;
@@ -769,7 +781,7 @@ function marker_focus(d) {
         document.getElementById('fdt-overlay-to').innerHTML = current_plan.end_node.id;
         var [by, cost] = current_plan.display_info.split(' ');
         document.getElementById('fdt-overlay-by').innerHTML = by;
-        document.getElementById('fdt-overlay-cost').innerHTML = cost;
+        document.getElementById('fdt-overlay-cost').innerHTML = parseFloat(cost);
         document.getElementById('fdt-overlay-starttime').innerHTML = new Date(current_plan.start_time);
         document.getElementById('fdt-overlay-endtime').innerHTML = new Date(current_plan.end_time);
     }
@@ -778,6 +790,6 @@ function marker_focus(d) {
     console.log(total_info);
 
     document.getElementById('fdt-overlay-totalendtime').innerHTML = new Date(parseInt(total_info[1]));
-    document.getElementById('fdt-overlay-totalcost').innerHTML = total_info[0];
+    document.getElementById('fdt-overlay-totalcost').innerHTML = parseFloat(total_info[0]);
 
 }

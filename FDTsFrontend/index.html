@@ -25,17 +25,21 @@
             position: absolute; /* Sit on top of the page content */
             /*display: none; !* Hidden by default *!*/
             width: 100%; /* Full width (cover the whole page) */
-            height: 100%; /* Full height (cover the whole page) */
+            height: 10%; /* Full height (cover the whole page) */
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(255,255,255,0); /* Black background with opacity */
+            background-color: rgba(255,75,75,0.6); /* Black background with opacity */
             z-index: 100000; /* Specify a stack order in case you're using a different order for other elements */
             cursor: pointer; /* Add a pointer on hover */
         }
 
     </style>
+
+    <div class="fdt-overlay col-8 offset-2" align="center" id="notification" style="display: none;">
+        <text style="font-size: 40px;" id="notification_text"></text>
+    </div>
 
 
     <div class="container-fluid" style="background-color: rgba(255,255,255,0);">
