@@ -287,6 +287,7 @@ socket.addEventListener('open', function (event) {
     ["get_all_vertex", "get_all_display_edge", "sync_time", "sync_total_transportation_plans"].forEach(function (e) {
         socket.send(JSON.stringify({"function": e}));
     });
+    control_time_flow(false); // start pause
 });
 
 
@@ -824,6 +825,7 @@ function update_left_detailed_bar() {
 
     document.getElementById('fdt-overlay-totalendtime').innerHTML = new Date(parseInt(total_info[1]));
     document.getElementById('fdt-overlay-totalcost').innerHTML = parseFloat(total_info[0]);
+    document.getElementById('fdt-overlay-ultimatedest').innerHTML = total_info[2];
 }
 
 function control_time_flow(flow) {
