@@ -47,6 +47,7 @@ namespace fdt {
             single_plan["to"] = it->get_to_vertex_display_name();
             single_plan["start_time"] = it->get_start_time();
             single_plan["end_time"] = it->get_end_time();
+            single_plan["display_info"] = it->get_transportation_display_info();
 
 //                std::cout << single_plan.dump() << std::endl;
 

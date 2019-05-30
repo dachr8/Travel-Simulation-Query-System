@@ -156,9 +156,9 @@ namespace fdt {
 			}
 		}
 		 string display = "";
-     display += u8"总开销" + std::to_string(schedule->planCost);
+     display += u8"总开销" + std::to_string(schedule.planCost);
      display += " ";
-     display += u8"行程结束时间" + std::to_string(schedule->planTime);
+     display += u8"行程结束时间" + std::to_string(schedule.planTime);
      
 
 		TotalTransportationPlan totalplan(plan,passenger,display);
