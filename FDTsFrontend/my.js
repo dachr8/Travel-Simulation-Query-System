@@ -6,7 +6,7 @@
  *
  * @type {number}
  */
-var time_multipler = 3600;
+var time_multipler = 720;
 
 var sync_with_cache = false;
 
