@@ -131,7 +131,8 @@ socket.addEventListener('message', function (event) {
                     start_node: dataset.nodes[get_node_by_id(k.from)],
                     end_node: dataset.nodes[get_node_by_id(k.to)],
                     start_time: k.start_time,
-                    end_time: k.end_time
+                    end_time: k.end_time,
+                    display_info : k.display_info
                 };
 
                 new_marker.plan.push(new_plan);
@@ -148,7 +149,8 @@ socket.addEventListener('message', function (event) {
                     start_node: dataset.nodes[get_node_by_id(k.from)],
                     end_node: dataset.nodes[get_node_by_id(k.to)],
                     start_time: k.start_time,
-                    end_time: k.end_time
+                    end_time: k.end_time,
+                    display_info: k.display_info
                 };
 
                 m.plan.push(new_plan);
@@ -439,7 +441,7 @@ function init_vertex_edges() {
         })
         .style("fill", function (d, i) {
             return colors(i);
-        });
+        }).on('mouseover', marker_focus);
 
     _markers.exit().remove();
 
@@ -461,7 +463,7 @@ function init_vertex_edges() {
         }).attr("text-anchor", "middle")
         .text(function (d) {
             return d.name;
-        });
+        }).on('mouseover', marker_focus);
 
     _marker_text.exit().remove();
 
@@ -493,7 +495,7 @@ function update_marker_data() {
         })
         .style("fill", function (d, i) {
             return colors(i);
-        });
+        }).on('mouseover', marker_focus);
 
     svg.selectAll('.marker_text').remove();
 
@@ -515,7 +517,7 @@ function update_marker_data() {
         }).attr("text-anchor", "middle")
         .text(function (d) {
             return d.name;
-        });
+        }).on('mouseover', marker_focus);
 
 }
 
@@ -718,3 +720,24 @@ function submit_form() {
 }
 
 var passenger_input_element = document.querySelector('[name="passenger"]');
+
+function marker_focus(d) {
+
+    // console.log(d);
+
+    document.getElementById('fdt-overlay-passenger').innerHTML = d.name;
+    if (d.plan_index >= 0 && d.plan_index < d.plan.length) {
+        var current_plan = d.plan[d.plan_index];
+        document.getElementById('fdt-overlay-from').innerHTML = current_plan.start_node.id;
+        document.getElementById('fdt-overlay-to').innerHTML = current_plan.end_node.id;
+        var [by, cost] = current_plan.display_info.split(' ');
+        document.getElementById('fdt-overlay-by').innerHTML = by;
+        document.getElementById('fdt-overlay-cost').innerHTML = cost;
+        document.getElementById('fdt-overlay-starttime').innerHTML = new Date(current_plan.start_time);
+        document.getElementById('fdt-overlay-endtime').innerHTML = new Date(current_plan.end_time);
+    }
+    var total_info = d.display_info.split(' ');
+    document.getElementById('fdt-overlay-totalendtime').innerHTML = new Date(total_info[1]);
+    document.getElementById('fdt-overlay-totalcost').innerHTML = total_info[0];
+
+}
