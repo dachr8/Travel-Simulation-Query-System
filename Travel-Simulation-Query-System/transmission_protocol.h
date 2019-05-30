@@ -307,7 +307,7 @@ namespace fdt {
 
     TotalTransportationPlan submit_passenger_requirement(Passenger passenger, PassengerRequirement requirement);
 
-//    std::vector<TotalTransportationPlan> sync_total_transportation_plans();
+    std::vector<TotalTransportationPlan> sync_total_transportation_plans();
 
     time_t sync_time();
 

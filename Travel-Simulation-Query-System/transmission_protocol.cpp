@@ -4,7 +4,9 @@
 #define plus 1000
 PassengerTable users;
 
+
 namespace fdt {
+	std::vector<TotalTransportationPlan> allplan;
 
 	std::string Vertex::get_display_name() {
 		return this->display_name;
@@ -134,20 +136,27 @@ namespace fdt {
 			return emptyplan;
 		}
 		else {
-			time_t current_time = requirement.get_start_time()/1000;
+			time_t current_time = requirement.get_start_time()/plus;
 			list<ArcCity>::iterator iter = schedule.cities.begin();
 
 			std::string st, end;
+			std::string single_display;
 			st = requirement.get_from_vertex_display_name();
 			while (iter != schedule.cities.end()) {
 				end = iter->city;
 				if (current_time < iter->time[0]) {
-					PlanSingleTransportation singlePlan(st, st, current_time*plus, iter->time[0]*plus, "rest");
+					single_display += "rest";
+					single_display += " ";
+					single_display += "0";
+					PlanSingleTransportation singlePlan(st, st, current_time*plus, iter->time[0]*plus, single_display);
 					plan.push_back(singlePlan);
 					current_time = iter->time[0];
 				}
 				else {
-					PlanSingleTransportation singlePlan(st, end, iter->time[0]*plus, iter->time[1]*plus, iter->transportation);
+					single_display += iter->transportation;
+					single_display += " ";
+					single_display += iter->fare;
+					PlanSingleTransportation singlePlan(st, end, iter->time[0]*plus, iter->time[1]*plus, single_display);
 					plan.push_back(singlePlan);
 					current_time = iter->time[1];
 					st = end;
@@ -156,17 +165,20 @@ namespace fdt {
 			}
 		}
 		 string display = "";
-     display += u8"总开销" + std::to_string(schedule->planCost);
-     display += " ";
-     display += u8"行程结束时间" + std::to_string(schedule->planTime);
+         display +=  std::to_string(schedule.planCost);
+		 display += " ";
+		 display +=  std::to_string(schedule.planTime);
      
 
 		TotalTransportationPlan totalplan(plan,passenger,display);
+		allplan.push_back(totalplan);
 
-		//delete schedule;
 		return totalplan;
 	}
 
+	std::vector<TotalTransportationPlan> sync_total_transportation_plans() {
+		return allplan;
+	}
 
     time_t sync_time() {
         return now * 1000;
