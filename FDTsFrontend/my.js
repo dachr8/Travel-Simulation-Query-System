@@ -400,7 +400,7 @@ function init_vertex_edges() {
         }).attr("text-anchor", "middle")
         .text(function (d) {
             return d.id;
-        });
+        }).call(force.drag);
 
     nodelabels.on('click', function(d) {
         selected_city = d;
