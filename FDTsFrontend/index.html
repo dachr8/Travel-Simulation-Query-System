@@ -88,7 +88,13 @@
 
             <div class="row">
                 <span>Total Time Limit</span>
-                <input type="number" name="total_time_limit" value="0">
+                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                    <input type="text" name="total_time_limit" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+                <!--<input type="number" name="total_time_limit" value="0">-->
             </div>
 
             <!--<input type="hidden" name="start_time" />-->

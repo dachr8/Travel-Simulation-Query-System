@@ -3,6 +3,7 @@
 
 #define plus 1000
 PassengerTable users;
+
 namespace fdt {
 	std::string Vertex::get_display_name() {
 		return this->display_name;
@@ -121,7 +122,7 @@ namespace fdt {
 			require.wayCities.push_back(*iter);
 			++iter;
 		}
-		//City c;
+	//City c;
 		//schedule = c.Permutations(require);
 		users.addPassenger(passenger.get_id(), require);
 		schedule = users.generateTravelSchedule(passenger.get_id());
@@ -134,6 +135,7 @@ namespace fdt {
 		else {
 			time_t current_time = requirement.get_start_time()/1000;
 			list<ArcCity>::iterator iter = schedule.cities.begin();
+
 			std::string st, end;
 			st = requirement.get_from_vertex_display_name();
 			while (iter != schedule.cities.end()) {
@@ -156,6 +158,7 @@ namespace fdt {
 		display += std::to_string(schedule.planCost);
 		display += " ";
 		display += std::to_string(schedule.planTime);
+
 		TotalTransportationPlan totalplan(plan,passenger,display);
 
 		//delete schedule;

@@ -99,6 +99,8 @@ namespace fdt {
 
             fdt::Passenger passenger = fdt::Passenger(j["passenger"]);
 
+			std::cout << "passenger normal" << std::endl;
+
             std::vector<std::string> pass_by_vertex = std::vector<std::string>();
 
             strategy s;
@@ -112,29 +114,43 @@ namespace fdt {
                 s = limitedTime;
             }
 
-            for (auto it = j["pass_by_vertex_display_name"].begin(); it != j["pass_by_vertex_display_name"].end(); ++it) {
+//			std::cout << "strategy ok" << std::endl;
+
+			auto pass_by_vertex_display_name_json_array = j["pass_by_vertex_display_name"];
+
+            for (auto it = pass_by_vertex_display_name_json_array.begin(); it != pass_by_vertex_display_name_json_array.end(); ++it) {
                 pass_by_vertex.emplace_back(*it);
             }
 
+//			std::cout << "pass_by_vertex ok" << std::endl;
+
             fdt::PassengerRequirement requirement = fdt::PassengerRequirement(j["from"], j["to"], j["start_time"], pass_by_vertex, s, j["total_time_limit"]);
 
+//			std::cout << "requirement build success" << std::endl;
             fdt::TotalTransportationPlan plan = fdt::submit_passenger_requirement(passenger, requirement);
+
+//			std::cout << "result" << std::endl;
 
             json total_transportation_plan;
 
             total_transportation_plan["display_info"] = plan.get_display_info();
 
+//			std::cout << "display_info ok" << std::endl;
+
             total_transportation_plan["passenger"] = plan.get_passenger().get_id();
 
+//			std::cout << "passenger ok" << std::endl;
+
             json json_array = json::array();
+			//std::vector<json> json_array = std::vector<json>();
 
             std::vector<PlanSingleTransportation> v = plan.get_single_transportation_plan_vector();
 
             for (auto it = v.begin(); it != v.end(); ++it) {
 
-                std::cout << "it value " << it->get_from_vertex_display_name() << ", " <<
-                          it->get_to_vertex_display_name() << ", " << it->get_start_time() << ", "<<
-                          it->get_end_time() << std::endl;
+ //               std::cout << "it value " << it->get_from_vertex_display_name() << ", " <<
+ //                         it->get_to_vertex_display_name() << ", " << it->get_start_time() << ", "<<
+  //                        it->get_end_time() << std::endl;
 
                 json single_plan;
                 single_plan["from"] = it->get_from_vertex_display_name();
@@ -142,17 +158,35 @@ namespace fdt {
                 single_plan["start_time"] = it->get_start_time();
                 single_plan["end_time"] = it->get_end_time();
 
-                std::cout << single_plan.dump() << std::endl;
+//                std::cout << single_plan.dump() << std::endl;
 
                 json_array.emplace_back(single_plan);
             }
 
+
             total_transportation_plan["single_transportation_plans"] = json_array;
 
-            json r_json;
+//			std::cout << __FILE__ << ":" << __LINE__ << ":" << "array_added" << std::endl;
+
+//			std::cout << __FILE__ << ":" << __LINE__ << ":" << total_transportation_plan.dump() << std::endl;
+
+            json r_json = json::object();
             r_json["total_transportation_plan"] = total_transportation_plan;
 
+//			std::cout << __FILE__ << ":" << __LINE__ << ":" << r_json.dump() << std::endl;
+
             r_json["function"] = "submit_passenger_requirement";
+
+//			std::cout << __FILE__ << ":" << __LINE__ << ";" << plan.get_passenger().get_id() << std::endl;
+
+			/*back = "{"
+				                "\"function\": \"submit_passenger_requirement\", "
+				                "\"total_transportation_plan\": {"
+				                    " \"passenger\": \""+ plan.get_passenger().get_id() +"\", "
+				                    "\"display_info\": \""+plan.get_display_info()+"\", "
+				                    "\"single_transportation_plans\": "+json_array.dump()+
+				                "}"
+				                "}";*/
 
 
             std::cout << r_json.dump() << std::endl;

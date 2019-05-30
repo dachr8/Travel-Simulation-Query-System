@@ -128,6 +128,7 @@
     <ClInclude Include="TimeTable.h" />
     <ClInclude Include="PassengerTable.h" />
     <ClInclude Include="transmission_protocol.h" />
+    <ClInclude Include="ws_server.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Logger.cpp" />
@@ -136,6 +137,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PassengerTable.cpp" />
     <ClCompile Include="transmission_protocol.cpp" />
+    <ClCompile Include="ws_server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="map.txt" />
