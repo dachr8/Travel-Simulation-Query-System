@@ -8,6 +8,10 @@
  */
 const time_multipler = 3600;
 
+const sync_with_cache = false;
+
+console.log("sync_with_cache = " + sync_with_cache);
+
 const node_radius = 30;
 
 $('.date').datetimepicker(); // init datetimepicker
@@ -103,6 +107,39 @@ socket.addEventListener('message', function (event) {
     if ("sync_time" === j.function) {
         sim_time = j.time;
         part_init[2] = 1;
+    }
+
+    if ("sync_total_transportation_plans" === j.function) {
+        console.log(j.plans);
+
+        dataset.markers = [];
+
+        for (var i in j.plans) {
+            var total_transportation_plan = j.plans[i];
+            var new_marker = {
+                name: total_transportation_plan.passenger,
+                display_info: total_transportation_plan.display_info,
+                plan: [],
+                plan_index: 0
+            };
+            for (var i in total_transportation_plan.single_transportation_plans) {
+
+                var k = total_transportation_plan.single_transportation_plans[i];
+                var new_plan = {
+                    start_node: dataset.nodes[get_node_by_id(k.from)],
+                    end_node: dataset.nodes[get_node_by_id(k.to)],
+                    start_time: k.start_time,
+                    end_time: k.end_time,
+                    display_info : k.display_info
+                };
+
+                new_marker.plan.push(new_plan);
+            }
+
+            dataset.markers.push(new_marker);
+        }
+
+        update_marker_data();
     }
 
     if (full_init && "submit_passenger_requirement" === j.function) {
@@ -222,7 +259,7 @@ var dataset = {
 
 // Connection opened
 socket.addEventListener('open', function (event) {
-    ["get_all_vertex", "get_all_display_edge", "sync_time"].forEach(function (e) {
+    ["get_all_vertex", "get_all_display_edge", "sync_time", "sync_total_transportation_plans"].forEach(function (e) {
         socket.send(JSON.stringify({"function": e}));
     });
 });
@@ -270,7 +307,7 @@ function init_vertex_edges() {
 
     // console.log(cache_time);
 
-    if (cache_time != null && sim_time > cache_time) {
+    if (sync_with_cache && cache_time != null && sim_time > cache_time) {
         var cached_markers = JSON.parse(sessionStorage.getItem('markers'));
         console.log(cached_markers);
         if (cached_markers != null) {

@@ -228,23 +228,24 @@ namespace fdt {
 //                "}";
         }
 
-//        if (function == "sync_total_transportation_plans") {
-//            std::vector<TotalTransportationPlan> v = sync_total_transportation_plans();
-//
-//            json r_json;
-//            r_json["function"] = "sync_total_transportation_plans";
-//
-//            json json_array = json::array();
-//
-//            for (auto it = v.begin(); it != v.end(); ++it) {
-//                json_array.emplace_back(*it);
-//            }
-//
-//            r_json['plans'] = json_array;
-//            back = r_json.dump();
-//            return 0;
-//
-//        }
+        if (function == "sync_total_transportation_plans") {
+            std::vector<TotalTransportationPlan> v = sync_total_transportation_plans();
+
+            json r_json;
+            r_json["function"] = "sync_total_transportation_plans";
+
+            json json_array = json::array();
+
+            for (auto it = v.begin(); it != v.end(); ++it) {
+                json parsed_plan = parse_total_transportation_plan(*it);
+                json_array.emplace_back(parsed_plan);
+            }
+
+            r_json["plans"] = json_array;
+            back = r_json.dump();
+            return 0;
+
+        }
 
         return 0;
     }
