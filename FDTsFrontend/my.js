@@ -10,7 +10,7 @@ const time_multipler = 3600;
 
 const node_radius = 30;
 
-$('#datetimepicker1').datetimepicker(); // init datetimepicker
+$('.date').datetimepicker(); // init datetimepicker
 
 /**
  * helper function to get object from form serialize data
@@ -624,10 +624,19 @@ function submit_form() {
         o['start_time'] = parseInt(new Date(o['start_time']).getTime());
     }
 
-    o['total_time_limit'] = parseInt(o['total_time_limit']);
-
+    // o['total_time_limit'] = parseInt(o['total_time_limit']);
+    if (o['total_time_limit'] == "") {
+        o['total_time_limit'] = 0;
+    } else {
+        o['total_time_limit'] = parseInt(new Date(o['total_time_limit']).getTime());
+    }
 
     if (o['start_time'] < new Date().getTime(sim_time)) {
+        console.log("time invalid");
+        return; // if before is a invalid request
+    }
+
+    if (o['total_time_limit'] > 0 && o['total_time_limit'] < new Date().getTime(sim_time)) {
         console.log("time invalid");
         return; // if before is a invalid request
     }
