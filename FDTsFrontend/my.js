@@ -721,7 +721,7 @@ setInterval(function() {
 
     sessionStorage.setItem('sim_time', sim_time);
 
-}, 1000);
+}, 3600000 / time_multipler);
 
 function new_schedule() {
 
