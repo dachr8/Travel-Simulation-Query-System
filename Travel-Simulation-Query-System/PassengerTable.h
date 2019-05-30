@@ -56,7 +56,7 @@ public:
 	PassengerTable();
 	PassengerTable(const string& file, const int& num);
 	~PassengerTable();
-	
+
 	bool addPassenger(const string& id, const PassengerRequirements& newPassenger);
 	bool addPassengerList(const string& file, const int& num);
 	bool delPassenger(const string& id);

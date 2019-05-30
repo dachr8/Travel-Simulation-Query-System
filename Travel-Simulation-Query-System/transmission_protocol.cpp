@@ -2,7 +2,6 @@
 #include"Permutations.h"
 
 #define plus 1000
-PassengerTable users;
 
 
 namespace fdt {
@@ -119,44 +118,42 @@ namespace fdt {
 		require.departure = requirement.get_from_vertex_display_name();
 		require.destination = requirement.get_to_vertex_display_name();
 		require.strategy = requirement.get_travel_strategy();
-		require.timeLimit = requirement.get_total_time_limit()/plus;
-		require.timeStart = requirement.get_start_time()/plus;
+		require.timeLimit = requirement.get_total_time_limit() / plus;
+		require.timeStart = requirement.get_start_time() / plus;
 		while (iter != pass.end()) {
 			require.wayCities.push_back(*iter);
 			++iter;
 		}
-	//City c;
-		//schedule = c.Permutations(require);
-		users.addPassenger(passenger.get_id(), require);
-		schedule = users.generateTravelSchedule(passenger.get_id());
-		users.printTravelSchedule(passenger.get_id());
+		//City c;
+			//schedule = c.Permutations(require);
+		passengers->addPassenger(passenger.get_id(), require);
+		schedule = passengers->generateTravelSchedule(passenger.get_id());
+		passengers->printTravelSchedule(passenger.get_id());
 
 		if (schedule.status.currentStatus == error) {
 			TotalTransportationPlan emptyplan(plan, passenger, "error");
 			return emptyplan;
-		}
-		else {
-			time_t current_time = requirement.get_start_time()/plus;
+		} else {
+			time_t current_time = requirement.get_start_time() / plus;
 			list<ArcCity>::iterator iter = schedule.cities.begin();
 
 			std::string st, end;
 			st = requirement.get_from_vertex_display_name();
 			while (iter != schedule.cities.end()) {
-                std::string single_display;
+				std::string single_display;
 				end = iter->city;
 				if (current_time < iter->time[0]) {
 					single_display += "rest";
 					single_display += " ";
 					single_display += "0";
-					PlanSingleTransportation singlePlan(st, st, current_time*plus, iter->time[0]*plus, single_display);
+					PlanSingleTransportation singlePlan(st, st, current_time * plus, iter->time[0] * plus, single_display);
 					plan.push_back(singlePlan);
 					current_time = iter->time[0];
-				}
-				else {
+				} else {
 					single_display += iter->transportation;
 					single_display += " ";
 					single_display += std::to_string(iter->fare);
-					PlanSingleTransportation singlePlan(st, end, iter->time[0]*plus, iter->time[1]*plus, single_display);
+					PlanSingleTransportation singlePlan(st, end, iter->time[0] * plus, iter->time[1] * plus, single_display);
 					plan.push_back(singlePlan);
 					current_time = iter->time[1];
 					st = end;
@@ -164,14 +161,14 @@ namespace fdt {
 				}
 			}
 		}
-		 string display = "";
+		string display = "";
 
-         display +=  std::to_string(schedule.planCost);
-		 display += " ";
-		 display +=  std::to_string(schedule.planTime);
-     
+		display += std::to_string(schedule.planCost);
+		display += " ";
+		display += std::to_string(schedule.planTime);
 
-		TotalTransportationPlan totalplan(plan,passenger,display);
+
+		TotalTransportationPlan totalplan(plan, passenger, display);
 		allplan.push_back(totalplan);
 
 		return totalplan;
@@ -181,8 +178,8 @@ namespace fdt {
 		return allplan;
 	}
 
-    time_t sync_time() {
-        return now * 1000;
-    }
+	time_t sync_time() {
+		return now * 1000;
+	}
 
 }
