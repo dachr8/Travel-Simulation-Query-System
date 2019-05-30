@@ -164,9 +164,9 @@ namespace fdt {
 		string display = "";
 
 
-     display +=  std::to_string(schedule.planCost);
-		 display += " ";
-		 display +=  std::to_string(schedule.planTime * plus);
+		display += std::to_string(schedule.planCost);
+		display += " ";
+		display += std::to_string(schedule.planTime * plus);
 
 
 		TotalTransportationPlan totalplan(plan, passenger, display);
@@ -182,5 +182,8 @@ namespace fdt {
 	time_t sync_time() {
 		return now * 1000;
 	}
-
+	bool set_simulation_time_flow(bool flow) {
+		timer_thread = flow;
+		return flow;
+	}
 }
