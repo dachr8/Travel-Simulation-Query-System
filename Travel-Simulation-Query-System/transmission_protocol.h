@@ -9,335 +9,309 @@
 
 
 namespace fdt {
-	/**
+    /**
 
-	 * Vertex node for transmission
+     * Vertex node for transmission
 
-	 * use display_name to select distinct vertex instance
+     * use display_name to select distinct vertex instance
 
-	 */
+     */
 
-	class Vertex {
+    class Vertex {
 
-	private:
+    private:
 
-		// unsigned id;
+        // unsigned id;
 
-		std::string display_name;
+        std::string display_name;
 
-	public:
+    public:
 
-		Vertex(){}
+        Vertex() {}
 
-		Vertex(const std::string& display_name) : display_name(display_name) {}
+        Vertex(const std::string &display_name) : display_name(display_name) {}
 
-		Vertex(const Vertex& _vertex) : display_name(_vertex.display_name) {}
+        Vertex(const Vertex &_vertex) : display_name(_vertex.display_name) {}
 
-		std::string get_display_name();
+        std::string get_display_name();
 
-	};
+    };
 
 
+    /**
 
-	/**
+     * Using edge to draw edges on map
 
-	 * Using edge to draw edges on map
+     */
 
-	 */
+    class Edge {
 
-	class Edge {
+    private:
 
-	private:
 
 
+        //unsigned id;
 
-		//unsigned id;
 
 
+        std::string source_vertex_display_name;
 
-		std::string source_vertex_display_name;
+        std::string destination_vertex_display_name;
 
-		std::string destination_vertex_display_name;
 
+        unsigned length; // optional
 
+    public:
 
-		unsigned length; // optional
+        Edge() {}
 
-	public:
+        Edge(const Edge &_edge) : source_vertex_display_name(_edge.source_vertex_display_name),
+                                  destination_vertex_display_name(_edge.destination_vertex_display_name),
+                                  length(_edge.length) {}
 
-		Edge() {}
 
-		Edge(const Edge & _edge) : source_vertex_display_name(_edge.source_vertex_display_name),
-								   destination_vertex_display_name(_edge.destination_vertex_display_name),
-		length(_edge.length) {}
+        Edge(std::string source_vertex_display_name, std::string destination_vertex_display_name) :
 
+                source_vertex_display_name(source_vertex_display_name),
+                destination_vertex_display_name(destination_vertex_display_name), length(200) {}
 
-		Edge(std::string source_vertex_display_name, std::string destination_vertex_display_name) :
 
-			source_vertex_display_name(source_vertex_display_name), destination_vertex_display_name(destination_vertex_display_name), length(200) {}
+        std::string get_source_vertex_display_name();
 
 
+        std::string get_destination_vertex_display_name();
 
-		std::string get_source_vertex_display_name();
 
+        unsigned get_length();
 
+    };
 
-		std::string get_destination_vertex_display_name();
 
+    /**
 
+     * Passing an instance of PassengerRequirement
 
-		unsigned get_length();
+     * for backend to compute
 
-	};
+     */
 
+    class PassengerRequirement {
 
+    private:
 
-	/**
+        std::string from_vertex_display_name;
 
-	 * Passing an instance of PassengerRequirement
+        std::string to_vertex_display_name;
 
-	 * for backend to compute
 
-	 */
+        time_t start_time;
 
-	class PassengerRequirement {
+        std::vector<std::string> pass_by_vertex_display_name_vector;
 
-	private:
 
-		std::string from_vertex_display_name;
+        strategy travel_strategy;
 
-		std::string to_vertex_display_name;
+        time_t total_time_limit;
 
+    public:
 
+        PassengerRequirement() {}
 
-		time_t start_time;
+        PassengerRequirement(const PassengerRequirement &_requirement) :
+                from_vertex_display_name(_requirement.from_vertex_display_name),
+                to_vertex_display_name(_requirement.to_vertex_display_name),
+                start_time(_requirement.start_time),
+                pass_by_vertex_display_name_vector(_requirement.pass_by_vertex_display_name_vector),
+                travel_strategy(_requirement.travel_strategy),
+                total_time_limit(_requirement.total_time_limit) {}
 
-		std::vector<std::string> pass_by_vertex_display_name_vector;
+        PassengerRequirement(std::string from_vertex_display_name,
 
+                             std::string to_vertex_display_name,
 
+                             time_t start_time,
 
-		strategy travel_strategy;
+                             std::vector<std::string> pass_by_vertex_display_name_vector,
 
-		time_t total_time_limit;
+                             strategy travel_strategy,
 
-	public:
+                             time_t total_time_limit) :
 
-		PassengerRequirement() {}
+                from_vertex_display_name(from_vertex_display_name),
 
-		PassengerRequirement(const PassengerRequirement & _requirement) :
-				from_vertex_display_name(_requirement.from_vertex_display_name),
-				to_vertex_display_name(_requirement.to_vertex_display_name),
-				start_time(_requirement.start_time),
-				pass_by_vertex_display_name_vector(_requirement.pass_by_vertex_display_name_vector),
-				travel_strategy(_requirement.travel_strategy),
-				total_time_limit(_requirement.total_time_limit) {}
+                to_vertex_display_name(to_vertex_display_name),
 
-		PassengerRequirement(std::string from_vertex_display_name,
+                start_time(start_time),
 
-			std::string to_vertex_display_name,
+                pass_by_vertex_display_name_vector(pass_by_vertex_display_name_vector),
 
-			time_t start_time,
+                travel_strategy(travel_strategy),
 
-			std::vector<std::string> pass_by_vertex_display_name_vector,
+                total_time_limit(total_time_limit) {}
 
-			strategy travel_strategy,
 
-			time_t total_time_limit) :
+        std::string get_from_vertex_display_name();
 
-			from_vertex_display_name(from_vertex_display_name),
 
-			to_vertex_display_name(to_vertex_display_name),
+        std::string get_to_vertex_display_name();
 
-			start_time(start_time),
+        time_t get_start_time();
 
-			pass_by_vertex_display_name_vector(pass_by_vertex_display_name_vector),
+        std::vector<std::string> get_pass_by_vertex_display_name_vector();
 
-			travel_strategy(travel_strategy),
+        strategy get_travel_strategy();
 
-			total_time_limit(total_time_limit) {}
+        time_t get_total_time_limit();
 
+    };
 
 
-		std::string get_from_vertex_display_name();
+    /**
 
+     * Result of computing
 
+     */
 
-		std::string get_to_vertex_display_name();
+    class PlanSingleTransportation {
 
-		time_t get_start_time();
+    private:
 
-		std::vector<std::string> get_pass_by_vertex_display_name_vector();
 
-		strategy get_travel_strategy();
 
-		time_t get_total_time_limit();
+        // from and to can be the same
 
-	};
+        std::string from_vertex_display_name;
 
+        std::string to_vertex_display_name;
 
 
-	/**
+        time_t start_time;
 
-	 * Result of computing
+        time_t end_time;
 
-	 */
 
-	class PlanSingleTransportation {
+        std::string transportation_display_info;
 
-	private:
+    public:
 
+        PlanSingleTransportation() {}
 
+        PlanSingleTransportation(const PlanSingleTransportation &_planSingleTransportation) :
+                from_vertex_display_name(_planSingleTransportation.from_vertex_display_name),
+                to_vertex_display_name(_planSingleTransportation.to_vertex_display_name),
+                start_time(_planSingleTransportation.start_time),
+                end_time(_planSingleTransportation.end_time),
+                transportation_display_info(_planSingleTransportation.transportation_display_info) {}
 
-		// from and to can be the same
+        PlanSingleTransportation(std::string from_vertex_display_name,
 
-		std::string from_vertex_display_name;
+                                 std::string to_vertex_display_name,
 
-		std::string to_vertex_display_name;
+                                 time_t start_time,
 
+                                 time_t end_time,
 
+                                 std::string transportation_display_info) :
 
-		time_t start_time;
+                from_vertex_display_name(from_vertex_display_name),
 
-		time_t end_time;
+                to_vertex_display_name(to_vertex_display_name),
 
+                start_time(start_time),
 
+                end_time(end_time) {}
 
-		std::string transportation_display_info;
 
-	public:
+        std::string get_from_vertex_display_name();
 
-		PlanSingleTransportation() {}
 
-		PlanSingleTransportation(const PlanSingleTransportation &_planSingleTransportation):
-				from_vertex_display_name(_planSingleTransportation.from_vertex_display_name),
-		to_vertex_display_name(_planSingleTransportation.to_vertex_display_name),
-		start_time(_planSingleTransportation.start_time),
-		end_time(_planSingleTransportation.end_time),
-		transportation_display_info(_planSingleTransportation.transportation_display_info) {}
+        std::string get_to_vertex_display_name();
 
-		PlanSingleTransportation(std::string from_vertex_display_name,
 
-			std::string to_vertex_display_name,
+        time_t get_start_time();
 
-			time_t start_time,
+        time_t get_end_time();
 
-			time_t end_time,
 
-			std::string transportation_display_info) :
+        std::string get_transportation_display_info();
 
-			from_vertex_display_name(from_vertex_display_name),
+    };
 
-			to_vertex_display_name(to_vertex_display_name),
 
-			start_time(start_time),
+    class Passenger {
 
-			end_time(end_time) {}
+    private:
 
+        std::string id;
 
+    public:
 
-		std::string get_from_vertex_display_name();
+        Passenger() {}
 
+        Passenger(const Passenger &_passenger) : id(_passenger.id) {}
 
+        Passenger(std::string id) : id(id) {}
 
-		std::string get_to_vertex_display_name();
 
+        std::string get_id();
 
+    };
 
-		time_t get_start_time();
 
-		time_t get_end_time();
+    class TotalTransportationPlan {
 
+    private:
 
+        std::vector<PlanSingleTransportation> single_transportation_plan_vector;
 
-		std::string get_transportation_display_info();
+        Passenger passenger;
 
-	};
+        std::string display_info;
 
 
-	
-	class Passenger {
+    public:
 
-	private:
+        TotalTransportationPlan() {}
 
-		std::string id;
+        TotalTransportationPlan(const TotalTransportationPlan &_plan) :
+                single_transportation_plan_vector(_plan.single_transportation_plan_vector),
+                passenger(_plan.passenger),
+                display_info(_plan.display_info) {}
 
-	public:
+        TotalTransportationPlan(std::vector<PlanSingleTransportation> single_transportation_plan_vector,
 
-		Passenger() {}
+                                Passenger passenger,
 
-		Passenger(const Passenger & _passenger) : id(_passenger.id) {}
+                                std::string display_info) : single_transportation_plan_vector(
+                single_transportation_plan_vector),
 
-		Passenger(std::string id) : id(id) {}
+                                                            passenger(passenger), display_info(display_info) {}
 
 
+        std::vector<PlanSingleTransportation> get_single_transportation_plan_vector();
 
-		std::string get_id();
 
-	};
+        Passenger get_passenger();
 
 
+        std::string get_display_info();
 
-	class TotalTransportationPlan {
+    };
 
-	private:
 
-		std::vector<PlanSingleTransportation> single_transportation_plan_vector;
+    std::vector<Vertex> get_all_vertex();
 
-		Passenger passenger;
 
-		std::string display_info;
+    std::vector<Edge> get_all_display_edge();
 
 
+    TotalTransportationPlan submit_passenger_requirement(Passenger passenger, PassengerRequirement requirement);
 
-	public:
+//    std::vector<TotalTransportationPlan> sync_total_transportation_plans();
 
-		TotalTransportationPlan() {}
-
-		TotalTransportationPlan(const TotalTransportationPlan &_plan) :
-				single_transportation_plan_vector(_plan.single_transportation_plan_vector),
-		passenger(_plan.passenger),
-		display_info(_plan.display_info) {}
-
-		TotalTransportationPlan(std::vector<PlanSingleTransportation> single_transportation_plan_vector,
-
-			Passenger passenger,
-
-			std::string display_info) : single_transportation_plan_vector(single_transportation_plan_vector),
-
-			passenger(passenger), display_info(display_info) {}
-
-
-
-		std::vector<PlanSingleTransportation> get_single_transportation_plan_vector();
-
-
-
-		Passenger get_passenger();
-
-
-
-		std::string get_display_info();
-
-	};
-
-
-
-	std::vector<Vertex> get_all_vertex();
-
-
-
-	std::vector<Edge> get_all_display_edge();
-
-
-
-	TotalTransportationPlan submit_passenger_requirement(Passenger passenger, PassengerRequirement requirement);
-
-
-
-	time_t sync_time();
+    time_t sync_time();
 
 }
-
 
 
 #endif //CPP_BACKEND_TRANSMISSION_PROTOCOL_H
