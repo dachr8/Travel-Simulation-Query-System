@@ -6,13 +6,13 @@
  *
  * @type {number}
  */
-const time_multipler = 3600;
+var time_multipler = 3600;
 
-const sync_with_cache = false;
+var sync_with_cache = false;
 
 console.log("sync_with_cache = " + sync_with_cache);
 
-const node_radius = 30;
+var node_radius = 30;
 
 $('.date').datetimepicker(); // init datetimepicker
 
@@ -21,8 +21,7 @@ $('.date').datetimepicker(); // init datetimepicker
  *
  * @returns {{}}
  */
-$.fn.serializeObject = function()
-{
+$.fn.serializeObject = function() {
     var o = {};
     var a = this.serializeArray();
     $.each(a, function() {
@@ -42,7 +41,7 @@ $.fn.serializeObject = function()
  * same as enum strategy in c++ codes
  * @type {{min_cost: string, min_time: string, limited_time: string}}
  */
-const STRATEGY = {
+var STRATEGY = {
     min_cost: "min_cost",
     min_time: "min_time",
     limited_time: "limited_time"
@@ -89,8 +88,6 @@ socket.addEventListener('message', function (event) {
         for (var i in j.vertex) {
             selection += '<option value="'+j.vertex[i].id+'">'+j.vertex[i].id+'</option>';
         }
-
-//            console.log(selection);
 
         document.getElementsByName('from')[0].innerHTML = selection;
         document.getElementsByName('to')[0].innerHTML = selection;
@@ -209,6 +206,7 @@ socket.addEventListener('message', function (event) {
     }
 
     if (!full_init && part_init[0] === part_init[1] && part_init[1] === part_init[2] && part_init[0] === 1) {
+        document.getElementById('submit_button').onclick = submit_form;
         init_vertex_edges();
     }
 });
@@ -794,7 +792,9 @@ function update_left_detailed_bar() {
         var current_plan = d.plan[d.plan_index];
         document.getElementById('fdt-overlay-from').innerHTML = current_plan.start_node.id;
         document.getElementById('fdt-overlay-to').innerHTML = current_plan.end_node.id;
-        var [by, cost] = current_plan.display_info.split(' ');
+        var t = current_plan.display_info.split(' ');
+        var by = t[0];
+        var cost = t[1];
         document.getElementById('fdt-overlay-by').innerHTML = by;
         document.getElementById('fdt-overlay-cost').innerHTML = parseFloat(cost);
         document.getElementById('fdt-overlay-starttime').innerHTML = new Date(current_plan.start_time);
