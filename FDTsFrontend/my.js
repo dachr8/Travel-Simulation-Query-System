@@ -592,6 +592,9 @@ function update_marker_data() {
 
 //    function update_marker() {}
 function update_marker() {
+
+    update_left_detailed_bar();
+
     markers.attr('cx', function (d) {
 
 //            console.log(d);
@@ -770,9 +773,21 @@ function submit_form() {
 
 var passenger_input_element = document.querySelector('[name="passenger"]');
 
-function marker_focus(d) {
+var focused_mark = null;
 
+function marker_focus(d) {
+    focused_mark = d;
     // console.log(d);
+
+    update_left_detailed_bar();
+}
+
+function update_left_detailed_bar() {
+    if (focused_mark == null) {
+        return;
+    }
+
+    var d = focused_mark;
 
     document.getElementById('fdt-overlay-passenger').innerHTML = d.name;
     if (d.plan_index >= 0 && d.plan_index < d.plan.length) {
@@ -791,5 +806,4 @@ function marker_focus(d) {
 
     document.getElementById('fdt-overlay-totalendtime').innerHTML = new Date(parseInt(total_info[1]));
     document.getElementById('fdt-overlay-totalcost').innerHTML = parseFloat(total_info[0]);
-
 }
