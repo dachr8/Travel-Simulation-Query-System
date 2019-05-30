@@ -66,6 +66,16 @@ var full_init = false;
 
 var selected_city = null;
 
+document.body.style.backgroundColor = '#ffffaa';
+
+socket.addEventListener('close', function (event) {
+    document.body.style.backgroundColor = '#ff7777';
+});
+
+socket.addEventListener('open', function (event) {
+    document.body.style.backgroundColor = '';
+});
+
 socket.addEventListener('message', function (event) {
     var j = JSON.parse(event.data);
 
@@ -168,6 +178,14 @@ document.querySelector(".container-fluid").style.height = (window.innerHeight * 
 
 var colors = d3.scale.category10();
 
+var color2 = d3.scale.category20();
+
+var color3 = function(e) {
+    return color2(5 + e);
+};
+
+color3();
+
 var dataset = {
 
     nodes: [
@@ -230,10 +248,10 @@ var svg = d3.select("#svg_container").append('svg').attr({
     "width": "100%", "height": "100%"
 });
 
-svg.call(d3.behavior.zoom().on("zoom", function () {
-    svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
-}))
-    .append("g");
+// svg.call(d3.behavior.zoom().on("zoom", function () {
+//     svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
+// }))
+//     .append("g");
 
 var w = svg_container.offsetWidth;
 var h = svg_container.offsetHeight;
@@ -245,6 +263,32 @@ var marker_text;
 var force_timer_started = false;
 
 function init_vertex_edges() {
+
+    var cache_time = sessionStorage.getItem('sim_time');
+
+    // console.log(cache_time);
+
+    if (cache_time != null && sim_time > cache_time) {
+        var cached_markers = JSON.parse(sessionStorage.getItem('markers'));
+        console.log(cached_markers);
+        if (cached_markers != null) {
+
+            for (var i in cached_markers) {
+                for (var j in cached_markers[i].plan) {
+                    cached_markers[i].plan[j].start_node = dataset.nodes[get_node_by_id(cached_markers[i].plan[j].start_node.id)];
+                    // console.log(cached_markers[i].plan[j].start_node);
+                    cached_markers[i].plan[j].end_node = dataset.nodes[get_node_by_id(cached_markers[i].plan[j].end_node.id)];
+                }
+            }
+
+            // console.log(cached_markers);
+            dataset.markers = cached_markers;
+        }
+    } else {
+        sessionStorage.clear();
+    }
+
+
     force = d3.layout.force()
         .nodes(dataset.nodes)
         .links(dataset.edges)
@@ -280,7 +324,7 @@ function init_vertex_edges() {
             "r": node_radius
         })
         .style("fill", function (d, i) {
-            return colors(i);
+            return color3(i);
         })
         .call(force.drag);
 
@@ -414,7 +458,7 @@ function init_vertex_edges() {
             },
             "class": "marker_text",
             "stroke": "black"
-        })
+        }).attr("text-anchor", "middle")
         .text(function (d) {
             return d.name;
         });
@@ -433,6 +477,8 @@ function init_vertex_edges() {
 }
 
 function update_marker_data() {
+
+    sessionStorage.setItem('markers', JSON.stringify(dataset.markers));
 
     svg.selectAll('.markers').remove();
 
@@ -466,7 +512,7 @@ function update_marker_data() {
             },
             "class": "marker_text",
             "stroke": "black"
-        })
+        }).attr("text-anchor", "middle")
         .text(function (d) {
             return d.name;
         });
@@ -601,6 +647,9 @@ setInterval(function() {
             "function": "sync_time"
         }));
     }
+
+    sessionStorage.setItem('sim_time', sim_time);
+
 }, 1000);
 
 function new_schedule() {

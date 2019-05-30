@@ -5,6 +5,7 @@
 PassengerTable users;
 
 namespace fdt {
+
 	std::string Vertex::get_display_name() {
 		return this->display_name;
 	}
@@ -154,10 +155,11 @@ namespace fdt {
 				}
 			}
 		}
-		string display = "";
-		display += std::to_string(schedule.planCost);
-		display += " ";
-		display += std::to_string(schedule.planTime);
+		 string display = "";
+     display += u8"总开销" + std::to_string(schedule->planCost);
+     display += " ";
+     display += u8"行程结束时间" + std::to_string(schedule->planTime);
+     
 
 		TotalTransportationPlan totalplan(plan,passenger,display);
 
@@ -165,67 +167,9 @@ namespace fdt {
 		return totalplan;
 	}
 
-    /*TotalTransportationPlan submit_passenger_requirement(Passenger passenger, PassengerRequirement requirement) {
-        time_t t = sync_time();
 
-        Passenger p("Mark_A");
-
-		std::cout << p.get_id() << std::endl;
-
-        std::vector<PlanSingleTransportation> singles{};
-
-        PlanSingleTransportation s1(
-                "Beijing",
-
-                "Wuhan",
-
-                t + 3600000,
-
-                t + 3600000 * 5,
-
-                "info");
-
-		std::cout << "s1" << s1.get_from_vertex_display_name() << std::endl;
-
-        singles.emplace_back(s1);
-
-		std::cout << "s1" << s1.get_from_vertex_display_name() << std::endl;
-
-        PlanSingleTransportation s2("Wuhan",
-
-                                    "Guangzhou",
-
-                                    t + 3600000 * 5,
-
-                                    t + 3600000 * 10,
-
-                                    "info2");
-
-        singles.emplace_back(s2);
-
-        PlanSingleTransportation s3("Guangzhou",
-
-                                    "Tianjin",
-
-                                    t + 3600000 * 10,
-
-                                    t + 3600000 * 15,
-
-                                    "info3");
-
-        singles.emplace_back(s3);
-
-
-		TotalTransportationPlan plan = TotalTransportationPlan (
-                singles,
-                p,
-                "info");
-
-        return plan;
-    }*/
-
-	time_t sync_time() {
-		return now * 1000;
-	}
+    time_t sync_time() {
+        return now * 1000;
+    }
 
 }
