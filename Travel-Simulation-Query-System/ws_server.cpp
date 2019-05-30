@@ -278,13 +278,13 @@ namespace fdt {
                              std::shared_ptr<WsServer::Message> message) {
             std::string message_str = message->string();
 
-            std::cout << "Server: Message received: \"" << message_str << "\" from " << connection.get() << std::endl;
+            //std::cout << "Server: Message received: \"" << message_str << "\" from " << connection.get() << std::endl;
 
             std::string r_message_str;
 
             handle_message(message_str, r_message_str);
 
-            std::cout << "Server: Sending message \"" << r_message_str << "\" to " << connection.get() << std::endl;
+            //std::cout << "Server: Sending message \"" << r_message_str << "\" to " << connection.get() << std::endl;
 
             auto send_stream = std::make_shared<WsServer::SendStream>();
             *send_stream << r_message_str;
