@@ -15,6 +15,8 @@
 
 #include <thread>
 
+#define TIMERATE 5000
+
 using namespace std;
 
 bool timer_thread = true;
@@ -41,19 +43,19 @@ void timer(time_t start) {
 			passengers->updatePassengerStatusTable();
 			logger->out("\n");
 #ifdef _WIN32
-			Sleep(1000);
+			Sleep(TIMERATE);
 #endif
 #ifdef __unix__
-			usleep(1000000);
+			usleep(1000 * TIMERATE);
 #endif
 			++ltm.tm_hour;
 			now = mktime(&ltm);
 		} else {
 #ifdef _WIN32
-			Sleep(1000);
+			Sleep(TIMERATE);
 #endif
 #ifdef __unix__
-			usleep(1000000);
+			usleep(1000 * TIMERATE);
 #endif
 		}
 	}
@@ -96,4 +98,3 @@ int main() {
 
 	return 0;
 }
-
