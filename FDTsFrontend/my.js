@@ -10,6 +10,8 @@ var time_multipler = 3600;
 
 var sync_with_cache = false;
 
+var sim_time_flow = true;
+
 console.log("sync_with_cache = " + sync_with_cache);
 
 var node_radius = 30;
@@ -205,8 +207,21 @@ socket.addEventListener('message', function (event) {
         update_marker_data();
     }
 
+    if ("set_simulation_time_flow" === j.function) {
+        sim_time_flow = j.flow;
+        var target_element = $('#time-flow-toggle');
+        if (j.flow) {
+            target_element.addClass('btn-success');
+            target_element.removeClass('btn-secondary');
+        } else {
+            target_element.addClass('btn-secondary');
+            target_element.removeClass('btn-success');
+        }
+    }
+
     if (!full_init && part_init[0] === part_init[1] && part_init[1] === part_init[2] && part_init[0] === 1) {
         document.getElementById('submit_button').onclick = submit_form;
+        document.getElementById('time-flow-toggle').onclick = toggle_time_flow;
         init_vertex_edges();
     }
 });
@@ -667,7 +682,10 @@ setInterval(function () {
     var n_time_d = new Date().getTime();
 
     if (full_init) update_marker();
-    sim_time += (n_time_d - time_d) * time_multipler;
+
+    if (sim_time_flow) {
+        sim_time += (n_time_d - time_d) * time_multipler;
+    }
 
     time_d = n_time_d;
 
@@ -806,4 +824,15 @@ function update_left_detailed_bar() {
 
     document.getElementById('fdt-overlay-totalendtime').innerHTML = new Date(parseInt(total_info[1]));
     document.getElementById('fdt-overlay-totalcost').innerHTML = parseFloat(total_info[0]);
+}
+
+function control_time_flow(flow) {
+    socket.send(JSON.stringify({
+        function: "set_simulation_time_flow",
+        flow: flow
+    }));
+}
+
+function toggle_time_flow() {
+    control_time_flow(!sim_time_flow);
 }
