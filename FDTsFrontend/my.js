@@ -774,7 +774,10 @@ function marker_focus(d) {
         document.getElementById('fdt-overlay-endtime').innerHTML = new Date(current_plan.end_time);
     }
     var total_info = d.display_info.split(' ');
-    document.getElementById('fdt-overlay-totalendtime').innerHTML = new Date(total_info[1]);
+
+    console.log(total_info);
+
+    document.getElementById('fdt-overlay-totalendtime').innerHTML = new Date(parseInt(total_info[1]));
     document.getElementById('fdt-overlay-totalcost').innerHTML = total_info[0];
 
 }
