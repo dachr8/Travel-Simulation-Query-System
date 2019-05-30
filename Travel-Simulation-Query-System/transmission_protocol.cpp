@@ -1,8 +1,8 @@
-#include"transmission_protocol.h"
+﻿#include"transmission_protocol.h"
 #include"Permutations.h"
 
-#define plus 3600*1000
-
+#define plus 1000
+PassengerTable users;
 namespace fdt {
 	std::string Vertex::get_display_name() {
 		return this->display_name;
@@ -110,29 +110,33 @@ namespace fdt {
 		PassengerRequirements require;
 		std::vector<PlanSingleTransportation> plan;
 		std::vector<std::string> pass = requirement.get_pass_by_vertex_display_name_vector();
-		TravelSchedule* schedule = new TravelSchedule;
-		City c;
+		TravelSchedule schedule;
 		auto iter = pass.begin();
 		require.departure = requirement.get_from_vertex_display_name();
 		require.destination = requirement.get_to_vertex_display_name();
 		require.strategy = requirement.get_travel_strategy();
-		require.timeLimit = requirement.get_total_time_limit();
-		require.timeStart = requirement.get_start_time();
+		require.timeLimit = requirement.get_total_time_limit()/plus;
+		require.timeStart = requirement.get_start_time()/plus;
 		while (iter != pass.end()) {
 			require.wayCities.push_back(*iter);
 			++iter;
 		}
-		schedule = c.Permutations(require);
-		if (schedule->status.currentStatus == error) {
+		//City c;
+		//schedule = c.Permutations(require);
+		users.addPassenger(passenger.get_id(), require);
+		schedule = users.generateTravelSchedule(passenger.get_id());
+		users.printTravelSchedule(passenger.get_id());
+
+		if (schedule.status.currentStatus == error) {
 			TotalTransportationPlan emptyplan(plan, passenger, "error");
 			return emptyplan;
 		}
 		else {
-			time_t current_time = requirement.get_start_time();
-			list<ArcCity>::iterator iter = schedule->cities.begin();
+			time_t current_time = requirement.get_start_time()/1000;
+			list<ArcCity>::iterator iter = schedule.cities.begin();
 			std::string st, end;
 			st = requirement.get_from_vertex_display_name();
-			while (iter != schedule->cities.end()) {
+			while (iter != schedule.cities.end()) {
 				end = iter->city;
 				if (current_time < iter->time[0]) {
 					PlanSingleTransportation singlePlan(st, st, current_time*plus, iter->time[0]*plus, "rest");
@@ -149,68 +153,73 @@ namespace fdt {
 			}
 		}
 		string display = "";
-		display += schedule->planCost;
-		display += "\t";
-		display += schedule->planTime;
+		display += std::to_string(schedule.planCost);
+		display += " ";
+		display += std::to_string(schedule.planTime);
 		TotalTransportationPlan totalplan(plan,passenger,display);
 
-		delete schedule;
+		//delete schedule;
 		return totalplan;
 	}
 
-//    TotalTransportationPlan submit_passenger_requirement(Passenger passenger, PassengerRequirement requirement) {
-//        time_t t = sync_time();
-//
-//        Passenger p("Mark_A");
-//
-//        std::vector<PlanSingleTransportation> singles{};
-//
-//        PlanSingleTransportation s1(
-//                "C",
-//
-//                "D",
-//
-//                t + 3600000,
-//
-//                t + 3600000 * 5,
-//
-//                "info");
-//
-//        singles.emplace_back(s1);
-//
-//        PlanSingleTransportation s2("D",
-//
-//                                    "A",
-//
-//                                    t + 3600000 * 5,
-//
-//                                    t + 3600000 * 10,
-//
-//                                    "info2");
-//
-//        singles.emplace_back(s2);
-//
-//        PlanSingleTransportation s3("A",
-//
-//                                    "C",
-//
-//                                    t + 3600000 * 10,
-//
-//                                    t + 3600000 * 15,
-//
-//                                    "info3");
-//
-//        singles.emplace_back(s3);
-//
-//		std::cout << "s1" << s1.get_from_vertex_display_name() << std::endl;
-//
-//		TotalTransportationPlan plan = TotalTransportationPlan (
-//                singles,
-//                p,
-//                "info");
-//
-//        return plan;
-//    }
+    /*TotalTransportationPlan submit_passenger_requirement(Passenger passenger, PassengerRequirement requirement) {
+        time_t t = sync_time();
+
+        Passenger p("Mark_A");
+
+		std::cout << p.get_id() << std::endl;
+
+        std::vector<PlanSingleTransportation> singles{};
+
+        PlanSingleTransportation s1(
+                "Beijing",
+
+                "Wuhan",
+
+                t + 3600000,
+
+                t + 3600000 * 5,
+
+                "info");
+
+		std::cout << "s1" << s1.get_from_vertex_display_name() << std::endl;
+
+        singles.emplace_back(s1);
+
+		std::cout << "s1" << s1.get_from_vertex_display_name() << std::endl;
+
+        PlanSingleTransportation s2("Wuhan",
+
+                                    "Guangzhou",
+
+                                    t + 3600000 * 5,
+
+                                    t + 3600000 * 10,
+
+                                    "info2");
+
+        singles.emplace_back(s2);
+
+        PlanSingleTransportation s3("Guangzhou",
+
+                                    "Tianjin",
+
+                                    t + 3600000 * 10,
+
+                                    t + 3600000 * 15,
+
+                                    "info3");
+
+        singles.emplace_back(s3);
+
+
+		TotalTransportationPlan plan = TotalTransportationPlan (
+                singles,
+                p,
+                "info");
+
+        return plan;
+    }*/
 
 	time_t sync_time() {
 		return now * 1000;
