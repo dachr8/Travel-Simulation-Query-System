@@ -458,7 +458,7 @@ function init_vertex_edges() {
             },
             "class": "marker_text",
             "stroke": "black"
-        })
+        }).attr("text-anchor", "middle")
         .text(function (d) {
             return d.name;
         });
@@ -512,7 +512,7 @@ function update_marker_data() {
             },
             "class": "marker_text",
             "stroke": "black"
-        })
+        }).attr("text-anchor", "middle")
         .text(function (d) {
             return d.name;
         });
