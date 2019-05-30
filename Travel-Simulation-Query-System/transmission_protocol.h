@@ -7,6 +7,7 @@
 #include <vector>
 
 extern PassengerTable* passengers;
+extern bool timer_thread;
 
 namespace fdt {
 	/**
@@ -23,16 +24,16 @@ namespace fdt {
 		std::string display_name;
 
 	public:
-    /**
-     *
-     * This function is intended to control simulated time flow or not,
-     * when this function is being called, the host should control its time flow
-     * as the input parameter 'flow' shows
-     *
-     * @param flow indicating the simluated time is or not going
-     * @return the same value of input param flow
-     */
-    bool set_simulation_time_flow(bool flow);
+		/**
+		 *
+		 * This function is intended to control simulated time flow or not,
+		 * when this function is being called, the host should control its time flow
+		 * as the input parameter 'flow' shows
+		 *
+		 * @param flow indicating the simluated time is or not going
+		 * @return the same value of input param flow
+		 */
+		bool set_simulation_time_flow(bool flow);
 
 		Vertex() {
 		}
@@ -225,6 +226,17 @@ namespace fdt {
 	std::vector<TotalTransportationPlan> sync_total_transportation_plans();
 
 	time_t sync_time();
+
+	/**
+	*
+	* This function is intended to control simulated time flow or not,
+	* when this function is being called, the host should control its time flow
+	* as the input parameter 'flow' shows
+	*
+	* @param flow indicating the simluated time is or not going
+	* @return the same value of input param flow
+	*/
+	bool set_simulation_time_flow(bool flow);
 }
 
 

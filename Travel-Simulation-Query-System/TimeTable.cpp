@@ -21,8 +21,6 @@ bool TimeTable::addArc(const string& city, const ArcCity& newArc) {
 bool TimeTable::addArcList(const string& file, const int& num) {
 	ifstream infile(file);
 	if (infile) {
-
-
 		// skip UTF-8 BOM header for Windows saved files
 		char c[3];
 		for (int j = 0; j < 3; ++j) {
@@ -31,7 +29,8 @@ bool TimeTable::addArcList(const string& file, const int& num) {
 		if (!(c[0] == 0xef && c[1] == 0xbb && c[2] == 0xbf)) {
 			for (int j = 0; j < 3; ++j) {
 				infile.unget();
-
+			}
+		}
 		for (int i = 0; i < num && !infile.eof(); ++i) {
 			string* city = new string;
 			ArcCity* arcCity = new ArcCity;

@@ -17,7 +17,7 @@
 
 using namespace std;
 
-static bool timer_thread = true;
+bool timer_thread = true;
 time_t now;
 PassengerTable* passengers;
 TimeTable* timeTable;
