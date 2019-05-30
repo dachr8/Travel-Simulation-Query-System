@@ -26,7 +26,7 @@ bool TimeTable::addArcList(const string& file, const int& num) {
 		for (int j = 0; j < 3; ++j) {
 			c[j] = infile.get();
 		}
-		if (!(c[0] == 0xef && c[1] == 0xbb && c[2] == 0xbf)) {
+		if (!((c[0] & 0xff) == 0xef && (c[1] & 0xff) == 0xbb && (c[2] & 0xff) == 0xbf)) {
 			for (int j = 0; j < 3; ++j) {
 				infile.unget();
 			}

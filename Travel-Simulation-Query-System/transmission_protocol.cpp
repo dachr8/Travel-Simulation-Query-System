@@ -167,6 +167,8 @@ namespace fdt {
 		display += std::to_string(schedule.planCost);
 		display += " ";
 		display += std::to_string(schedule.planTime * plus);
+		display += " ";
+		display += requirement.get_to_vertex_display_name();
 
 
 		TotalTransportationPlan totalplan(plan, passenger, display);
