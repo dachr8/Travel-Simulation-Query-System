@@ -249,7 +249,7 @@ namespace fdt {
 
         if (function == "set_simulation_time_flow") {
 
-            bool flow = set_simulation_time_flow(j['flow']);
+            bool flow = set_simulation_time_flow(j["flow"]);
 
             json r_json;
             r_json["function"] = "set_simulation_time_flow";
