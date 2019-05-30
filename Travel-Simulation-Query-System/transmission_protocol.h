@@ -313,6 +313,17 @@ namespace fdt {
 
     time_t sync_time();
 
+    /**
+     *
+     * This function is intended to control simulated time flow or not,
+     * when this function is being called, the host should control its time flow
+     * as the input parameter 'flow' shows
+     *
+     * @param flow indicating the simluated time is or not going
+     * @return the same value of input param flow
+     */
+    bool set_simulation_time_flow(bool flow);
+
 }
 
 
