@@ -140,9 +140,9 @@ namespace fdt {
 			list<ArcCity>::iterator iter = schedule.cities.begin();
 
 			std::string st, end;
-			std::string single_display;
 			st = requirement.get_from_vertex_display_name();
 			while (iter != schedule.cities.end()) {
+                std::string single_display;
 				end = iter->city;
 				if (current_time < iter->time[0]) {
 					single_display += "rest";
@@ -155,7 +155,7 @@ namespace fdt {
 				else {
 					single_display += iter->transportation;
 					single_display += " ";
-					single_display += iter->fare;
+					single_display += std::to_string(iter->fare);
 					PlanSingleTransportation singlePlan(st, end, iter->time[0]*plus, iter->time[1]*plus, single_display);
 					plan.push_back(singlePlan);
 					current_time = iter->time[1];

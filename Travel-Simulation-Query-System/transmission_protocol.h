@@ -219,7 +219,9 @@ namespace fdt {
 
                 start_time(start_time),
 
-                end_time(end_time) {}
+                end_time(end_time),
+
+                transportation_display_info(transportation_display_info) {}
 
 
         std::string get_from_vertex_display_name();
