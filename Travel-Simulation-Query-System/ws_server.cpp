@@ -247,6 +247,19 @@ namespace fdt {
 
         }
 
+        if (function == "set_simulation_time_flow") {
+
+            bool flow = set_simulation_time_flow(j['flow']);
+
+            json r_json;
+            r_json["function"] = "set_simulation_time_flow";
+            r_json["flow"] = flow;
+
+            back = r_json.dump();
+
+            return 0;
+        }
+
         return 0;
     }
 
