@@ -25,109 +25,113 @@
             position: absolute; /* Sit on top of the page content */
             /*display: none; !* Hidden by default *!*/
             width: 100%; /* Full width (cover the whole page) */
-            height: 100%; /* Full height (cover the whole page) */
+            height: 10%; /* Full height (cover the whole page) */
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(255,255,255,0); /* Black background with opacity */
+            background-color: rgba(255,75,75,0.6); /* Black background with opacity */
             z-index: 100000; /* Specify a stack order in case you're using a different order for other elements */
             cursor: pointer; /* Add a pointer on hover */
         }
 
     </style>
 
-    <div class="fdt-overlay col-2">
-
-        <div style="background-color: rgba(255,255,255,0.5);">
-            <p>
-                Pointed Traveller Travel Information
-            </p>
-            <table class="table table-striped">
-                <tr>
-                    <td>
-                        Passenger
-                    </td>
-                    <td id="fdt-overlay-passenger">
-                        A
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        From
-                    </td>
-                    <td id="fdt-overlay-from">
-                        B
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        To
-                    </td>
-                    <td id="fdt-overlay-to">
-                        C
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Transportation
-                    </td>
-                    <td id="fdt-overlay-by">
-                        D
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Start Time
-                    </td>
-                    <td id="fdt-overlay-starttime">
-                        E
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        End Time
-                    </td>
-                    <td id="fdt-overlay-endtime">
-                        F
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Cost
-                    </td>
-                    <td>
-                        G
-                    </td>
-                </tr>
-                <hr>
-                <tr>
-                    <td>
-                        Total End Time
-                    </td>
-                    <td>
-                        H
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Total Cost
-                    </td>
-                    <td>
-                        I
-                    </td>
-                </tr>
-            </table>
-        </div>
+    <div class="fdt-overlay col-8 offset-2" align="center" id="notification" style="display: none;">
+        <text style="font-size: 40px;" id="notification_text"></text>
     </div>
 
-    <div class="container-fluid" style="">
+
+    <div class="container-fluid" style="background-color: rgba(255,255,255,0);">
         <div class="row h-100">
-            <div class="col-8 h-100">
+            <div class="col-3" style="">
+
+                <div style="background-color: rgba(255,255,255,0.5);">
+                    <p>
+                        Pointed Traveller Travel Information
+                    </p>
+                    <table class="table table-striped">
+                        <tr>
+                            <td>
+                                Passenger
+                            </td>
+                            <td id="fdt-overlay-passenger">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                From
+                            </td>
+                            <td id="fdt-overlay-from">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                To
+                            </td>
+                            <td id="fdt-overlay-to">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Transportation
+                            </td>
+                            <td id="fdt-overlay-by">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Start Time
+                            </td>
+                            <td id="fdt-overlay-starttime">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                End Time
+                            </td>
+                            <td id="fdt-overlay-endtime">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Cost
+                            </td>
+                            <td id="fdt-overlay-cost">
+
+                            </td>
+                        </tr>
+                        <hr>
+                        <tr>
+                            <td>
+                                Total End Time
+                            </td>
+                            <td id="fdt-overlay-totalendtime">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Total Cost
+                            </td>
+                            <td id="fdt-overlay-totalcost">
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-6 h-100">
                 <div class="col-12 h-100" id="svg_container"></div>
             </div>
 
-            <div class="col-4 border" style="background-color: #ffffff">
+            <div class="col-3 border" style="background-color: #ffffff">
 
                 <p></p>
 
@@ -280,7 +284,7 @@
                     </table>
 
                     <div class="row">
-                        <button type="button" class="btn btn-primary col-10 offset-1" onclick="submit_form()">Submit Form</button>
+                        <button type="button" class="btn btn-primary col-10 offset-1" id="submit_button">Submit Form</button>
                     </div>
                 </form>
 
@@ -294,7 +298,7 @@
 </head>
 <body>
 
-<script type="text/javascript" src="my.js"></script>
+<script type="text/javascript" src="my.min.js"></script>
 
 </body>
 </html>

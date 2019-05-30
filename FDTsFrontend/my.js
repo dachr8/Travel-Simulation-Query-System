@@ -6,9 +6,13 @@
  *
  * @type {number}
  */
-const time_multipler = 3600;
+var time_multipler = 3600;
 
-const node_radius = 30;
+var sync_with_cache = false;
+
+console.log("sync_with_cache = " + sync_with_cache);
+
+var node_radius = 30;
 
 $('.date').datetimepicker(); // init datetimepicker
 
@@ -17,8 +21,7 @@ $('.date').datetimepicker(); // init datetimepicker
  *
  * @returns {{}}
  */
-$.fn.serializeObject = function()
-{
+$.fn.serializeObject = function() {
     var o = {};
     var a = this.serializeArray();
     $.each(a, function() {
@@ -38,7 +41,7 @@ $.fn.serializeObject = function()
  * same as enum strategy in c++ codes
  * @type {{min_cost: string, min_time: string, limited_time: string}}
  */
-const STRATEGY = {
+var STRATEGY = {
     min_cost: "min_cost",
     min_time: "min_time",
     limited_time: "limited_time"
@@ -86,8 +89,6 @@ socket.addEventListener('message', function (event) {
             selection += '<option value="'+j.vertex[i].id+'">'+j.vertex[i].id+'</option>';
         }
 
-//            console.log(selection);
-
         document.getElementsByName('from')[0].innerHTML = selection;
         document.getElementsByName('to')[0].innerHTML = selection;
         document.getElementsByName('pass_by_vertex_display_name')[0].innerHTML = selection;
@@ -105,12 +106,57 @@ socket.addEventListener('message', function (event) {
         part_init[2] = 1;
     }
 
+    if ("sync_total_transportation_plans" === j.function) {
+        console.log(j.plans);
+
+        dataset.markers = [];
+
+        for (var i in j.plans) {
+            var total_transportation_plan = j.plans[i];
+            var new_marker = {
+                name: total_transportation_plan.passenger,
+                display_info: total_transportation_plan.display_info,
+                plan: [],
+                plan_index: 0
+            };
+            for (var i in total_transportation_plan.single_transportation_plans) {
+
+                var k = total_transportation_plan.single_transportation_plans[i];
+                var new_plan = {
+                    start_node: dataset.nodes[get_node_by_id(k.from)],
+                    end_node: dataset.nodes[get_node_by_id(k.to)],
+                    start_time: k.start_time,
+                    end_time: k.end_time,
+                    display_info : k.display_info
+                };
+
+                new_marker.plan.push(new_plan);
+            }
+
+            dataset.markers.push(new_marker);
+        }
+
+        update_marker_data();
+    }
+
     if (full_init && "submit_passenger_requirement" === j.function) {
         // fill marker data
         console.log(j);
 
+        var notification_element = $('#notification');
+        var notification_text_element = document.getElementById('notification_text');
+
         if (j.total_transportation_plan.display_info === "error") {
+            notification_element.css('background-color', 'rgba(255,75,75,0.6)');
+            notification_text_element.innerHTML = 'Unreachable';
+            notification_element.show();
+            notification_element.fadeOut(2000);
             return;
+        } else {
+            notification_element.css('background-color', 'rgba(75,255,75,0.6)');
+            notification_text_element.innerHTML = 'Ok';
+            notification_element.show();
+            notification_element.fadeOut(2000);
         }
 
         var total_transportation_plan = j.total_transportation_plan;
@@ -131,7 +177,8 @@ socket.addEventListener('message', function (event) {
                     start_node: dataset.nodes[get_node_by_id(k.from)],
                     end_node: dataset.nodes[get_node_by_id(k.to)],
                     start_time: k.start_time,
-                    end_time: k.end_time
+                    end_time: k.end_time,
+                    display_info : k.display_info
                 };
 
                 new_marker.plan.push(new_plan);
@@ -148,7 +195,8 @@ socket.addEventListener('message', function (event) {
                     start_node: dataset.nodes[get_node_by_id(k.from)],
                     end_node: dataset.nodes[get_node_by_id(k.to)],
                     start_time: k.start_time,
-                    end_time: k.end_time
+                    end_time: k.end_time,
+                    display_info: k.display_info
                 };
 
                 m.plan.push(new_plan);
@@ -158,6 +206,7 @@ socket.addEventListener('message', function (event) {
     }
 
     if (!full_init && part_init[0] === part_init[1] && part_init[1] === part_init[2] && part_init[0] === 1) {
+        document.getElementById('submit_button').onclick = submit_form;
         init_vertex_edges();
     }
 });
@@ -220,7 +269,7 @@ var dataset = {
 
 // Connection opened
 socket.addEventListener('open', function (event) {
-    ["get_all_vertex", "get_all_display_edge", "sync_time"].forEach(function (e) {
+    ["get_all_vertex", "get_all_display_edge", "sync_time", "sync_total_transportation_plans"].forEach(function (e) {
         socket.send(JSON.stringify({"function": e}));
     });
 });
@@ -268,7 +317,7 @@ function init_vertex_edges() {
 
     // console.log(cache_time);
 
-    if (cache_time != null && sim_time > cache_time) {
+    if (sync_with_cache && cache_time != null && sim_time > cache_time) {
         var cached_markers = JSON.parse(sessionStorage.getItem('markers'));
         console.log(cached_markers);
         if (cached_markers != null) {
@@ -349,7 +398,7 @@ function init_vertex_edges() {
         }).attr("text-anchor", "middle")
         .text(function (d) {
             return d.id;
-        });
+        }).call(force.drag);
 
     nodelabels.on('click', function(d) {
         selected_city = d;
@@ -439,7 +488,7 @@ function init_vertex_edges() {
         })
         .style("fill", function (d, i) {
             return colors(i);
-        });
+        }).on('mouseover', marker_focus);
 
     _markers.exit().remove();
 
@@ -461,7 +510,7 @@ function init_vertex_edges() {
         }).attr("text-anchor", "middle")
         .text(function (d) {
             return d.name;
-        });
+        }).on('mouseover', marker_focus);
 
     _marker_text.exit().remove();
 
@@ -493,7 +542,7 @@ function update_marker_data() {
         })
         .style("fill", function (d, i) {
             return colors(i);
-        });
+        }).on('mouseover', marker_focus);
 
     svg.selectAll('.marker_text').remove();
 
@@ -515,7 +564,7 @@ function update_marker_data() {
         }).attr("text-anchor", "middle")
         .text(function (d) {
             return d.name;
-        });
+        }).on('mouseover', marker_focus);
 
 }
 
@@ -541,6 +590,9 @@ function update_marker_data() {
 
 //    function update_marker() {}
 function update_marker() {
+
+    update_left_detailed_bar();
+
     markers.attr('cx', function (d) {
 
 //            console.log(d);
@@ -718,3 +770,40 @@ function submit_form() {
 }
 
 var passenger_input_element = document.querySelector('[name="passenger"]');
+
+var focused_mark = null;
+
+function marker_focus(d) {
+    focused_mark = d;
+    // console.log(d);
+
+    update_left_detailed_bar();
+}
+
+function update_left_detailed_bar() {
+    if (focused_mark == null) {
+        return;
+    }
+
+    var d = focused_mark;
+
+    document.getElementById('fdt-overlay-passenger').innerHTML = d.name;
+    if (d.plan_index >= 0 && d.plan_index < d.plan.length) {
+        var current_plan = d.plan[d.plan_index];
+        document.getElementById('fdt-overlay-from').innerHTML = current_plan.start_node.id;
+        document.getElementById('fdt-overlay-to').innerHTML = current_plan.end_node.id;
+        var t = current_plan.display_info.split(' ');
+        var by = t[0];
+        var cost = t[1];
+        document.getElementById('fdt-overlay-by').innerHTML = by;
+        document.getElementById('fdt-overlay-cost').innerHTML = parseFloat(cost);
+        document.getElementById('fdt-overlay-starttime').innerHTML = new Date(current_plan.start_time);
+        document.getElementById('fdt-overlay-endtime').innerHTML = new Date(current_plan.end_time);
+    }
+    var total_info = d.display_info.split(' ');
+
+    console.log(total_info);
+
+    document.getElementById('fdt-overlay-totalendtime').innerHTML = new Date(parseInt(total_info[1]));
+    document.getElementById('fdt-overlay-totalcost').innerHTML = parseFloat(total_info[0]);
+}

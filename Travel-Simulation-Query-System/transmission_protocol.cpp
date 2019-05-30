@@ -163,9 +163,10 @@ namespace fdt {
 		}
 		string display = "";
 
-		display += std::to_string(schedule.planCost);
-		display += " ";
-		display += std::to_string(schedule.planTime);
+
+     display +=  std::to_string(schedule.planCost);
+		 display += " ";
+		 display +=  std::to_string(schedule.planTime * plus);
 
 
 		TotalTransportationPlan totalplan(plan, passenger, display);
