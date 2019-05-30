@@ -87,13 +87,13 @@ TravelSchedule PassengerTable::generateTravelSchedule(const string &id) {
     TravelSchedule * schedule = c.Permutations(requires);
 
     if (schedule->status.currentStatus == error) {
-        logger->out(id + "\t·���滮ʧ��\n");
+        logger->out(id + "\t路径规划失败\n");
     } else {
         schedule->status.currentCity = schedule->departure;
         schedule->status.currentStatus = waiting;
         schedule->status.currentWay = schedule->cities.front();
         travelSchedule.insert({id, *schedule});
-        logger->out(id + "\t·���滮�ɹ�\n");
+        logger->out(id + "\t路径规划成功\n");
     }
     return *schedule;
 }
@@ -128,12 +128,12 @@ bool PassengerTable::updatePassengerStatusTable() {
                 else
                     iter->second.status.currentStatus = onTheWay;
             }
-            logger->out(iter->first + "\t����" + StatustoString(iter->second.status) + "\n");
+            logger->out(iter->first + "\t已到达" + StatustoString(iter->second.status) + "\n");
         }
 
         if (iter->second.status.currentCity == iter->second.departure &&
             now <= iter->second.status.currentWay.time[0]) {
-            logger->out(iter->first + "\t��Ҫ����" + StatustoString(iter->second.status) + "\n");
+            logger->out(iter->first + "\t需要到达出发地" + StatustoString(iter->second.status) + "\n");
         }
     }
     return true;
@@ -149,16 +149,16 @@ string PassengerTable::StatustoString(PassengerStatus &status) {
     string str = status.currentCity + ",";
     switch (status.currentStatus) {
         case waiting:
-            str += "�ȴ�ȥ��";
+            str += "正在等待去往";
             break;
         case onTheWay:
-            str += "����ȥ��";
+            str += "正在去往";
             break;
         case resting:
-            str += "������Ϣ�У�����ȥ��";
+            str += "换乘休息中，等待去往";
             break;
         case over:
-            str += "�ó��ѽ���";
+            str += "旅程已结束";
             break;
         default:
             str += "error";
