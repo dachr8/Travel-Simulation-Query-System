@@ -22,6 +22,7 @@ bool TimeTable::addArcList(const string& file, const int& num) {
 	ifstream infile(file);
 	if (infile) {
 
+
 		// skip UTF-8 BOM header for Windows saved files
 		char c[3];
 		for (int j = 0; j < 3; ++j) {
@@ -30,8 +31,6 @@ bool TimeTable::addArcList(const string& file, const int& num) {
 		if (!(c[0] == 0xef && c[1] == 0xbb && c[2] == 0xbf)) {
 			for (int j = 0; j < 3; ++j) {
 				infile.unget();
-			}
-		}
 
 		for (int i = 0; i < num && !infile.eof(); ++i) {
 			string* city = new string;
@@ -53,7 +52,7 @@ bool TimeTable::addArcList(const string& file, const int& num) {
 				return false;
 		}
 	}
-		
+
 	infile.close();
 	return true;
 }
@@ -85,7 +84,7 @@ bool operator==(const ArcCity& a, const ArcCity& b) {
 
 
 string ArcCity::toString() {
-	string s = city + '\t' + transportation +  "票价：" + to_string(fare);
+	string s = city + '\t' + transportation + "票价：" + to_string(fare);
 
 	for (int i = 0; i < 2; ++i) {
 		s += '\t';
