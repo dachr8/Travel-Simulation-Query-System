@@ -1,4 +1,4 @@
-#include "PassengerTable.h"
+﻿#include "PassengerTable.h"
 #include "Permutations.h"
 
 #include <cfloat>
@@ -81,10 +81,12 @@ TravelSchedule PassengerTable::reSchedule(const string &id, const PassengerRequi
     return getTravelSchedule(id);
 }
 
-TravelSchedule PassengerTable::generateTravelSchedule(const string &id) {
-    PassengerRequirements requires = passengerRequirements.find(id)->second;
-    City c;
-    TravelSchedule * schedule = c.Permutations(requires);
+TravelSchedule PassengerTable::generateTravelSchedule(const string& id) {
+	PassengerRequirements requires = passengerRequirements.find(id)->second;
+
+	City c;
+
+	TravelSchedule* schedule = c.Permutations(requires);
 
     if (schedule->status.currentStatus == error) {
         logger->out(id + "\t路径规划失败\n");
@@ -148,21 +150,21 @@ bool PassengerTable::printPassengerStatusTable() {
 string PassengerTable::StatustoString(PassengerStatus &status) {
     string str = status.currentCity + ",";
     switch (status.currentStatus) {
-        case waiting:
-            str += "正在等待去往";
-            break;
-        case onTheWay:
-            str += "正在去往";
-            break;
-        case resting:
-            str += "换乘休息中，等待去往";
-            break;
-        case over:
-            str += "旅程已结束";
-            break;
-        default:
-            str += "error";
-            break;
+	case waiting:
+		str += "正在等待去往";
+		break;
+	case onTheWay:
+		str += "正在去往";
+		break;
+	case resting:
+		str += "换乘休息中，等待去往";
+		break;
+	case over:
+		str += "旅程已结束";
+		break;
+	default:
+		str += "error";
+		break;
     }
     if (status.currentStatus != over)
         str += status.currentWay.toString();

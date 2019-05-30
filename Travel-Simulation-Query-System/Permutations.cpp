@@ -150,7 +150,7 @@ TravelSchedule* City::Permutations(PassengerRequirements& require) {
 				if (travelList[s][e].from == st) {
 					f = 0;
 				}
-				if (travelList[s][e].value == FLT_MAX) {
+				if (travelList[s][e].value == FLT_MAX || travelList[s][e].from == "") {
 					goto skip;
 				}
 				

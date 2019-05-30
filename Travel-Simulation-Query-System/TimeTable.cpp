@@ -21,7 +21,6 @@ bool TimeTable::addArc(const string& city, const ArcCity& newArc) {
 bool TimeTable::addArcList(const string& file, const int& num) {
 	ifstream infile(file);
 	if (infile) {
-
 		char c = infile.get();
 
 		if (c & 0x80) {
@@ -83,7 +82,8 @@ bool operator==(const ArcCity& a, const ArcCity& b) {
 
 
 string ArcCity::toString() {
-	string s = city + '\t' + transportation + "\票价：" + to_string(fare);
+	string s = city + '\t' + transportation +  "票价：" + to_string(fare);
+
 	for (int i = 0; i < 2; ++i) {
 		s += '\t';
 		char tmp[64];
