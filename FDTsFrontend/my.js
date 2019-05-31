@@ -49,11 +49,17 @@ var STRATEGY = {
     limited_time: "limited_time"
 };
 
+var WS_URL = location.href.replace('http', 'ws');
+if (WS_URL.charAt(WS_URL.length - 1) != '/') {
+    WS_URL += '/';
+}
+WS_URL += "rpc";
+
 /**
  * web socket instance
  * @type {WebSocket}
  */
-var socket = new WebSocket('ws://localhost:8145');
+var socket = new WebSocket(WS_URL);
 
 /**
  * simulated time container
