@@ -4,3 +4,9 @@
 [submodule "Travel-Simulation-Query-System/json"]
 	path = Travel-Simulation-Query-System/json
 	url = https://github.com/nlohmann/json.git
+[submodule "Travel-Simulation-Query-System/boost-cmake"]
+	path = Travel-Simulation-Query-System/boost-cmake
+	url = https://github.com/Orphis/boost-cmake.git
+[submodule "Travel-Simulation-Query-System/openssl-cmake"]
+	path = Travel-Simulation-Query-System/openssl-cmake
+	url = https://github.com/janbar/openssl-cmake.git
