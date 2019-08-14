@@ -1,5 +1,10 @@
 project(Travel-Simulation-Query-System)
 
+set(CMAKE_LEGACY_CYGWIN_WIN32 0)
+add_definitions(-D_WIN32)
+
+add_subdirectory(boost-cmake)
+add_subdirectory(openssl-cmake)
 add_subdirectory(Simple-WebSocket-Server)
 add_subdirectory(json)
 
